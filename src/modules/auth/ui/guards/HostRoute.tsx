@@ -2,13 +2,17 @@ import { Navigate, Outlet } from 'react-router';
 import { useAuth } from '../hooks/useAuth';
 
 const HostRoute = () => {
-  const { isAuthenticated, isHost, can } = useAuth();
+  const { isAuthenticated, isLoading, canAccessHostDashboard } = useAuth();
+
+  if (isLoading) {
+    return null;
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  if (!isHost || !can('host.dashboard.read')) {
+  if (!canAccessHostDashboard) {
     return <Navigate to="/" replace />;
   }
 

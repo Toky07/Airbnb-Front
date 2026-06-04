@@ -1,7 +1,7 @@
-import { faBed, faHotel, faRightFromBracket, faTableColumns } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faHotel, faTableColumns } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, NavLink, Outlet } from 'react-router';
-import { BrandLogo, PageContainer } from '../../shared/ui';
+import { BrandLogo, PageContainer, UserMenu } from '../../shared/ui';
 import { useAuth } from '../../modules/auth/ui/hooks/useAuth';
 import { notifyMessages, useNotification } from '../../shared/notifications';
 
@@ -12,7 +12,7 @@ const navItems = [
 ];
 
 const HostLayout = () => {
-  const { email, logout } = useAuth();
+  const { session, email, canAccessHostDashboard, hostAccess, logout } = useAuth();
   const { success: notifySuccess } = useNotification();
 
   const handleLogout = () => {
@@ -23,21 +23,22 @@ const HostLayout = () => {
   return (
     <div className="min-h-screen bg-slate-50">
       <header className="border-b border-slate-200 bg-white">
-        <PageContainer className="flex h-16 items-center justify-between">
+        <PageContainer className="flex h-16 items-center justify-between gap-4">
           <BrandLogo />
-          <div className="flex items-center gap-4">
-            <span className="hidden text-sm text-slate-500 sm:inline">{email}</span>
-            <Link to="/" className="text-sm font-medium text-slate-600 hover:text-slate-900">
-              Site public
-            </Link>
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-300"
+          <div className="flex items-center gap-3">
+            <Link
+              to="/"
+              className="hidden rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 sm:inline-flex"
             >
-              <FontAwesomeIcon icon={faRightFromBracket} className="h-3.5 w-3.5" />
-              Déconnexion
-            </button>
+              Voir les logements
+            </Link>
+            <UserMenu
+              session={session}
+              email={email}
+              canAccessHostDashboard={canAccessHostDashboard}
+              hasProperty={Boolean(hostAccess?.hasProperty)}
+              onLogout={handleLogout}
+            />
           </div>
         </PageContainer>
       </header>
@@ -45,7 +46,7 @@ const HostLayout = () => {
       <PageContainer className="grid gap-8 py-8 lg:grid-cols-[240px_minmax(0,1fr)]">
         <aside className="h-fit rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
           <p className="mb-4 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Espace hôte
+            Administration hôtel
           </p>
           <nav className="space-y-1">
             {navItems.map((item) => (

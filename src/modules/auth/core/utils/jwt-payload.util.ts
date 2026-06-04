@@ -38,7 +38,12 @@ export function extractSessionFromToken(token: string | null) {
   const isSuperAdmin = Boolean(payload?.isSuperAdmin);
 
   return {
-    authId: typeof payload?.sub === 'number' ? payload.sub : null,
+    authId:
+      typeof payload?.sub === 'number'
+        ? payload.sub
+        : typeof payload?.sub === 'string'
+          ? Number(payload.sub)
+          : null,
     email: payload?.email ?? null,
     roles,
     permissions: payload?.permissions ?? [],

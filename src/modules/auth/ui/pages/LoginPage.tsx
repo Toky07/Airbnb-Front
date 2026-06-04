@@ -1,6 +1,7 @@
 import { type FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { getAuthService } from '../../core/services/auth.service';
+import { resolvePostLoginRedirect } from '../../core/services/resolve-post-login-redirect';
 import { useAuth } from '../hooks/useAuth';
 import { Button, PageContainer } from '../../../../shared/ui';
 import { notifyMessages, useNotification } from '../../../../shared/notifications';
@@ -27,9 +28,9 @@ const LoginPage = () => {
       return;
     }
 
-    login(result.token);
+    const session = await login(result.token);
     notifySuccess(notifyMessages.auth.login());
-    navigate('/host');
+    navigate(resolvePostLoginRedirect(session));
   };
 
   return (

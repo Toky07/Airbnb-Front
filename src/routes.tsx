@@ -5,6 +5,8 @@ import HostRoute from './modules/auth/ui/guards/HostRoute';
 import LoginPage from './modules/auth/ui/pages/LoginPage';
 import RegisterPage from './modules/auth/ui/pages/RegisterPage';
 import SetPasswordPage from './modules/auth/ui/pages/SetPasswordPage';
+import ProtectedRoute from './modules/auth/ui/guards/ProtectedRoute';
+import ProfilePage from './modules/account/ui/pages/ProfilePage';
 import HostLayout from './layout/host/HostLayout';
 import HostDashboardPage from './modules/host/ui/pages/HostDashboardPage';
 import HostPropertyPage from './modules/host/ui/pages/HostPropertyPage';
@@ -29,6 +31,12 @@ const RegisterRoute = () => (
 const SetPasswordRoute = () => (
   <PublicPageLayout>
     <SetPasswordPage />
+  </PublicPageLayout>
+);
+
+const ProfileRoute = () => (
+  <PublicPageLayout>
+    <ProfilePage />
   </PublicPageLayout>
 );
 
@@ -68,6 +76,15 @@ const router = createBrowserRouter([
           {
             path: '/set-password',
             Component: SetPasswordRoute,
+          },
+        ],
+      },
+      {
+        Component: ProtectedRoute,
+        children: [
+          {
+            path: '/account/profile',
+            Component: ProfileRoute,
           },
         ],
       },

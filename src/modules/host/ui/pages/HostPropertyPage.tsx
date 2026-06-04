@@ -5,6 +5,7 @@ import type { CategorySummary } from '../../../rooms/core/types/room.types';
 import { resolveMediaUrl } from '../../../../shared/utils/resolve-media-url';
 import { Button } from '../../../../shared/ui';
 import { notifyMessages, useNotification } from '../../../../shared/notifications';
+import { useAuth } from '../../../auth/ui/hooks/useAuth';
 
 const defaultForm: PropertyFormPayload = {
   name: '',
@@ -28,6 +29,7 @@ const HostPropertyPage = () => {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { success: notifySuccess } = useNotification();
+  const { refreshSession } = useAuth();
 
   useEffect(() => {
     async function load() {
@@ -82,6 +84,7 @@ const HostPropertyPage = () => {
     }
 
     setProperty(result.property ?? null);
+    await refreshSession();
     notifySuccess(
       property
         ? notifyMessages.property.updated(form.name.trim())

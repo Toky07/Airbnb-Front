@@ -2,6 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import AuthProvider from '../../../auth/ui/providers/AuthProvider';
+import { NotificationProvider } from '../../../../shared/notifications';
 import HomePage from './HomePage';
 
 const mockRooms = {
@@ -50,9 +51,11 @@ describe('HomePage', () => {
 
     render(
       <MemoryRouter>
-        <AuthProvider>
-          <HomePage />
-        </AuthProvider>
+        <NotificationProvider>
+          <AuthProvider>
+            <HomePage />
+          </AuthProvider>
+        </NotificationProvider>
       </MemoryRouter>,
     );
 

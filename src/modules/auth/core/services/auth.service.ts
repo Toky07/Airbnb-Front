@@ -1,5 +1,7 @@
 import { getApiClient } from '../../../../shared/http/api-client';
 import { getTokenStorage } from '../../../../shared/http/token-storage';
+import { mapMeResponse } from './resolve-auth-session';
+import type { MeResponse } from '../types/auth.types';
 
 export class AuthSessionService {
   getToken(): string | null {
@@ -137,12 +139,13 @@ export class AuthService {
     return { success: true };
   }
 
-  async me(): Promise<unknown> {
+  async fetchMe(): Promise<MeResponse | null> {
     const response = await getApiClient().get('/auth/me');
     if (!response.ok) {
       return null;
     }
-    return response.json();
+    const data: unknown = await response.json();
+    return mapMeResponse(data);
   }
 }
 
