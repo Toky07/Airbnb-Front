@@ -11,6 +11,7 @@ import {
   resolveRoomImageUrls,
 } from '../../../rooms/core/types/room.types';
 import { Button } from '../../../../shared/ui';
+import { notifyMessages, useNotification } from '../../../../shared/notifications';
 
 const defaultForm: RoomFormPayload = {
   name: '',
@@ -37,6 +38,7 @@ const HostRoomsPage = () => {
   const [form, setForm] = useState<RoomFormPayload>(defaultForm);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const { success: notifySuccess } = useNotification();
 
   const loadRooms = async () => {
     setLoading(true);
@@ -104,6 +106,11 @@ const HostRoomsPage = () => {
     }
 
     setShowForm(false);
+    notifySuccess(
+      editingRoom
+        ? notifyMessages.room.updated(form.name.trim())
+        : notifyMessages.room.created(form.name.trim()),
+    );
     await loadRooms();
   };
 
@@ -118,6 +125,7 @@ const HostRoomsPage = () => {
       return;
     }
 
+    notifySuccess(notifyMessages.room.deleted(room.name));
     await loadRooms();
   };
 

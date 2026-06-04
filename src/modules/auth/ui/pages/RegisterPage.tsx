@@ -1,24 +1,26 @@
 import { type FormEvent, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { getAuthService } from '../../core/services/auth.service';
 import { Button, PageContainer } from '../../../../shared/ui';
+import { notifyMessages, useNotification } from '../../../../shared/notifications';
 
 const RegisterPage = () => {
-  const navigate = useNavigate();
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
     email: '',
     phoneNumber: '',
-    password: '',
   });
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { success: notifySuccess } = useNotification();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setLoading(true);
     setError(null);
+    setSuccess(false);
 
     const result = await getAuthService().register(form);
     setLoading(false);
@@ -28,19 +30,41 @@ const RegisterPage = () => {
       return;
     }
 
-    navigate('/login');
+    setSuccess(true);
+    notifySuccess(notifyMessages.auth.registered(), { duration: 8000 });
   };
 
   const update = (field: keyof typeof form, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
   };
 
+  if (success) {
+    return (
+      <PageContainer className="flex min-h-[70vh] items-center justify-center py-12">
+        <div className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-lg">
+          <h1 className="text-2xl font-bold text-slate-900">Inscription enregistrée</h1>
+          <p className="mt-4 text-sm text-slate-600">
+            Un email vous a été envoyé avec un lien pour définir votre mot de passe et activer votre compte.
+          </p>
+          <Link
+            to="/login"
+            className="mt-6 inline-flex rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white"
+          >
+            Aller à la connexion
+          </Link>
+        </div>
+      </PageContainer>
+    );
+  }
+
   return (
     <PageContainer className="flex min-h-[70vh] items-center justify-center py-12">
       <form onSubmit={handleSubmit} className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold text-slate-900">Devenir hôte</h1>
-          <p className="mt-2 text-sm text-slate-500">Créez votre compte pour publier votre établissement</p>
+          <p className="mt-2 text-sm text-slate-500">
+            Créez votre compte — vous recevrez un email pour définir votre mot de passe
+          </p>
         </div>
 
         {error ? (
@@ -83,16 +107,6 @@ const RegisterPage = () => {
             <input
               value={form.phoneNumber}
               onChange={(event) => update('phoneNumber', event.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-              required
-            />
-          </label>
-          <label className="block sm:col-span-2">
-            <span className="mb-2 block text-sm font-medium text-slate-700">Mot de passe</span>
-            <input
-              type="password"
-              value={form.password}
-              onChange={(event) => update('password', event.target.value)}
               className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
               required
             />

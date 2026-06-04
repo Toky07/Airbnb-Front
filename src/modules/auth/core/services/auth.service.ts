@@ -74,7 +74,6 @@ export class AuthService {
 
   async register(payload: {
     email: string;
-    password: string;
     firstName: string;
     lastName: string;
     phoneNumber: string;
@@ -86,6 +85,52 @@ export class AuthService {
       return {
         success: false,
         error: extractErrorMessage(data, 'Inscription impossible.'),
+      };
+    }
+
+    return { success: true };
+  }
+
+  async validatePasswordSetup(token: string): Promise<{
+    valid: boolean;
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+  }> {
+    const response = await getApiClient().get(
+      `/auth/password-setup/validate?token=${encodeURIComponent(token)}`,
+    );
+    if (!response.ok) {
+      return { valid: false };
+    }
+    const data = (await response.json()) as {
+      valid?: boolean;
+      email?: string;
+      firstName?: string;
+      lastName?: string;
+    };
+    return {
+      valid: Boolean(data.valid),
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+    };
+  }
+
+  async setPassword(
+    token: string,
+    password: string,
+  ): Promise<{ success: boolean; error?: string }> {
+    const response = await getApiClient().post('/auth/password-setup', {
+      token,
+      password,
+    });
+    const data: unknown = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: extractErrorMessage(data, 'Activation impossible.'),
       };
     }
 

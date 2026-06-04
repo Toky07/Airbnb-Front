@@ -4,6 +4,7 @@ import type { HostProperty, PropertyFormPayload } from '../../core/types/host.ty
 import type { CategorySummary } from '../../../rooms/core/types/room.types';
 import { resolveMediaUrl } from '../../../../shared/utils/resolve-media-url';
 import { Button } from '../../../../shared/ui';
+import { notifyMessages, useNotification } from '../../../../shared/notifications';
 
 const defaultForm: PropertyFormPayload = {
   name: '',
@@ -26,7 +27,7 @@ const HostPropertyPage = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const { success: notifySuccess } = useNotification();
 
   useEffect(() => {
     async function load() {
@@ -67,7 +68,6 @@ const HostPropertyPage = () => {
     event.preventDefault();
     setSaving(true);
     setError(null);
-    setSuccess(null);
 
     const hostService = getHostService();
     const result = property
@@ -82,7 +82,11 @@ const HostPropertyPage = () => {
     }
 
     setProperty(result.property ?? null);
-    setSuccess(property ? 'Établissement mis à jour.' : 'Établissement créé avec succès.');
+    notifySuccess(
+      property
+        ? notifyMessages.property.updated(form.name.trim())
+        : notifyMessages.property.created(form.name.trim()),
+    );
   };
 
   if (loading) {
@@ -105,11 +109,6 @@ const HostPropertyPage = () => {
       <form onSubmit={handleSubmit} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
         {error ? (
           <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
-        ) : null}
-        {success ? (
-          <div className="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-            {success}
-          </div>
         ) : null}
 
         <div className="grid gap-5 md:grid-cols-2">

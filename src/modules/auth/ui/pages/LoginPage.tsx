@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import { getAuthService } from '../../core/services/auth.service';
 import { useAuth } from '../hooks/useAuth';
 import { Button, PageContainer } from '../../../../shared/ui';
+import { notifyMessages, useNotification } from '../../../../shared/notifications';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { success: notifySuccess } = useNotification();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -26,6 +28,7 @@ const LoginPage = () => {
     }
 
     login(result.token);
+    notifySuccess(notifyMessages.auth.login());
     navigate('/host');
   };
 

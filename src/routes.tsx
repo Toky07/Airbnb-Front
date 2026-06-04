@@ -4,6 +4,7 @@ import GuestRoute from './modules/auth/ui/guards/GuestRoute';
 import HostRoute from './modules/auth/ui/guards/HostRoute';
 import LoginPage from './modules/auth/ui/pages/LoginPage';
 import RegisterPage from './modules/auth/ui/pages/RegisterPage';
+import SetPasswordPage from './modules/auth/ui/pages/SetPasswordPage';
 import HostLayout from './layout/host/HostLayout';
 import HostDashboardPage from './modules/host/ui/pages/HostDashboardPage';
 import HostPropertyPage from './modules/host/ui/pages/HostPropertyPage';
@@ -22,6 +23,12 @@ const LoginRoute = () => (
 const RegisterRoute = () => (
   <PublicPageLayout>
     <RegisterPage />
+  </PublicPageLayout>
+);
+
+const SetPasswordRoute = () => (
+  <PublicPageLayout>
+    <SetPasswordPage />
   </PublicPageLayout>
 );
 
@@ -57,6 +64,10 @@ const router = createBrowserRouter([
           {
             path: '/register',
             Component: RegisterRoute,
+          },
+          {
+            path: '/set-password',
+            Component: SetPasswordRoute,
           },
         ],
       },

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, NavLink, Outlet } from 'react-router';
 import { BrandLogo, PageContainer } from '../../shared/ui';
 import { useAuth } from '../../modules/auth/ui/hooks/useAuth';
+import { notifyMessages, useNotification } from '../../shared/notifications';
 
 const navItems = [
   { to: '/host', label: 'Tableau de bord', icon: faTableColumns, end: true },
@@ -12,6 +13,12 @@ const navItems = [
 
 const HostLayout = () => {
   const { email, logout } = useAuth();
+  const { success: notifySuccess } = useNotification();
+
+  const handleLogout = () => {
+    logout();
+    notifySuccess(notifyMessages.auth.logout());
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -25,7 +32,7 @@ const HostLayout = () => {
             </Link>
             <button
               type="button"
-              onClick={logout}
+              onClick={handleLogout}
               className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-300"
             >
               <FontAwesomeIcon icon={faRightFromBracket} className="h-3.5 w-3.5" />
