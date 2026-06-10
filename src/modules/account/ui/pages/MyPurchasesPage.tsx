@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { getReservationService } from '../../../reservation/core/services/reservation.service';
-import {
-  type Reservation,
-} from '../../../reservation/core/types/reservation.types';
+import type { Reservation } from '../../../reservation/core/types/reservation.types';
 import { getButtonClassName } from '../../../../shared/ui/button/button-classes';
 import { PageContainer } from '../../../../shared/ui';
+import PublicPageLayout from '../../../site/ui/components/PublicPageLayout';
 import PurchaseCard from '../components/PurchaseCard';
 
 const MyPurchasesPage = () => {
@@ -30,44 +29,62 @@ const MyPurchasesPage = () => {
   }, []);
 
   return (
-      <PageContainer className="py-16">
-        <div className="mx-auto max-w-3xl">
-          <h1 className="text-3xl font-bold text-slate-900">Mes achats</h1>
-          <p className="mt-2 text-sm text-slate-500">
-            Retrouvez l’historique de vos réservations confirmées et annulées.
-          </p>
-
-          {loading ? (
-            <div className="mt-10 h-40 animate-pulse rounded-3xl bg-slate-100" />
-          ) : null}
-
-          {error ? (
-            <p className="mt-10 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-              {error}
-            </p>
-          ) : null}
-
-          {!loading && !error && reservations.length === 0 ? (
-            <div className="mt-10 rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-10 text-center">
-              <p className="text-slate-600">Vous n’avez pas encore de réservation payée.</p>
-              <Link
-                to="/search"
-                className={getButtonClassName('primary', 'md', 'mt-6 inline-flex')}
-              >
-                Rechercher une chambre
-              </Link>
+      <div className="bg-gradient-to-b from-slate-50 via-white to-white">
+        <PageContainer className="py-12 lg:py-16">
+          <div className="mx-auto max-w-4xl">
+            <div className="max-w-2xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">
+                Mon compte
+              </p>
+              <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                Mes achats
+              </h1>
+              <p className="mt-3 text-base text-slate-600">
+                Retrouvez l’historique de vos séjours confirmés et annulés, avec le détail de
+                chaque réservation.
+              </p>
             </div>
-          ) : null}
 
-          {!loading && !error && reservations.length > 0 ? (
-            <div className="mt-10 space-y-4">
-              {reservations.map((reservation) => (
-                <PurchaseCard key={reservation.id} reservation={reservation} />
-              ))}
-            </div>
-          ) : null}
-        </div>
-      </PageContainer>
+            {loading ? (
+              <div className="mt-10 space-y-5">
+                <div className="h-44 animate-pulse rounded-3xl bg-slate-100" />
+                <div className="h-44 animate-pulse rounded-3xl bg-slate-100" />
+              </div>
+            ) : null}
+
+            {error ? (
+              <p className="mt-10 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {error}
+              </p>
+            ) : null}
+
+            {!loading && !error && reservations.length === 0 ? (
+              <div className="mt-12 rounded-3xl border border-dashed border-slate-200 bg-white/80 p-12 text-center shadow-sm">
+                <p className="text-lg font-medium text-slate-700">
+                  Vous n’avez pas encore de réservation payée
+                </p>
+                <p className="mt-2 text-sm text-slate-500">
+                  Dès votre premier paiement, vos séjours apparaîtront ici.
+                </p>
+                <Link
+                  to="/search"
+                  className={getButtonClassName('primary', 'md', 'mt-8 inline-flex')}
+                >
+                  Rechercher une chambre
+                </Link>
+              </div>
+            ) : null}
+
+            {!loading && !error && reservations.length > 0 ? (
+              <div className="mt-10 space-y-5">
+                {reservations.map((reservation) => (
+                  <PurchaseCard key={reservation.id} reservation={reservation} />
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </PageContainer>
+      </div>
   );
 };
 
