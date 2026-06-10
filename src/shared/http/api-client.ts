@@ -1,4 +1,5 @@
 import { getTokenStorage, notifyUnauthorized } from './token-storage';
+import { getCartSessionId } from './cart-session.storage';
 
 const baseUrl = import.meta.env.VITE_API_URL?.replace(/\/$/, '') ?? 'http://localhost:3000';
 
@@ -11,6 +12,10 @@ export class ApiClient {
     const token = this.tokenStorage.getToken();
     if (token) {
       headers.Authorization = `Bearer ${token}`;
+    }
+    const cartSessionId = getCartSessionId();
+    if (cartSessionId) {
+      headers['X-Cart-Session'] = cartSessionId;
     }
     return headers;
   }

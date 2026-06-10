@@ -2,6 +2,7 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import {
   faChevronDown,
   faHotel,
+  faReceipt,
   faRightFromBracket,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
@@ -48,6 +49,12 @@ export function buildUserMenuItems({
       to: '/account/profile',
       label: 'Mon profil',
       icon: faUser,
+    },
+    {
+      type: 'link',
+      to: '/account/purchases',
+      label: 'Mes achats',
+      icon: faReceipt,
     },
   ];
 

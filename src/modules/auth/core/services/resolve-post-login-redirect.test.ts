@@ -32,6 +32,14 @@ describe('resolve-post-login-redirect', () => {
     expect(resolvePostLoginRedirect(hostSession)).toBe('/host');
   });
 
+  it('priorise un redirect interne après connexion', () => {
+    expect(resolvePostLoginRedirect(hostSession, '/rooms/5')).toBe('/rooms/5');
+  });
+
+  it('ignore un redirect externe non sûr', () => {
+    expect(resolvePostLoginRedirect(hostSession, '//evil.test')).toBe('/host');
+  });
+
   it('affiche le nom de l’établissement dans le libellé admin', () => {
     expect(resolveHostAdminLabel(hostSession)).toBe('Gérer Hôtel Azur');
   });

@@ -1,5 +1,5 @@
 import { type FormEvent, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import { getAuthService } from '../../core/services/auth.service';
 import { resolvePostLoginRedirect } from '../../core/services/resolve-post-login-redirect';
 import { useAuth } from '../hooks/useAuth';
@@ -8,6 +8,8 @@ import { notifyMessages, useNotification } from '../../../../shared/notification
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirect = searchParams.get('redirect');
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +32,7 @@ const LoginPage = () => {
 
     const session = await login(result.token);
     notifySuccess(notifyMessages.auth.login());
-    navigate(resolvePostLoginRedirect(session));
+    navigate(resolvePostLoginRedirect(session, redirect));
   };
 
   return (

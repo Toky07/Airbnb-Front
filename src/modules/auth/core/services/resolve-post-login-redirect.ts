@@ -1,6 +1,14 @@
 import type { AuthSession } from '../types/auth.types';
+import { isSafeInternalRedirect } from '../../../../shared/http/parse-api-error';
 
-export function resolvePostLoginRedirect(session: AuthSession): string {
+export function resolvePostLoginRedirect(
+  session: AuthSession,
+  redirectPath?: string | null,
+): string {
+  if (isSafeInternalRedirect(redirectPath)) {
+    return redirectPath;
+  }
+
   if (session.canAccessHostDashboard) {
     return '/host';
   }

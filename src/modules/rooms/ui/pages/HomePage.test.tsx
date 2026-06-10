@@ -2,8 +2,40 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import AuthProvider from '../../../auth/ui/providers/AuthProvider';
+import CartProvider from '../../../cart/ui/providers/CartProvider';
 import { NotificationProvider } from '../../../../shared/notifications';
 import HomePage from './HomePage';
+
+vi.mock('../../../cart/core/services/cart.service', () => ({
+  getCartService: () => ({
+    getCart: vi.fn().mockResolvedValue({
+      success: true,
+      cart: {
+        id: 1,
+        sessionId: 'test-session',
+        userId: null,
+        items: [],
+        totalPrice: 0,
+        itemCount: 0,
+      },
+    }),
+    merge: vi.fn().mockResolvedValue({
+      success: true,
+      cart: {
+        id: 1,
+        sessionId: 'test-session',
+        userId: null,
+        items: [],
+        totalPrice: 0,
+        itemCount: 0,
+      },
+    }),
+    addReservation: vi.fn(),
+    removeItem: vi.fn(),
+    checkout: vi.fn(),
+    clear: vi.fn(),
+  }),
+}));
 
 const mockRooms = {
   data: [
@@ -53,7 +85,9 @@ describe('HomePage', () => {
       <MemoryRouter>
         <NotificationProvider>
           <AuthProvider>
-            <HomePage />
+            <CartProvider>
+              <HomePage />
+            </CartProvider>
           </AuthProvider>
         </NotificationProvider>
       </MemoryRouter>,

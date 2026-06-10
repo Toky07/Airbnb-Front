@@ -1,20 +1,18 @@
 import { faArrowLeft, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link, useParams } from 'react-router';
+import { Link, useLocation, useParams } from 'react-router';
 import PublicPageLayout from '../../../site/ui/components/PublicPageLayout';
-import { Button, PageContainer } from '../../../../shared/ui';
-import {
-  formatPricePerNight,
-  getRoomLocation,
-  getRoomStatusLabel,
-  isRoomBookable,
-} from '../../core/types/room.types';
+import { PageContainer } from '../../../../shared/ui';
+import { getRoomLocation } from '../../core/types/room.types';
 import { useRoomDetail } from '../hooks/useRoomDetail';
 import RoomAmenities from '../components/RoomAmenities';
 import RoomDetailGallery from '../components/RoomDetailGallery';
+import RoomBookingPanel from '../../../reservation/ui/components/RoomBookingPanel';
+import { isRoomBookable } from '../../core/types/room.types';
 
 const RoomDetailPage = () => {
   const { id } = useParams();
+  const location = useLocation();
   const roomId = Number.parseInt(id ?? '', 10);
   const { room, loading, error } = useRoomDetail(Number.isFinite(roomId) ? roomId : null);
 
@@ -95,37 +93,15 @@ const RoomDetailPage = () => {
             </div>
 
             <aside className="lg:sticky lg:top-24 lg:self-start">
-              <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/50">
-                <p className="text-2xl font-bold text-slate-900">
-                  {formatPricePerNight(room.pricePerNight)}
-                  <span className="text-base font-normal text-slate-500"> / nuit</span>
-                </p>
-
-                <p className="mt-2 text-sm text-slate-500">
-                  Statut :{' '}
-                  <span className="font-medium text-slate-700">
-                    {getRoomStatusLabel(room.status)}
-                  </span>
-                </p>
-
-                <Button
-                  type="button"
-                  className="mt-6 w-full"
-                  disabled={!isRoomBookable(room)}
-                >
-                  {isRoomBookable(room) ? 'Réserver' : 'Indisponible'}
-                </Button>
-
-                {!isRoomBookable(room) ? (
-                  <p className="mt-3 text-center text-xs text-slate-500">
+              {isRoomBookable(room) ? (
+                <RoomBookingPanel room={room} returnPath={location.pathname} />
+              ) : (
+                <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/50">
+                  <p className="text-center text-sm text-slate-500">
                     Ce logement n&apos;est pas disponible pour le moment.
                   </p>
-                ) : (
-                  <p className="mt-3 text-center text-xs text-slate-500">
-                    La réservation en ligne sera disponible prochainement.
-                  </p>
-                )}
-              </div>
+                </div>
+              )}
             </aside>
           </div>
         ) : null}

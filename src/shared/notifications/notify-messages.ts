@@ -15,4 +15,7 @@ export const notifyMessages = {
     updated: (name: string) => `La chambre « ${name} » a été mise à jour.`,
     deleted: (name: string) => `La chambre « ${name} » a été supprimée.`,
   },
+  booking: {
+    confirmed: () => 'Paiement confirmé ! Votre réservation est validée.',
+  },
 } as const;

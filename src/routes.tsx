@@ -1,5 +1,6 @@
 import { createBrowserRouter, Outlet } from 'react-router';
 import AuthProvider from './modules/auth/ui/providers/AuthProvider';
+import CartProvider from './modules/cart/ui/providers/CartProvider';
 import GuestRoute from './modules/auth/ui/guards/GuestRoute';
 import HostRoute from './modules/auth/ui/guards/HostRoute';
 import LoginPage from './modules/auth/ui/pages/LoginPage';
@@ -7,6 +8,7 @@ import RegisterPage from './modules/auth/ui/pages/RegisterPage';
 import SetPasswordPage from './modules/auth/ui/pages/SetPasswordPage';
 import ProtectedRoute from './modules/auth/ui/guards/ProtectedRoute';
 import ProfilePage from './modules/account/ui/pages/ProfilePage';
+import MyPurchasesPage from './modules/account/ui/pages/MyPurchasesPage';
 import HostLayout from './layout/host/HostLayout';
 import HostDashboardPage from './modules/host/ui/pages/HostDashboardPage';
 import HostPropertyPage from './modules/host/ui/pages/HostPropertyPage';
@@ -14,6 +16,7 @@ import HostRoomsPage from './modules/host/ui/pages/HostRoomsPage';
 import HomePage from './modules/rooms/ui/pages/HomePage';
 import SearchPage from './modules/rooms/ui/pages/SearchPage';
 import RoomDetailPage from './modules/rooms/ui/pages/RoomDetailPage';
+import CartPage from './modules/cart/ui/pages/CartPage';
 import PublicPageLayout from './modules/site/ui/components/PublicPageLayout';
 
 const LoginRoute = () => (
@@ -40,9 +43,17 @@ const ProfileRoute = () => (
   </PublicPageLayout>
 );
 
+const MyPurchasesRoute = () => (
+  <PublicPageLayout>
+    <MyPurchasesPage />
+  </PublicPageLayout>
+);
+
 const AuthShell = () => (
   <AuthProvider>
-    <Outlet />
+    <CartProvider>
+      <Outlet />
+    </CartProvider>
   </AuthProvider>
 );
 
@@ -61,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: '/rooms/:id',
         Component: RoomDetailPage,
+      },
+      {
+        path: '/cart',
+        Component: CartPage,
       },
       {
         Component: GuestRoute,
@@ -85,6 +100,10 @@ const router = createBrowserRouter([
           {
             path: '/account/profile',
             Component: ProfileRoute,
+          },
+          {
+            path: '/account/purchases',
+            Component: MyPurchasesRoute,
           },
         ],
       },
