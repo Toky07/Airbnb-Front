@@ -27,7 +27,7 @@ const CartItemsList = ({ items, removingId, onRemove }: CartItemsListProps) => (
             propertyName: details.propertyName || fallback.propertyName,
           }}
           footerLink={
-            item.roomId ? { to: `/rooms/${item.roomId}`, label: 'Voir la chambre' } : undefined
+            item.roomSlug ? { to: `/rooms/${item.roomSlug}`, label: 'Voir la chambre' } : undefined
           }
           action={
             <button

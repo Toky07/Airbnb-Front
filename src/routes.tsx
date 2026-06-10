@@ -71,7 +71,7 @@ const router = createBrowserRouter([
         Component: SearchPage,
       },
       {
-        path: '/rooms/:id',
+        path: '/rooms/:slug',
         Component: RoomDetailPage,
       },
       {

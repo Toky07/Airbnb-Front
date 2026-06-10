@@ -30,6 +30,17 @@ export class RoomService {
     return mapRoomListItem(data);
   }
 
+  async getBySlug(slug: string): Promise<RoomListItem | null> {
+    const response = await getApiClient().get(`/rooms/by-slug/${slug}`);
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data: unknown = await response.json();
+    return mapRoomListItem(data);
+  }
+
 }
 
 let service: RoomService | null = null;

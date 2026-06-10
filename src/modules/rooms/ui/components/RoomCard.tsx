@@ -18,7 +18,7 @@ const RoomCard = ({ room }: RoomCardProps) => {
 
   return (
     <Link
-      to={`/rooms/${room.id}`}
+      to={`/rooms/${room.slug}`}
       className="group block"
     >
       <div className="relative aspect-square overflow-hidden rounded-xl bg-slate-200">

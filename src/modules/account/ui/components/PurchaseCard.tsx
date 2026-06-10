@@ -43,10 +43,11 @@ export default function PurchaseCard({ reservation }: { reservation: Reservation
         priceLabel: formatPricePerNight(reservation.totalPrice),
         roomId: reservation.roomId,
       }}
-      footerLink={{
-        to: `/rooms/${reservation.roomId}`,
-        label: 'Voir la chambre',
-      }}
+      footerLink={
+        reservation.roomSlug
+          ? { to: `/rooms/${reservation.roomSlug}`, label: 'Voir la chambre' }
+          : undefined
+      }
     />
   );
 }

@@ -17,6 +17,7 @@ export type Reservation = {
   nights: number;
   status: ReservationStatus;
   roomName: string | null;
+  roomSlug: string | null;
   propertyName: string | null;
   propertyCity: string | null;
   imageUrl: string | null;
@@ -58,6 +59,7 @@ export function mapReservation(data: unknown): Reservation | null {
     nights: Number(record.nights ?? 0),
     status: (record.status as ReservationStatus) ?? 'pending',
     roomName: typeof record.roomName === 'string' ? record.roomName : null,
+    roomSlug: typeof record.roomSlug === 'string' ? record.roomSlug : null,
     propertyName: typeof record.propertyName === 'string' ? record.propertyName : null,
     propertyCity: typeof record.propertyCity === 'string' ? record.propertyCity : null,
     imageUrl: typeof record.imageUrl === 'string' ? record.imageUrl : null,

@@ -8,13 +8,13 @@ type UseRoomDetailResult = {
   error: string | null;
 };
 
-export function useRoomDetail(id: number | null): UseRoomDetailResult {
+export function useRoomDetail(slug: string | null): UseRoomDetailResult {
   const [room, setRoom] = useState<RoomListItem | null>(null);
-  const [loading, setLoading] = useState(Boolean(id));
+  const [loading, setLoading] = useState(Boolean(slug));
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id || !Number.isFinite(id)) {
+    if (!slug) {
       setRoom(null);
       setLoading(false);
       setError('Identifiant invalide.');
@@ -28,7 +28,7 @@ export function useRoomDetail(id: number | null): UseRoomDetailResult {
       setError(null);
 
       try {
-        const data = await getRoomService().getById(id as number);
+        const data = await getRoomService().getBySlug(slug as string);
         if (!cancelled) {
           setRoom(data);
           if (!data) {
@@ -52,7 +52,7 @@ export function useRoomDetail(id: number | null): UseRoomDetailResult {
     return () => {
       cancelled = true;
     };
-  }, [id]);
+  }, [slug]);
 
   return { room, loading, error };
 }

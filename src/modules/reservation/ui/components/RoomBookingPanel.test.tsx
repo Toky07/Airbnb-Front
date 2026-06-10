@@ -7,6 +7,7 @@ import type { RoomListItem } from '../../../rooms/core/types/room.types';
 const room: RoomListItem = {
   id: 5,
   name: 'Suite',
+  slug: 'suite',
   description: 'Belle suite',
   pricePerNight: 100,
   maxGuests: 2,

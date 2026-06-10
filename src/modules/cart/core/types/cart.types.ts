@@ -15,6 +15,7 @@ export type CartItem = {
   guestCount: number | null;
   nights: number | null;
   roomName: string | null;
+  roomSlug: string | null;
   propertyName: string | null;
   propertyCity: string | null;
   imageUrl: string | null;
@@ -63,6 +64,7 @@ export function mapCartItem(data: unknown): CartItem | null {
     guestCount: typeof record.guestCount === 'number' ? record.guestCount : null,
     nights: typeof record.nights === 'number' ? record.nights : null,
     roomName: typeof record.roomName === 'string' ? record.roomName : null,
+    roomSlug: typeof record.roomSlug === 'string' ? record.roomSlug : null,
     propertyName: typeof record.propertyName === 'string' ? record.propertyName : null,
     propertyCity: typeof record.propertyCity === 'string' ? record.propertyCity : null,
     imageUrl: typeof record.imageUrl === 'string' ? record.imageUrl : null,

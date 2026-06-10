@@ -26,6 +26,7 @@ export type UnavailableDateRange = {
 export type RoomListItem = {
   id: number;
   name: string;
+  slug: string;
   description: string;
   pricePerNight: number;
   maxGuests: number;
@@ -98,6 +99,7 @@ export function mapRoomListItem(data: unknown): RoomListItem | null {
   return {
     id: record.id,
     name: record.name,
+    slug: String(record.slug ?? ''),
     description: String(record.description ?? ''),
     pricePerNight: record.pricePerNight,
     maxGuests: Number(record.maxGuests ?? 0),

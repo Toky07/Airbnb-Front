@@ -12,10 +12,9 @@ import RoomBookingPanel from '../../../reservation/ui/components/RoomBookingPane
 import { isRoomBookable } from '../../core/types/room.types';
 
 const RoomDetailPage = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const location = useLocation();
-  const roomId = Number.parseInt(id ?? '', 10);
-  const { room, loading, error } = useRoomDetail(Number.isFinite(roomId) ? roomId : null);
+  const { room, loading, error } = useRoomDetail(slug ?? null);
   usePageTitle(room?.name ?? 'Détail du logement');
 
   return (
