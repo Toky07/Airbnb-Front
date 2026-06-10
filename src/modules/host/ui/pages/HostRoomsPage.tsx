@@ -130,166 +130,199 @@ const HostRoomsPage = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+    <div className="mx-auto max-w-5xl space-y-10">
+      <div className="flex flex-wrap items-center justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Mes chambres</h1>
-          <p className="mt-2 text-slate-500">Ajoutez, modifiez ou supprimez vos logements.</p>
+          <h1 className="font-serif text-4xl font-bold text-slate-900">Mes chambres</h1>
+          <p className="mt-3 text-lg text-slate-500">Ajoutez, modifiez ou supprimez vos logements.</p>
         </div>
-        <Button onClick={openCreate}>
-          <FontAwesomeIcon icon={faPlus} className="mr-2 h-3.5 w-3.5" />
+        <Button onClick={openCreate} className="px-6 py-3">
+          <FontAwesomeIcon icon={faPlus} className="mr-2 h-4 w-4" />
           Nouvelle chambre
         </Button>
       </div>
 
       {error && !showForm ? (
-        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
+        <div className="rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">{error}</div>
       ) : null}
 
       {showForm ? (
-        <form onSubmit={handleSubmit} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-slate-900">
-              {editingRoom ? 'Modifier la chambre' : 'Nouvelle chambre'}
-            </h2>
-            <button
-              type="button"
-              onClick={() => setShowForm(false)}
-              className="text-sm font-medium text-slate-500 hover:text-slate-800"
-            >
-              Fermer
-            </button>
+        <form onSubmit={handleSubmit} className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm">
+          <div className="border-b border-slate-100 bg-slate-50/50 px-8 py-6 sm:px-10">
+            <div className="flex items-center justify-between">
+              <h2 className="font-serif text-2xl font-bold text-slate-900">
+                {editingRoom ? 'Modifier la chambre' : 'Nouvelle chambre'}
+              </h2>
+              <button
+                type="button"
+                onClick={() => setShowForm(false)}
+                className="rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
+              >
+                Fermer
+              </button>
+            </div>
           </div>
 
-          {error ? (
-            <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
-          ) : null}
+          <div className="p-8 sm:p-10">
+            {error ? (
+              <div className="mb-8 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error}</div>
+            ) : null}
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <label className="md:col-span-2 block">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Nom</span>
-              <input
-                value={form.name}
-                onChange={(event) => update('name', event.target.value)}
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-                required
-              />
-            </label>
-            <label className="md:col-span-2 block">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Description</span>
-              <textarea
-                value={form.description}
-                onChange={(event) => update('description', event.target.value)}
-                rows={3}
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-              />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Prix / nuit (€)</span>
-              <input
-                type="number"
-                min={1}
-                value={form.pricePerNight}
-                onChange={(event) => update('pricePerNight', Number(event.target.value))}
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-                required
-              />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Statut</span>
-              <select
-                value={form.status}
-                onChange={(event) => update('status', event.target.value)}
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-              >
-                <option value="available">Disponible</option>
-                <option value="occupied">Occupée</option>
-                <option value="maintenance">Maintenance</option>
-              </select>
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Type</span>
-              <select
-                value={form.roomTypeId ?? ''}
-                onChange={(event) =>
-                  update('roomTypeId', event.target.value ? Number(event.target.value) : null)
-                }
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-              >
-                <option value="">Sélectionner</option>
-                {roomTypes.map((type) => (
-                  <option key={type.id} value={type.id}>
-                    {type.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Voyageurs max</span>
-              <input
-                type="number"
-                min={1}
-                value={form.maxGuests}
-                onChange={(event) => update('maxGuests', Number(event.target.value))}
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-              />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Chambres</span>
-              <input
-                type="number"
-                min={0}
-                value={form.bedrooms}
-                onChange={(event) => update('bedrooms', Number(event.target.value))}
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-              />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Lits</span>
-              <input
-                type="number"
-                min={0}
-                value={form.beds}
-                onChange={(event) => update('beds', Number(event.target.value))}
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-              />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Surface (m²)</span>
-              <input
-                type="number"
-                min={1}
-                value={form.size}
-                onChange={(event) => update('size', Number(event.target.value))}
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-              />
-            </label>
-            <label className="md:col-span-2 block">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Photos</span>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={(event) =>
-                  update('imageFiles', event.target.files ? Array.from(event.target.files) : [])
-                }
-                className="w-full rounded-xl border border-dashed border-slate-300 px-4 py-3 text-sm"
-              />
-              {editingRoom && form.keptImagePaths && form.keptImagePaths.length > 0 ? (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {resolveRoomImageUrls(form.keptImagePaths).map((url) => (
-                    <img key={url} src={url} alt="" className="h-16 w-16 rounded-lg object-cover" />
+            <div className="grid gap-8 md:grid-cols-2">
+              <label className="block md:col-span-2">
+                <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Nom de la chambre</span>
+                <input
+                  value={form.name}
+                  onChange={(event) => update('name', event.target.value)}
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  required
+                  placeholder="Ex: Suite Vue Mer"
+                />
+              </label>
+              
+              <label className="block md:col-span-2">
+                <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Description</span>
+                <textarea
+                  value={form.description}
+                  onChange={(event) => update('description', event.target.value)}
+                  rows={3}
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  placeholder="Décrivez les atouts de cette chambre..."
+                />
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Prix / nuit (€)</span>
+                <input
+                  type="number"
+                  min={1}
+                  value={form.pricePerNight}
+                  onChange={(event) => update('pricePerNight', Number(event.target.value))}
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  required
+                />
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Statut</span>
+                <select
+                  value={form.status}
+                  onChange={(event) => update('status', event.target.value)}
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                >
+                  <option value="available">Disponible</option>
+                  <option value="occupied">Occupée</option>
+                  <option value="maintenance">Maintenance</option>
+                </select>
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Type</span>
+                <select
+                  value={form.roomTypeId ?? ''}
+                  onChange={(event) =>
+                    update('roomTypeId', event.target.value ? Number(event.target.value) : null)
+                  }
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                >
+                  <option value="">Sélectionner</option>
+                  {roomTypes.map((type) => (
+                    <option key={type.id} value={type.id}>
+                      {type.name}
+                    </option>
                   ))}
+                </select>
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Voyageurs max</span>
+                <input
+                  type="number"
+                  min={1}
+                  value={form.maxGuests}
+                  onChange={(event) => update('maxGuests', Number(event.target.value))}
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                />
+              </label>
+
+              <div className="grid grid-cols-3 gap-4 md:col-span-2">
+                <label className="block">
+                  <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Chambres</span>
+                  <input
+                    type="number"
+                    min={0}
+                    value={form.bedrooms}
+                    onChange={(event) => update('bedrooms', Number(event.target.value))}
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </label>
+                <label className="block">
+                  <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Lits</span>
+                  <input
+                    type="number"
+                    min={0}
+                    value={form.beds}
+                    onChange={(event) => update('beds', Number(event.target.value))}
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </label>
+                <label className="block">
+                  <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Surface (m²)</span>
+                  <input
+                    type="number"
+                    min={1}
+                    value={form.size}
+                    onChange={(event) => update('size', Number(event.target.value))}
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                  />
+                </label>
+              </div>
+
+              <label className="block md:col-span-2">
+                <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Photos</span>
+                <div className="relative mt-2 flex justify-center rounded-2xl border border-dashed border-slate-300 px-6 py-10 transition hover:border-brand hover:bg-slate-50">
+                  <div className="text-center">
+                    <div className="mt-4 flex text-sm leading-6 text-slate-600 justify-center">
+                      <label
+                        htmlFor="file-upload-room"
+                        className="relative cursor-pointer rounded-md bg-white font-semibold text-brand focus-within:outline-none focus-within:ring-2 focus-within:ring-brand focus-within:ring-offset-2 hover:text-brand/80"
+                      >
+                        <span>Télécharger des fichiers</span>
+                        <input
+                          id="file-upload-room"
+                          name="file-upload-room"
+                          type="file"
+                          multiple
+                          className="sr-only"
+                          accept="image/*"
+                          onChange={(event) =>
+                            update('imageFiles', event.target.files ? Array.from(event.target.files) : [])
+                          }
+                        />
+                      </label>
+                      <p className="pl-1">ou glisser-déposer</p>
+                    </div>
+                    <p className="text-xs leading-5 text-slate-500">PNG, JPG, GIF jusqu'à 10MB</p>
+                  </div>
                 </div>
-              ) : null}
-            </label>
+                {editingRoom && form.keptImagePaths && form.keptImagePaths.length > 0 ? (
+                  <div className="mt-6 flex flex-wrap gap-4">
+                    {resolveRoomImageUrls(form.keptImagePaths).map((url) => (
+                      <div key={url} className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+                        <img src={url} alt="" className="h-24 w-32 object-cover" />
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+              </label>
+            </div>
           </div>
 
-          <div className="mt-6 flex justify-end gap-3">
-            <Button type="button" variant="secondary" onClick={() => setShowForm(false)}>
+          <div className="flex items-center justify-end gap-4 border-t border-slate-100 bg-slate-50 px-8 py-6 sm:px-10">
+            <Button type="button" variant="secondary" onClick={() => setShowForm(false)} className="px-6 py-3">
               Annuler
             </Button>
-            <Button type="submit" disabled={saving}>
+            <Button type="submit" disabled={saving} className="px-8 py-3">
               {saving ? 'Enregistrement…' : editingRoom ? 'Enregistrer' : 'Créer la chambre'}
             </Button>
           </div>
@@ -297,37 +330,49 @@ const HostRoomsPage = () => {
       ) : null}
 
       {loading ? (
-        <div className="animate-pulse rounded-3xl bg-white p-8 h-48 border border-slate-200" />
+        <div className="h-48 animate-pulse rounded-3xl border border-slate-100 bg-white p-8 shadow-sm" />
       ) : rooms.length === 0 ? (
-        <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center">
-          <p className="text-lg font-medium text-slate-700">Aucune chambre pour le moment</p>
-          <p className="mt-2 text-sm text-slate-500">Commencez par ajouter votre première chambre.</p>
+        <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white py-20 text-center">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-slate-50">
+            <FontAwesomeIcon icon={faBed} className="h-8 w-8 text-slate-300" />
+          </div>
+          <p className="mt-6 font-serif text-2xl font-bold text-slate-900">Aucune chambre pour le moment</p>
+          <p className="mt-2 text-slate-500">Commencez par ajouter votre première chambre.</p>
         </div>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid gap-6">
           {rooms.map((room) => {
             const image = getRoomPrimaryImage(room);
             return (
               <article
                 key={room.id}
-                className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center"
+                className="group flex flex-col gap-6 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition-all hover:shadow-md sm:flex-row sm:items-center"
               >
-                <div className="h-24 w-full shrink-0 overflow-hidden rounded-2xl bg-slate-100 sm:w-32">
+                <div className="h-32 w-full shrink-0 overflow-hidden rounded-2xl bg-slate-100 sm:w-48">
                   {image ? (
-                    <img src={image} alt={room.name} className="h-full w-full object-cover" />
+                    <img src={image} alt={room.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   ) : null}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h3 className="font-semibold text-slate-900">{room.name}</h3>
-                  <p className="mt-1 text-sm text-slate-500">
-                    {formatPricePerNight(room.pricePerNight)} / nuit · {getRoomStatusLabel(room.status)}
-                  </p>
+                  <h3 className="font-serif text-2xl font-bold text-slate-900">{room.name}</h3>
+                  <div className="mt-2 flex items-center gap-3">
+                    <span className="font-semibold text-slate-900">{formatPricePerNight(room.pricePerNight)}</span>
+                    <span className="text-slate-400">·</span>
+                    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset ${
+                      room.status === 'available' ? 'bg-emerald-50 text-emerald-700 ring-emerald-600/20' :
+                      room.status === 'occupied' ? 'bg-amber-50 text-amber-700 ring-amber-600/20' :
+                      'bg-red-50 text-red-700 ring-red-600/20'
+                    }`}>
+                      {getRoomStatusLabel(room.status)}
+                    </span>
+                  </div>
+                  <p className="mt-3 line-clamp-2 text-sm text-slate-500">{room.description}</p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <button
                     type="button"
                     onClick={() => openEdit(room)}
-                    className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-300"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
                   >
                     <FontAwesomeIcon icon={faPen} className="h-3.5 w-3.5" />
                     Modifier
@@ -335,7 +380,7 @@ const HostRoomsPage = () => {
                   <button
                     type="button"
                     onClick={() => void handleDelete(room)}
-                    className="inline-flex items-center gap-2 rounded-full border border-red-200 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-red-100 px-5 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
                   >
                     <FontAwesomeIcon icon={faTrash} className="h-3.5 w-3.5" />
                     Supprimer

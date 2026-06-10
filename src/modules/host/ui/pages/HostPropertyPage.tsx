@@ -93,7 +93,7 @@ const HostPropertyPage = () => {
   };
 
   if (loading) {
-    return <div className="animate-pulse rounded-3xl bg-white p-8 h-96 border border-slate-200" />;
+    return <div className="h-96 animate-pulse rounded-3xl border border-slate-100 bg-white p-8 shadow-sm" />;
   }
 
   const imagePreview = form.imageFile
@@ -101,115 +101,147 @@ const HostPropertyPage = () => {
     : resolveMediaUrl(property?.image);
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-4xl space-y-10">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Mon établissement</h1>
-        <p className="mt-2 text-slate-500">
+        <h1 className="font-serif text-4xl font-bold text-slate-900">Mon établissement</h1>
+        <p className="mt-3 text-lg text-slate-500">
           {property ? 'Modifiez les informations visibles par les voyageurs.' : 'Créez votre hôtel ou établissement.'}
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-        {error ? (
-          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
-        ) : null}
+      <form onSubmit={handleSubmit} className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm">
+        <div className="p-8 sm:p-10">
+          {error ? (
+            <div className="mb-8 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error}</div>
+          ) : null}
 
-        <div className="grid gap-5 md:grid-cols-2">
-          <label className="md:col-span-2 block">
-            <span className="mb-2 block text-sm font-medium text-slate-700">Nom</span>
-            <input
-              value={form.name}
-              onChange={(event) => update('name', event.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-              required
-            />
-          </label>
-          <label className="md:col-span-2 block">
-            <span className="mb-2 block text-sm font-medium text-slate-700">Description</span>
-            <textarea
-              value={form.description}
-              onChange={(event) => update('description', event.target.value)}
-              rows={4}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-            />
-          </label>
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium text-slate-700">Adresse</span>
-            <input
-              value={form.address}
-              onChange={(event) => update('address', event.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-              required
-            />
-          </label>
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium text-slate-700">Ville</span>
-            <input
-              value={form.city}
-              onChange={(event) => update('city', event.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-              required
-            />
-          </label>
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium text-slate-700">Pays</span>
-            <input
-              value={form.country}
-              onChange={(event) => update('country', event.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-              required
-            />
-          </label>
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium text-slate-700">Type</span>
-            <select
-              value={form.propertyTypeId ?? ''}
-              onChange={(event) =>
-                update('propertyTypeId', event.target.value ? Number(event.target.value) : null)
-              }
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-            >
-              <option value="">Sélectionner</option>
-              {types.map((type) => (
-                <option key={type.id} value={type.id}>
-                  {type.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium text-slate-700">Arrivée</span>
-            <input
-              value={form.checkInTime}
-              onChange={(event) => update('checkInTime', event.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-            />
-          </label>
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium text-slate-700">Départ</span>
-            <input
-              value={form.checkOutTime}
-              onChange={(event) => update('checkOutTime', event.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-            />
-          </label>
-          <label className="md:col-span-2 block">
-            <span className="mb-2 block text-sm font-medium text-slate-700">Photo principale</span>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(event) => update('imageFile', event.target.files?.[0] ?? null)}
-              className="w-full rounded-xl border border-dashed border-slate-300 px-4 py-3 text-sm"
-            />
-            {imagePreview ? (
-              <img src={imagePreview} alt="" className="mt-4 h-40 w-full rounded-2xl object-cover" />
-            ) : null}
-          </label>
+          <div className="grid gap-8 md:grid-cols-2">
+            <label className="block md:col-span-2">
+              <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Nom de l'établissement</span>
+              <input
+                value={form.name}
+                onChange={(event) => update('name', event.target.value)}
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                required
+                placeholder="Ex: Hôtel Riviera"
+              />
+            </label>
+            
+            <label className="block md:col-span-2">
+              <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Description</span>
+              <textarea
+                value={form.description}
+                onChange={(event) => update('description', event.target.value)}
+                rows={4}
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                placeholder="Décrivez votre établissement..."
+              />
+            </label>
+
+            <label className="block md:col-span-2">
+              <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Adresse</span>
+              <input
+                value={form.address}
+                onChange={(event) => update('address', event.target.value)}
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                required
+              />
+            </label>
+
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Ville</span>
+              <input
+                value={form.city}
+                onChange={(event) => update('city', event.target.value)}
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                required
+              />
+            </label>
+
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Pays</span>
+              <input
+                value={form.country}
+                onChange={(event) => update('country', event.target.value)}
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                required
+              />
+            </label>
+
+            <label className="block md:col-span-2">
+              <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Type d'établissement</span>
+              <select
+                value={form.propertyTypeId ?? ''}
+                onChange={(event) =>
+                  update('propertyTypeId', event.target.value ? Number(event.target.value) : null)
+                }
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+              >
+                <option value="">Sélectionner un type</option>
+                {types.map((type) => (
+                  <option key={type.id} value={type.id}>
+                    {type.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Heure d'arrivée</span>
+              <input
+                type="time"
+                value={form.checkInTime}
+                onChange={(event) => update('checkInTime', event.target.value)}
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+              />
+            </label>
+
+            <label className="block">
+              <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Heure de départ</span>
+              <input
+                type="time"
+                value={form.checkOutTime}
+                onChange={(event) => update('checkOutTime', event.target.value)}
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+              />
+            </label>
+
+            <label className="block md:col-span-2">
+              <span className="mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500">Photo principale</span>
+              <div className="relative mt-2 flex justify-center rounded-2xl border border-dashed border-slate-300 px-6 py-10 transition hover:border-brand hover:bg-slate-50">
+                <div className="text-center">
+                  <div className="mt-4 flex text-sm leading-6 text-slate-600 justify-center">
+                    <label
+                      htmlFor="file-upload"
+                      className="relative cursor-pointer rounded-md bg-white font-semibold text-brand focus-within:outline-none focus-within:ring-2 focus-within:ring-brand focus-within:ring-offset-2 hover:text-brand/80"
+                    >
+                      <span>Télécharger un fichier</span>
+                      <input
+                        id="file-upload"
+                        name="file-upload"
+                        type="file"
+                        className="sr-only"
+                        accept="image/*"
+                        onChange={(event) => update('imageFile', event.target.files?.[0] ?? null)}
+                      />
+                    </label>
+                    <p className="pl-1">ou glisser-déposer</p>
+                  </div>
+                  <p className="text-xs leading-5 text-slate-500">PNG, JPG, GIF jusqu'à 10MB</p>
+                </div>
+              </div>
+              {imagePreview ? (
+                <div className="mt-6 overflow-hidden rounded-3xl border border-slate-200 shadow-sm">
+                  <img src={imagePreview} alt="Aperçu" className="h-64 w-full object-cover" />
+                </div>
+              ) : null}
+            </label>
+          </div>
         </div>
 
-        <div className="mt-6 flex justify-end">
-          <Button type="submit" disabled={saving}>
-            {saving ? 'Enregistrement…' : property ? 'Enregistrer' : 'Créer l’établissement'}
+        <div className="flex items-center justify-end border-t border-slate-100 bg-slate-50 px-8 py-6 sm:px-10">
+          <Button type="submit" disabled={saving} className="px-8 py-4 text-base">
+            {saving ? 'Enregistrement…' : property ? 'Enregistrer les modifications' : 'Créer l’établissement'}
           </Button>
         </div>
       </form>
