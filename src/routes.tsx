@@ -11,9 +11,10 @@ import ProfilePage from './modules/account/ui/pages/ProfilePage';
 import MyPurchasesPage from './modules/account/ui/pages/MyPurchasesPage';
 import HostLayout from './layout/host/HostLayout';
 import HostDashboardPage from './modules/host/ui/pages/HostDashboardPage';
-import HostPropertyPage from './modules/host/ui/pages/HostPropertyPage';
+import HostPropertiesListPage from './modules/host/ui/pages/HostPropertiesListPage';
+import HostPropertyCreatePage from './modules/host/ui/pages/HostPropertyCreatePage';
+import HostPropertyDetailPage from './modules/host/ui/pages/HostPropertyDetailPage';
 import HostReservationsPage from './modules/host/ui/pages/HostReservationsPage';
-import HostRoomsPage from './modules/host/ui/pages/HostRoomsPage';
 import HomePage from './modules/rooms/ui/pages/HomePage';
 import SearchPage from './modules/rooms/ui/pages/SearchPage';
 import RoomDetailPage from './modules/rooms/ui/pages/RoomDetailPage';
@@ -125,11 +126,15 @@ const router = createBrowserRouter([
               },
               {
                 path: 'property',
-                Component: HostPropertyPage,
+                Component: HostPropertiesListPage,
               },
               {
-                path: 'rooms',
-                Component: HostRoomsPage,
+                path: 'property/new',
+                Component: HostPropertyCreatePage,
+              },
+              {
+                path: 'property/:id',
+                Component: HostPropertyDetailPage,
               },
             ],
           },

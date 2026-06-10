@@ -36,6 +36,7 @@ describe('resolve-auth-session', () => {
         hasProperty: true,
         propertyId: 10,
         propertyName: 'Hôtel Azur',
+        propertyCount: 1,
       },
     };
 

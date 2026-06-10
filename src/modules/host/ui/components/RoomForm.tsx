@@ -2,6 +2,7 @@ import type { FormEvent } from 'react';
 import type { RoomFormPayload } from '../../core/types/host.types';
 import type { CategorySummary } from '../../../rooms/core/types/room.types';
 import type { RoomListItem } from '../../../rooms/core/types/room.types';
+import HostAmenityField from '../../../amenity/ui/components/HostAmenityField';
 import { Button, ImageFileInput, ImageGallery } from '../../../../shared/ui';
 import { hostFieldClassName } from '../constants/host-form-classes';
 import { ROOM_MAX_IMAGES, ROOM_STATUS_OPTIONS } from '../constants/room-form.constants';
@@ -20,6 +21,8 @@ type RoomFormProps = {
   onSubmit: (event: FormEvent) => void;
   onUpdate: <K extends keyof RoomFormPayload>(key: K, value: RoomFormPayload[K]) => void;
   onRemoveExistingImage: (imagePath: string) => void;
+  amenityIds: number[];
+  onAmenityIdsChange: (ids: number[]) => void;
 };
 
 const RoomForm = ({
@@ -34,6 +37,8 @@ const RoomForm = ({
   onSubmit,
   onUpdate,
   onRemoveExistingImage,
+  amenityIds,
+  onAmenityIdsChange,
 }: RoomFormProps) => (
   <form onSubmit={onSubmit} className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm">
     <div className="border-b border-slate-100 bg-slate-50/50 px-8 py-6 sm:px-10">
@@ -184,6 +189,14 @@ const RoomForm = ({
             hint={`JPG, PNG, WebP ou GIF — max. 5 Mo — jusqu'à ${ROOM_MAX_IMAGES} images`}
           />
         </div>
+
+        <HostAmenityField
+          scope="room"
+          label="Équipements de la chambre"
+          hint="WiFi, TV, climatisation, minibar… Les équipements seront enregistrés avec la chambre."
+          value={amenityIds}
+          onChange={onAmenityIdsChange}
+        />
       </div>
     </div>
 

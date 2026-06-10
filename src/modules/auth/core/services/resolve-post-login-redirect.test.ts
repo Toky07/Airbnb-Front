@@ -24,6 +24,7 @@ const hostSession: AuthSession = {
     hasProperty: true,
     propertyId: 10,
     propertyName: 'Hôtel Azur',
+    propertyCount: 1,
   },
 };
 

@@ -15,7 +15,14 @@ const HostDashboardPage = () => {
     );
   }
 
-  const property = profile?.property;
+  const properties = profile?.properties ?? [];
+  const hasProperties = properties.length > 0;
+  const propertyLabel =
+    properties.length === 0
+      ? 'Non configuré'
+      : properties.length === 1
+        ? properties[0].name
+        : `${properties.length} établissements`;
 
   return (
     <div className="space-y-10">
@@ -30,13 +37,11 @@ const HostDashboardPage = () => {
         <div className="group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-8 shadow-sm transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-slate-400">Établissement</p>
-              <p className="mt-3 font-serif text-2xl font-bold text-slate-900">
-                {property?.name ?? 'Non configuré'}
-              </p>
-              {property ? (
+              <p className="text-sm font-semibold uppercase tracking-wider text-slate-400">Établissements</p>
+              <p className="mt-3 font-serif text-2xl font-bold text-slate-900">{propertyLabel}</p>
+              {properties.length === 1 ? (
                 <p className="mt-1 text-sm text-slate-500">
-                  {property.city}, {property.country}
+                  {properties[0].city}, {properties[0].country}
                 </p>
               ) : null}
             </div>
@@ -45,8 +50,8 @@ const HostDashboardPage = () => {
             </span>
           </div>
           <Link to="/host/property" className="mt-8 inline-block">
-            <Button variant={property ? 'secondary' : 'primary'} size="sm">
-              {property ? "Modifier l'établissement" : 'Créer mon établissement'}
+            <Button variant={hasProperties ? 'secondary' : 'primary'} size="sm">
+              {hasProperties ? 'Gérer mes établissements' : 'Créer mon établissement'}
             </Button>
           </Link>
         </div>
@@ -63,10 +68,10 @@ const HostDashboardPage = () => {
               <FontAwesomeIcon icon={faBed} className="h-5 w-5" />
             </span>
           </div>
-          <Link to="/host/rooms" className="mt-8 inline-block">
-            <Button variant="secondary" size="sm" disabled={!property}>
+          <Link to="/host/property" className="mt-8 inline-block">
+            <Button variant="secondary" size="sm" disabled={!hasProperties}>
               <FontAwesomeIcon icon={faPlus} className="mr-2 h-3.5 w-3.5" />
-              Gérer les chambres
+              Voir les établissements
             </Button>
           </Link>
         </div>
@@ -100,7 +105,7 @@ const HostDashboardPage = () => {
         </div>
       </div>
 
-      {!property ? (
+      {!hasProperties ? (
         <div className="rounded-3xl border border-dashed border-brand/30 bg-rose-50/50 p-8">
           <h2 className="font-serif text-xl font-bold text-slate-900">Commencez ici</h2>
           <p className="mt-2 text-slate-600">

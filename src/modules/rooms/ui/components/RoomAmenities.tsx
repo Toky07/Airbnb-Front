@@ -7,13 +7,14 @@ import {
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AmenityList from '../../../amenity/ui/components/AmenityList';
 import type { RoomListItem } from '../../core/types/room.types';
 
 type RoomAmenitiesProps = {
   room: RoomListItem;
 };
 
-const items = (room: RoomListItem) => [
+const featureItems = (room: RoomListItem) => [
   { icon: faUsers, label: `${room.maxGuests} voyageurs max.` },
   { icon: faBed, label: `${room.bedrooms} chambre${room.bedrooms > 1 ? 's' : ''}` },
   { icon: faBath, label: `${room.bathrooms} salle${room.bathrooms > 1 ? 's' : ''} de bain` },
@@ -22,18 +23,30 @@ const items = (room: RoomListItem) => [
 ];
 
 const RoomAmenities = ({ room }: RoomAmenitiesProps) => (
-  <div className="space-y-4">
-    <h2 className="text-lg font-semibold text-slate-900">Ce logement</h2>
-    <ul className="grid gap-3 sm:grid-cols-2">
-      {items(room).map((item) => (
-        <li key={item.label} className="flex items-center gap-3 text-sm text-slate-700">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
-            <FontAwesomeIcon icon={item.icon} className="h-4 w-4" />
-          </span>
-          {item.label}
-        </li>
-      ))}
-    </ul>
+  <div className="space-y-8">
+    <div className="space-y-4">
+      <h2 className="text-lg font-semibold text-slate-900">Ce logement</h2>
+      <ul className="grid gap-3 sm:grid-cols-2">
+        {featureItems(room).map((item) => (
+          <li key={item.label} className="flex items-center gap-3 text-sm text-slate-700">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+              <FontAwesomeIcon icon={item.icon} className="h-4 w-4" />
+            </span>
+            {item.label}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <AmenityList
+      title="Équipements de la chambre"
+      amenities={room.amenities ?? []}
+    />
+
+    <AmenityList
+      title="Équipements de l’établissement"
+      amenities={room.propertyAmenities ?? []}
+    />
 
     {room.property?.checkInTime || room.property?.checkOutTime ? (
       <div className="rounded-2xl border border-slate-200 p-4">

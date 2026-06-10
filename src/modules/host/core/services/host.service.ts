@@ -85,21 +85,29 @@ export class HostService {
     return mapHostProfile(data);
   }
 
-  async getProperty(): Promise<HostProperty | null> {
-    const response = await getApiClient().get('/host/property');
+  async listProperties(): Promise<HostProperty[]> {
+    const response = await getApiClient().get('/host/properties');
+    if (!response.ok) {
+      return [];
+    }
+    const data: unknown = await response.json();
+    return Array.isArray(data)
+      ? data.map(mapHostProperty).filter((item): item is HostProperty => item !== null)
+      : [];
+  }
+
+  async getProperty(propertyId: number): Promise<HostProperty | null> {
+    const response = await getApiClient().get(`/host/properties/${propertyId}`);
     if (!response.ok) {
       return null;
     }
     const data: unknown = await response.json();
-    if (!data) {
-      return null;
-    }
     return mapHostProperty(data);
   }
 
   async createProperty(payload: PropertyFormPayload): Promise<{ success: boolean; property?: HostProperty; error?: string }> {
     const response = await getApiClient().postFormData(
-      '/host/property',
+      '/host/properties',
       buildPropertyFormData(payload),
     );
     if (!response.ok) {
@@ -110,9 +118,12 @@ export class HostService {
     return property ? { success: true, property } : { success: false, error: 'Réponse invalide.' };
   }
 
-  async updateProperty(payload: PropertyFormPayload): Promise<{ success: boolean; property?: HostProperty; error?: string }> {
+  async updateProperty(
+    propertyId: number,
+    payload: PropertyFormPayload,
+  ): Promise<{ success: boolean; property?: HostProperty; error?: string }> {
     const response = await getApiClient().putFormData(
-      '/host/property',
+      `/host/properties/${propertyId}`,
       buildPropertyFormData(payload),
     );
     if (!response.ok) {
@@ -123,8 +134,10 @@ export class HostService {
     return property ? { success: true, property } : { success: false, error: 'Réponse invalide.' };
   }
 
-  async listRooms(params: ListQueryParams = {}) {
-    const response = await getApiClient().get(`/host/rooms${buildListQuery(params)}`);
+  async listRooms(propertyId: number, params: ListQueryParams = {}) {
+    const response = await getApiClient().get(
+      `/host/rooms${buildListQuery({ ...params, propertyId })}`,
+    );
     if (!response.ok) {
       return {
         data: [] as RoomListItem[],
@@ -135,8 +148,14 @@ export class HostService {
     return parsePaginatedResponse(data, mapRoomListItem);
   }
 
-  async createRoom(payload: RoomFormPayload): Promise<{ success: boolean; room?: RoomListItem; error?: string }> {
-    const response = await getApiClient().postFormData('/host/rooms', buildRoomFormData(payload));
+  async createRoom(
+    propertyId: number,
+    payload: RoomFormPayload,
+  ): Promise<{ success: boolean; room?: RoomListItem; error?: string }> {
+    const response = await getApiClient().postFormData(
+      `/host/rooms?propertyId=${propertyId}`,
+      buildRoomFormData(payload),
+    );
     if (!response.ok) {
       return { success: false, error: await parseError(response, 'Création impossible.') };
     }
@@ -145,8 +164,15 @@ export class HostService {
     return room ? { success: true, room } : { success: false, error: 'Réponse invalide.' };
   }
 
-  async updateRoom(id: number, payload: RoomFormPayload): Promise<{ success: boolean; room?: RoomListItem; error?: string }> {
-    const response = await getApiClient().putFormData(`/host/rooms/${id}`, buildRoomFormData(payload));
+  async updateRoom(
+    propertyId: number,
+    id: number,
+    payload: RoomFormPayload,
+  ): Promise<{ success: boolean; room?: RoomListItem; error?: string }> {
+    const response = await getApiClient().putFormData(
+      `/host/rooms/${id}?propertyId=${propertyId}`,
+      buildRoomFormData(payload),
+    );
     if (!response.ok) {
       return { success: false, error: await parseError(response, 'Modification impossible.') };
     }
@@ -155,8 +181,8 @@ export class HostService {
     return room ? { success: true, room } : { success: false, error: 'Réponse invalide.' };
   }
 
-  async deleteRoom(id: number): Promise<{ success: boolean; error?: string }> {
-    const response = await getApiClient().delete(`/host/rooms/${id}`);
+  async deleteRoom(propertyId: number, id: number): Promise<{ success: boolean; error?: string }> {
+    const response = await getApiClient().delete(`/host/rooms/${id}?propertyId=${propertyId}`);
     if (!response.ok) {
       return { success: false, error: await parseError(response, 'Suppression impossible.') };
     }

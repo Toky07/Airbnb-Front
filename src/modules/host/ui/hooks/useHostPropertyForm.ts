@@ -1,16 +1,20 @@
 import { type FormEvent, useCallback, useEffect, useState } from 'react';
+import { getHostAmenityService } from '../../../amenity/core/services/host-amenity.service';
 import { getHostService } from '../../core/services/host.service';
 import type { HostProperty, PropertyFormPayload } from '../../core/types/host.types';
 import type { CategorySummary } from '../../../rooms/core/types/room.types';
 import { resolveMediaUrl } from '../../../../shared/utils/resolve-media-url';
 import { notifyMessages, useNotification } from '../../../../shared/notifications';
 import { useAuth } from '../../../auth/ui/hooks/useAuth';
+import { useHostPropertyContext } from '../context/host-property.context';
 import {
   emptyPropertyForm,
   propertyToFormPayload,
 } from '../constants/property-form.constants';
 
-export function useHostPropertyForm() {
+type PropertyFormMode = 'create' | 'edit';
+
+export function useHostPropertyForm(mode: PropertyFormMode, propertyId: number | null) {
   const [property, setProperty] = useState<HostProperty | null>(null);
   const [types, setTypes] = useState<CategorySummary[]>([]);
   const [form, setForm] = useState<PropertyFormPayload>(emptyPropertyForm);
@@ -18,33 +22,48 @@ export function useHostPropertyForm() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [amenityIds, setAmenityIds] = useState<number[]>([]);
   const { success: notifySuccess } = useNotification();
   const { refreshSession } = useAuth();
+  const { refreshProperties } = useHostPropertyContext();
 
   useEffect(() => {
     async function load() {
       setLoading(true);
       const hostService = getHostService();
-      const [propertyData, typeOptions] = await Promise.all([
-        hostService.getProperty(),
-        hostService.listPropertyTypeOptions(),
-      ]);
-      setProperty(propertyData);
+      const typeOptions = await hostService.listPropertyTypeOptions();
       setTypes(typeOptions);
 
-      if (propertyData) {
-        setForm(propertyToFormPayload(propertyData));
-        setImagePreview(propertyData.image ?? '');
+      if (mode === 'edit' && propertyId) {
+        const propertyData = await hostService.getProperty(propertyId);
+        setProperty(propertyData);
+
+        if (propertyData) {
+          setForm(propertyToFormPayload(propertyData));
+          setImagePreview(propertyData.image ?? '');
+          try {
+            const assigned = await getHostAmenityService().listForProperty(propertyData.id);
+            setAmenityIds(assigned.map((item) => item.id));
+          } catch {
+            setAmenityIds([]);
+          }
+        } else {
+          setForm(emptyPropertyForm);
+          setImagePreview('');
+          setAmenityIds([]);
+        }
       } else {
+        setProperty(null);
         setForm(emptyPropertyForm);
         setImagePreview('');
+        setAmenityIds([]);
       }
 
       setLoading(false);
     }
 
     void load();
-  }, []);
+  }, [mode, propertyId]);
 
   const update = useCallback(
     <K extends keyof PropertyFormPayload>(key: K, value: PropertyFormPayload[K]) => {
@@ -60,9 +79,10 @@ export function useHostPropertyForm() {
       setError(null);
 
       const hostService = getHostService();
-      const result = property
-        ? await hostService.updateProperty(form)
-        : await hostService.createProperty(form);
+      const result =
+        mode === 'edit' && propertyId
+          ? await hostService.updateProperty(propertyId, form)
+          : await hostService.createProperty(form);
 
       setSaving(false);
 
@@ -71,15 +91,40 @@ export function useHostPropertyForm() {
         return;
       }
 
-      setProperty(result.property ?? null);
+      const savedProperty = result.property ?? null;
+
+      if (savedProperty) {
+        try {
+          await getHostAmenityService().syncForProperty(savedProperty.id, amenityIds);
+        } catch (syncError) {
+          setError(
+            syncError instanceof Error
+              ? syncError.message
+              : 'Établissement enregistré, mais les équipements n’ont pas pu être mis à jour.',
+          );
+          return;
+        }
+      }
+
+      await refreshProperties();
       await refreshSession();
       notifySuccess(
-        property
+        mode === 'edit'
           ? notifyMessages.property.updated(form.name.trim())
           : notifyMessages.property.created(form.name.trim()),
       );
+
+      return savedProperty;
     },
-    [form, notifySuccess, property, refreshSession],
+    [
+      amenityIds,
+      form,
+      mode,
+      notifySuccess,
+      propertyId,
+      refreshProperties,
+      refreshSession,
+    ],
   );
 
   const imageValue = imagePreview || resolveMediaUrl(property?.image) || '';
@@ -96,5 +141,7 @@ export function useHostPropertyForm() {
     setImagePreview,
     update,
     handleSubmit,
+    amenityIds,
+    setAmenityIds,
   };
 }

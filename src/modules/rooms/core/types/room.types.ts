@@ -1,4 +1,5 @@
 import { resolveMediaUrl } from '../../../../shared/utils/resolve-media-url';
+import { mapAmenityItem, type AmenityItem } from '../../../amenity/core/types/amenity.types';
 
 export type CategorySummary = {
   id: number;
@@ -42,6 +43,8 @@ export type RoomListItem = {
   roomType: CategorySummary | null;
   images: string[];
   unavailableDates?: UnavailableDateRange[];
+  amenities?: AmenityItem[];
+  propertyAmenities?: AmenityItem[];
 };
 
 export function mapRoomListItem(data: unknown): RoomListItem | null {
@@ -132,6 +135,16 @@ export function mapRoomListItem(data: unknown): RoomListItem | null {
             typeof (r as Record<string, unknown>).startDate === 'string' &&
             typeof (r as Record<string, unknown>).endDate === 'string',
         )
+      : undefined,
+    amenities: Array.isArray(record.amenities)
+      ? record.amenities
+          .map(mapAmenityItem)
+          .filter((item): item is AmenityItem => item !== null)
+      : undefined,
+    propertyAmenities: Array.isArray(record.propertyAmenities)
+      ? record.propertyAmenities
+          .map(mapAmenityItem)
+          .filter((item): item is AmenityItem => item !== null)
       : undefined,
   };
 }

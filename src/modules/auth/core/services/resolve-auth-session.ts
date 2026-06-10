@@ -49,6 +49,9 @@ export function mapMeResponse(data: unknown): MeResponse | null {
             'string'
               ? ((hostAccessRaw as Record<string, unknown>).propertyName as string)
               : null,
+          propertyCount: Number(
+            (hostAccessRaw as Record<string, unknown>).propertyCount ?? 0,
+          ),
         }
       : null;
 
@@ -79,11 +82,13 @@ function buildHostAccess(isHost: boolean, hostAccess: MeResponse['hostAccess']) 
         hasProperty: hostAccess.hasProperty,
         propertyId: hostAccess.propertyId,
         propertyName: hostAccess.propertyName,
+        propertyCount: hostAccess.propertyCount,
       }
     : {
         hasProperty: false,
         propertyId: null,
         propertyName: null,
+        propertyCount: 0,
       };
 }
 
@@ -110,6 +115,7 @@ export function sessionFromToken(token: string | null): AuthSession {
           hasProperty: false,
           propertyId: null,
           propertyName: null,
+          propertyCount: 0,
         }
       : null,
   };

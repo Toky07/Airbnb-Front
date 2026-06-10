@@ -24,11 +24,12 @@ export type HostProperty = {
   propertyTypeId: number | null;
   propertyType: CategorySummary | null;
   image: string | null;
+  roomCount: number;
 };
 
 export type HostProfile = {
   user: HostUser;
-  property: HostProperty | null;
+  properties: HostProperty[];
 };
 
 export type PropertyFormPayload = {
@@ -95,6 +96,7 @@ export function mapHostProperty(data: unknown): HostProperty | null {
           }
         : null,
     image: typeof record.image === 'string' ? record.image : null,
+    roomCount: Array.isArray(record.rooms) ? record.rooms.length : Number(record.roomCount ?? 0),
   };
 }
 
@@ -112,6 +114,16 @@ export function mapHostProfile(data: unknown): HostProfile | null {
     return null;
   }
 
+  const properties = Array.isArray(record.properties)
+    ? record.properties
+        .map(mapHostProperty)
+        .filter((property): property is HostProperty => property !== null)
+    : record.property
+      ? [mapHostProperty(record.property)].filter(
+          (property): property is HostProperty => property !== null,
+        )
+      : [];
+
   return {
     user: {
       id: userRecord.id,
@@ -120,7 +132,7 @@ export function mapHostProfile(data: unknown): HostProfile | null {
       email: String(userRecord.email ?? ''),
       phoneNumber: String(userRecord.phoneNumber ?? ''),
     },
-    property: record.property ? mapHostProperty(record.property) : null,
+    properties,
   };
 }
 

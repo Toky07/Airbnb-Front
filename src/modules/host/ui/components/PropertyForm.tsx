@@ -1,6 +1,7 @@
 import type { FormEvent } from 'react';
 import type { PropertyFormPayload } from '../../core/types/host.types';
 import type { CategorySummary } from '../../../rooms/core/types/room.types';
+import HostAmenityField from '../../../amenity/ui/components/HostAmenityField';
 import { Button, ImageFileInput } from '../../../../shared/ui';
 import { hostFieldClassName } from '../constants/host-form-classes';
 import HostFormError from './HostFormError';
@@ -17,6 +18,8 @@ type PropertyFormProps = {
   onImagePreviewChange: (value: string) => void;
   onImageFileSelect: (file: File | null) => void;
   onUpdate: <K extends keyof PropertyFormPayload>(key: K, value: PropertyFormPayload[K]) => void;
+  amenityIds: number[];
+  onAmenityIdsChange: (ids: number[]) => void;
 };
 
 const PropertyForm = ({
@@ -30,6 +33,8 @@ const PropertyForm = ({
   onImagePreviewChange,
   onImageFileSelect,
   onUpdate,
+  amenityIds,
+  onAmenityIdsChange,
 }: PropertyFormProps) => (
   <form onSubmit={onSubmit} className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm">
     <div className="p-8 sm:p-10">
@@ -127,6 +132,16 @@ const PropertyForm = ({
             onFileSelect={onImageFileSelect}
           />
         </div>
+
+        {propertyExists ? (
+          <HostAmenityField
+            scope="property"
+            label="Équipements de l’établissement"
+            hint="Cochez les équipements proposés par votre établissement dans le catalogue."
+            value={amenityIds}
+            onChange={onAmenityIdsChange}
+          />
+        ) : null}
       </div>
     </div>
 

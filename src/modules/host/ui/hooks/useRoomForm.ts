@@ -1,4 +1,5 @@
-import { type FormEvent, useCallback, useMemo, useState } from 'react';
+import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { getHostAmenityService } from '../../../amenity/core/services/host-amenity.service';
 import { getHostService } from '../../core/services/host.service';
 import type { RoomFormPayload } from '../../core/types/host.types';
 import type { RoomListItem } from '../../../rooms/core/types/room.types';
@@ -10,21 +11,24 @@ import {
 } from '../constants/room-form.constants';
 
 type UseRoomFormOptions = {
+  propertyId: number;
   onSaved: () => Promise<void>;
 };
 
-export function useRoomForm({ onSaved }: UseRoomFormOptions) {
+export function useRoomForm({ propertyId, onSaved }: UseRoomFormOptions) {
   const [showForm, setShowForm] = useState(false);
   const [editingRoom, setEditingRoom] = useState<RoomListItem | null>(null);
   const [form, setForm] = useState<RoomFormPayload>(emptyRoomForm);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [amenityIds, setAmenityIds] = useState<number[]>([]);
   const { success: notifySuccess } = useNotification();
   const newImagesValue = useMemo(() => EMPTY_IMAGE_VALUE, []);
 
   const openCreate = useCallback(() => {
     setEditingRoom(null);
     setForm(emptyRoomForm);
+    setAmenityIds([]);
     setError(null);
     setShowForm(true);
   }, []);
@@ -32,6 +36,7 @@ export function useRoomForm({ onSaved }: UseRoomFormOptions) {
   const openEdit = useCallback((room: RoomListItem) => {
     setEditingRoom(room);
     setForm(roomToFormPayload(room));
+    setAmenityIds([]);
     setError(null);
     setShowForm(true);
   }, []);
@@ -39,6 +44,33 @@ export function useRoomForm({ onSaved }: UseRoomFormOptions) {
   const closeForm = useCallback(() => {
     setShowForm(false);
   }, []);
+
+  useEffect(() => {
+    if (!showForm || !editingRoom) {
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadAmenities() {
+      try {
+        const assigned = await getHostAmenityService().listForRoom(propertyId, editingRoom!.id);
+        if (!cancelled) {
+          setAmenityIds(assigned.map((item) => item.id));
+        }
+      } catch {
+        if (!cancelled) {
+          setAmenityIds([]);
+        }
+      }
+    }
+
+    void loadAmenities();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [showForm, editingRoom, propertyId]);
 
   const update = useCallback(
     <K extends keyof RoomFormPayload>(key: K, value: RoomFormPayload[K]) => {
@@ -67,14 +99,28 @@ export function useRoomForm({ onSaved }: UseRoomFormOptions) {
 
       const hostService = getHostService();
       const result = editingRoom
-        ? await hostService.updateRoom(editingRoom.id, form)
-        : await hostService.createRoom(form);
+        ? await hostService.updateRoom(propertyId, editingRoom.id, form)
+        : await hostService.createRoom(propertyId, form);
 
       setSaving(false);
 
       if (!result.success) {
         setError(result.error ?? 'Enregistrement impossible.');
         return;
+      }
+
+      const savedRoom = result.room;
+      if (savedRoom) {
+        try {
+          await getHostAmenityService().syncForRoom(propertyId, savedRoom.id, amenityIds);
+        } catch (syncError) {
+          setError(
+            syncError instanceof Error
+              ? syncError.message
+              : 'Chambre enregistrée, mais les équipements n’ont pas pu être mis à jour.',
+          );
+          return;
+        }
       }
 
       setShowForm(false);
@@ -85,7 +131,7 @@ export function useRoomForm({ onSaved }: UseRoomFormOptions) {
       );
       await onSaved();
     },
-    [editingRoom, form, notifySuccess, onSaved],
+    [amenityIds, editingRoom, form, notifySuccess, onSaved, propertyId],
   );
 
   return {
@@ -102,5 +148,7 @@ export function useRoomForm({ onSaved }: UseRoomFormOptions) {
     update,
     removeExistingImage,
     handleSubmit,
+    amenityIds,
+    setAmenityIds,
   };
 }

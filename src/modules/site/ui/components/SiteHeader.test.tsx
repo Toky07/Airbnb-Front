@@ -27,6 +27,7 @@ vi.mock('../../../auth/ui/hooks/useAuth', () => ({
         hasProperty: true,
         propertyId: 10,
         propertyName: 'Hôtel Azur',
+        propertyCount: 1,
       },
     },
     email: 'host@test.com',

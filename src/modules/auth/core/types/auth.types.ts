@@ -10,6 +10,7 @@ export type HostAccess = {
   hasProperty: boolean;
   propertyId: number | null;
   propertyName: string | null;
+  propertyCount: number;
 };
 
 export type AuthSession = {
@@ -42,6 +43,7 @@ export type MeResponse = {
     hasProperty: boolean;
     propertyId: number | null;
     propertyName: string | null;
+    propertyCount: number;
   } | null;
 };
 

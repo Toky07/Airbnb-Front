@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-import { getHostReservationService, getHostService, type HostReservationStats } from '../../core/services/host.service';
+import {
+  getHostReservationService,
+  getHostService,
+  type HostReservationStats,
+} from '../../core/services/host.service';
 import type { HostProfile } from '../../core/types/host.types';
 
 export function useHostDashboard() {
@@ -13,13 +17,25 @@ export function useHostDashboard() {
       setLoading(true);
       const hostService = getHostService();
       const reservationService = getHostReservationService();
-      const [profileData, roomsData, statsData] = await Promise.all([
+      const [profileData, statsData] = await Promise.all([
         hostService.getProfile(),
-        hostService.listRooms({ page: 1, limit: 10 }),
         reservationService.getStats(),
       ]);
+
+      const properties = profileData?.properties ?? [];
+      let totalRooms = 0;
+
+      if (properties.length > 0) {
+        const roomResults = await Promise.all(
+          properties.map((property) =>
+            hostService.listRooms(property.id, { page: 1, limit: 10 }),
+          ),
+        );
+        totalRooms = roomResults.reduce((sum, result) => sum + result.meta.total, 0);
+      }
+
       setProfile(profileData);
-      setRoomsCount(roomsData.meta.total);
+      setRoomsCount(totalRooms);
       setReservationStats(statsData);
       setLoading(false);
     }
