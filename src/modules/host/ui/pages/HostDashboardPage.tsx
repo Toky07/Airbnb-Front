@@ -1,38 +1,18 @@
 import { faBed, faCalendarCheck, faHotel, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import { getHostReservationService, getHostService, type HostReservationStats } from '../../core/services/host.service';
-import type { HostProfile } from '../../core/types/host.types';
 import { Button } from '../../../../shared/ui';
+import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
+import { useHostDashboard } from '../hooks/useHostDashboard';
 
 const HostDashboardPage = () => {
-  const [profile, setProfile] = useState<HostProfile | null>(null);
-  const [roomsCount, setRoomsCount] = useState(0);
-  const [reservationStats, setReservationStats] = useState<HostReservationStats | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function load() {
-      setLoading(true);
-      const hostService = getHostService();
-      const reservationService = getHostReservationService();
-      const [profileData, roomsData, statsData] = await Promise.all([
-        hostService.getProfile(),
-        hostService.listRooms({ page: 1, limit: 10 }),
-        reservationService.getStats(),
-      ]);
-      setProfile(profileData);
-      setRoomsCount(roomsData.meta.total);
-      setReservationStats(statsData);
-      setLoading(false);
-    }
-
-    void load();
-  }, []);
+  usePageTitle('Tableau de bord');
+  const { profile, roomsCount, reservationStats, loading } = useHostDashboard();
 
   if (loading) {
-    return <div className="h-64 animate-pulse rounded-3xl border border-slate-100 bg-white p-8 shadow-sm" />;
+    return (
+      <div className="h-64 animate-pulse rounded-3xl border border-slate-100 bg-white p-8 shadow-sm" />
+    );
   }
 
   const property = profile?.property;
@@ -43,13 +23,10 @@ const HostDashboardPage = () => {
         <h1 className="font-serif text-4xl font-bold text-slate-900">
           Bonjour, {profile?.user.firstName ?? 'Hôte'}
         </h1>
-        <p className="mt-3 text-lg text-slate-500">
-          Voici un aperçu de votre activité aujourd'hui.
-        </p>
+        <p className="mt-3 text-lg text-slate-500">Voici un aperçu de votre activité aujourd'hui.</p>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {/* Card: Établissement */}
         <div className="group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-8 shadow-sm transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
@@ -74,11 +51,12 @@ const HostDashboardPage = () => {
           </Link>
         </div>
 
-        {/* Card: Chambres */}
         <div className="group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-8 shadow-sm transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-slate-400">Chambres publiées</p>
+              <p className="text-sm font-semibold uppercase tracking-wider text-slate-400">
+                Chambres publiées
+              </p>
               <p className="mt-3 font-serif text-3xl font-bold text-slate-900">{roomsCount}</p>
             </div>
             <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-700">
@@ -93,11 +71,12 @@ const HostDashboardPage = () => {
           </Link>
         </div>
 
-        {/* Card: Réservations */}
         <div className="group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-8 shadow-sm transition-all hover:shadow-md">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-slate-400">Réservations</p>
+              <p className="text-sm font-semibold uppercase tracking-wider text-slate-400">
+                Réservations
+              </p>
               <p className="mt-3 font-serif text-3xl font-bold text-slate-900">
                 {reservationStats?.totalCount ?? 0}
               </p>

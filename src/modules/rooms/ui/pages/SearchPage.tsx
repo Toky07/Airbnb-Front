@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useSearchParams } from 'react-router';
 import PublicPageLayout from '../../../site/ui/components/PublicPageLayout';
 import { PageContainer } from '../../../../shared/ui';
+import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import { DEFAULT_PAGE_SIZE } from '../../../../shared/pagination/types';
 import { useRoomsList } from '../hooks/useRoomsList';
 import RoomGrid from '../components/RoomGrid';
@@ -10,6 +11,7 @@ import RoomSearchBar from '../components/RoomSearchBar';
 import type { RoomListItem } from '../../core/types/room.types';
 
 const SearchPage = () => {
+  usePageTitle('Recherche');
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q')?.trim() ?? '';
   const roomType = searchParams.get('type')?.trim() ?? '';

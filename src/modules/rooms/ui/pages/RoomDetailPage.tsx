@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useLocation, useParams } from 'react-router';
 import PublicPageLayout from '../../../site/ui/components/PublicPageLayout';
 import { PageContainer } from '../../../../shared/ui';
+import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import { getRoomLocation } from '../../core/types/room.types';
 import { useRoomDetail } from '../hooks/useRoomDetail';
 import RoomAmenities from '../components/RoomAmenities';
@@ -15,6 +16,7 @@ const RoomDetailPage = () => {
   const location = useLocation();
   const roomId = Number.parseInt(id ?? '', 10);
   const { room, loading, error } = useRoomDetail(Number.isFinite(roomId) ? roomId : null);
+  usePageTitle(room?.name ?? 'Détail du logement');
 
   return (
     <PublicPageLayout>

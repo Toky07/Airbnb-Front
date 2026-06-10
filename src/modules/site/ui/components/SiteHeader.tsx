@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router';
 import { BrandLogo, PageContainer } from '../../../../shared/ui';
 import { useCart } from '../../../cart/ui/hooks/useCart';
-import { headerNavLinks } from '../../core/config/header-nav.config';
 import SiteHeaderAuthActions from './SiteHeaderAuthActions';
 import RoomSearchBar from '../../../rooms/ui/components/RoomSearchBar';
 

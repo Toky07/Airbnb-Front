@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { Cart } from '../core/types/cart.types';
+import type { Cart } from '../../core/types/cart.types';
 
 export type CartContextValue = {
   cart: Cart | null;

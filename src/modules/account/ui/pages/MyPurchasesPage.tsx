@@ -1,90 +1,69 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import { getReservationService } from '../../../reservation/core/services/reservation.service';
-import type { Reservation } from '../../../reservation/core/types/reservation.types';
 import { getButtonClassName } from '../../../../shared/ui/button/button-classes';
 import { PageContainer } from '../../../../shared/ui';
-import PublicPageLayout from '../../../site/ui/components/PublicPageLayout';
+import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import PurchaseCard from '../components/PurchaseCard';
+import { useMyPurchases } from '../hooks/useMyPurchases';
 
 const MyPurchasesPage = () => {
-  const [reservations, setReservations] = useState<Reservation[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    void getReservationService()
-      .listMine()
-      .then((result) => {
-        if (!result.success) {
-          setError(result.error);
-          return;
-        }
-
-        setReservations(
-          result.reservations.filter((reservation) => reservation.status !== 'pending'),
-        );
-      })
-      .finally(() => setLoading(false));
-  }, []);
+  usePageTitle('Mes achats');
+  const { reservations, loading, error } = useMyPurchases();
 
   return (
-      <div className="bg-gradient-to-b from-slate-50 via-white to-white">
-        <PageContainer className="py-12 lg:py-16">
-          <div className="mx-auto max-w-4xl">
-            <div className="max-w-2xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">
-                Mon compte
-              </p>
-              <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                Mes achats
-              </h1>
-              <p className="mt-3 text-base text-slate-600">
-                Retrouvez l’historique de vos séjours confirmés et annulés, avec le détail de
-                chaque réservation.
-              </p>
-            </div>
-
-            {loading ? (
-              <div className="mt-10 space-y-5">
-                <div className="h-44 animate-pulse rounded-3xl bg-slate-100" />
-                <div className="h-44 animate-pulse rounded-3xl bg-slate-100" />
-              </div>
-            ) : null}
-
-            {error ? (
-              <p className="mt-10 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                {error}
-              </p>
-            ) : null}
-
-            {!loading && !error && reservations.length === 0 ? (
-              <div className="mt-12 rounded-3xl border border-dashed border-slate-200 bg-white/80 p-12 text-center shadow-sm">
-                <p className="text-lg font-medium text-slate-700">
-                  Vous n’avez pas encore de réservation payée
-                </p>
-                <p className="mt-2 text-sm text-slate-500">
-                  Dès votre premier paiement, vos séjours apparaîtront ici.
-                </p>
-                <Link
-                  to="/search"
-                  className={getButtonClassName('primary', 'md', 'mt-8 inline-flex')}
-                >
-                  Rechercher une chambre
-                </Link>
-              </div>
-            ) : null}
-
-            {!loading && !error && reservations.length > 0 ? (
-              <div className="mt-10 space-y-5">
-                {reservations.map((reservation) => (
-                  <PurchaseCard key={reservation.id} reservation={reservation} />
-                ))}
-              </div>
-            ) : null}
+    <div className="bg-gradient-to-b from-slate-50 via-white to-white">
+      <PageContainer className="py-12 lg:py-16">
+        <div className="mx-auto max-w-4xl">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">Mon compte</p>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+              Mes achats
+            </h1>
+            <p className="mt-3 text-base text-slate-600">
+              Retrouvez l’historique de vos séjours confirmés et annulés, avec le détail de chaque
+              réservation.
+            </p>
           </div>
-        </PageContainer>
-      </div>
+
+          {loading ? (
+            <div className="mt-10 space-y-5">
+              <div className="h-44 animate-pulse rounded-3xl bg-slate-100" />
+              <div className="h-44 animate-pulse rounded-3xl bg-slate-100" />
+            </div>
+          ) : null}
+
+          {error ? (
+            <p className="mt-10 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {error}
+            </p>
+          ) : null}
+
+          {!loading && !error && reservations.length === 0 ? (
+            <div className="mt-12 rounded-3xl border border-dashed border-slate-200 bg-white/80 p-12 text-center shadow-sm">
+              <p className="text-lg font-medium text-slate-700">
+                Vous n’avez pas encore de réservation payée
+              </p>
+              <p className="mt-2 text-sm text-slate-500">
+                Dès votre premier paiement, vos séjours apparaîtront ici.
+              </p>
+              <Link
+                to="/search"
+                className={getButtonClassName('primary', 'md', 'mt-8 inline-flex')}
+              >
+                Rechercher une chambre
+              </Link>
+            </div>
+          ) : null}
+
+          {!loading && !error && reservations.length > 0 ? (
+            <div className="mt-10 space-y-5">
+              {reservations.map((reservation) => (
+                <PurchaseCard key={reservation.id} reservation={reservation} />
+              ))}
+            </div>
+          ) : null}
+        </div>
+      </PageContainer>
+    </div>
   );
 };
 

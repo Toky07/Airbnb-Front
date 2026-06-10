@@ -6,6 +6,8 @@ export { default as FavoriteButton } from './card/FavoriteButton';
 export { default as MediaCard } from './card/MediaCard';
 export { default as MediaCardImage } from './card/MediaCardImage';
 export { default as OverlayMediaCard } from './card/OverlayMediaCard';
+export { default as ImageFileInput } from './image-file-input';
+export { default as ImageGallery } from './ImageGallery';
 export { default as HeroBackdrop } from './hero/HeroBackdrop';
 export { default as ScrollIndicator } from './hero/ScrollIndicator';
 export { default as PageContainer } from './layout/PageContainer';

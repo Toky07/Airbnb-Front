@@ -3,12 +3,14 @@ import { Link } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PublicPageLayout from '../../../site/ui/components/PublicPageLayout';
 import { PageContainer } from '../../../../shared/ui';
+import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import { useRoomsList } from '../hooks/useRoomsList';
 import RoomGrid from '../components/RoomGrid';
 import RoomSearchBar from '../components/RoomSearchBar';
 import { getRoomLocation } from '../../core/types/room.types';
 
 const HomePage = () => {
+  usePageTitle('Accueil');
   const { result, loading, error } = useRoomsList({ page: 1, limit: 10 });
   const featuredRooms = result.data.filter((room) => room.status === 'available').slice(0, 8);
 

@@ -2,9 +2,11 @@ import { type FormEvent, useState } from 'react';
 import { Link } from 'react-router';
 import { getAuthService } from '../../core/services/auth.service';
 import { Button, PageContainer } from '../../../../shared/ui';
+import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import { notifyMessages, useNotification } from '../../../../shared/notifications';
 
 const RegisterPage = () => {
+  usePageTitle('Inscription');
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',

@@ -4,9 +4,11 @@ import { getAuthService } from '../../core/services/auth.service';
 import { resolvePostLoginRedirect } from '../../core/services/resolve-post-login-redirect';
 import { useAuth } from '../hooks/useAuth';
 import { Button, PageContainer } from '../../../../shared/ui';
+import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import { notifyMessages, useNotification } from '../../../../shared/notifications';
 
 const LoginPage = () => {
+  usePageTitle('Connexion');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get('redirect');

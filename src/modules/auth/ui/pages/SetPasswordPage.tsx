@@ -2,9 +2,11 @@ import { type FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { getAuthService } from '../../core/services/auth.service';
 import { Button, PageContainer } from '../../../../shared/ui';
+import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import { notifyMessages, useNotification } from '../../../../shared/notifications';
 
 const SetPasswordPage = () => {
+  usePageTitle('Définir le mot de passe');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token') ?? '';
