@@ -45,59 +45,61 @@ const RoomDetailPage = () => {
         ) : null}
 
         {!loading && room ? (
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
-            <div className="space-y-8">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_360px]">
+            <div className="space-y-12">
               <RoomDetailGallery room={room} />
 
-              <div>
-                <div className="flex flex-wrap items-start justify-between gap-4">
+              <div className="border-b border-slate-200 pb-10">
+                <div className="flex flex-wrap items-start justify-between gap-6">
                   <div>
-                    <h1 className="text-3xl font-bold text-slate-900">{room.name}</h1>
-                    <p className="mt-2 flex items-center gap-2 text-slate-600">
-                      <FontAwesomeIcon icon={faLocationDot} className="h-4 w-4" />
+                    <h1 className="font-serif text-4xl font-medium text-slate-900 md:text-5xl">{room.name}</h1>
+                    <p className="mt-4 flex items-center gap-2 text-lg text-slate-600">
+                      <FontAwesomeIcon icon={faLocationDot} className="h-5 w-5 text-brand/80" />
                       {getRoomLocation(room)}
                     </p>
                     {room.property?.address ? (
-                      <p className="mt-1 text-sm text-slate-500">{room.property.address}</p>
+                      <p className="mt-2 text-slate-500">{room.property.address}</p>
                     ) : null}
                   </div>
                   {room.roomType ? (
-                    <span className="rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700">
+                    <span className="rounded-sm bg-slate-100 px-4 py-2 text-sm font-semibold tracking-wider text-slate-800 uppercase">
                       {room.roomType.name}
                     </span>
                   ) : null}
                 </div>
 
                 {room.property?.name ? (
-                  <p className="mt-4 text-sm text-slate-500">
-                    Établissement : <span className="font-medium text-slate-700">{room.property.name}</span>
+                  <p className="mt-6 text-slate-500">
+                    Établissement : <span className="font-medium text-slate-900">{room.property.name}</span>
                   </p>
                 ) : null}
               </div>
 
               {room.description ? (
-                <div>
-                  <h2 className="mb-3 text-lg font-semibold text-slate-900">Description</h2>
-                  <p className="whitespace-pre-line text-slate-600">{room.description}</p>
+                <div className="border-b border-slate-200 pb-10">
+                  <h2 className="mb-6 font-serif text-2xl font-medium text-slate-900">À propos de cette chambre</h2>
+                  <p className="whitespace-pre-line text-lg font-light leading-relaxed text-slate-600">{room.description}</p>
                 </div>
               ) : null}
 
-              <RoomAmenities room={room} />
+              <div className="border-b border-slate-200 pb-10">
+                <RoomAmenities room={room} />
+              </div>
 
               {room.property?.description ? (
-                <div>
-                  <h2 className="mb-3 text-lg font-semibold text-slate-900">À propos de l&apos;établissement</h2>
-                  <p className="whitespace-pre-line text-slate-600">{room.property.description}</p>
+                <div className="pb-10">
+                  <h2 className="mb-6 font-serif text-2xl font-medium text-slate-900">L'établissement</h2>
+                  <p className="whitespace-pre-line text-lg font-light leading-relaxed text-slate-600">{room.property.description}</p>
                 </div>
               ) : null}
             </div>
 
-            <aside className="lg:sticky lg:top-24 lg:self-start">
+            <aside className="lg:sticky lg:top-28 lg:self-start">
               {isRoomBookable(room) ? (
                 <RoomBookingPanel room={room} returnPath={location.pathname} />
               ) : (
-                <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/50">
-                  <p className="text-center text-sm text-slate-500">
+                <div className="rounded-sm border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/50">
+                  <p className="text-center text-slate-500">
                     Ce logement n&apos;est pas disponible pour le moment.
                   </p>
                 </div>

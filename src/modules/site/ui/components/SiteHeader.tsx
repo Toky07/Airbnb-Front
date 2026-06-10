@@ -5,32 +5,33 @@ import { BrandLogo, PageContainer } from '../../../../shared/ui';
 import { useCart } from '../../../cart/ui/hooks/useCart';
 import { headerNavLinks } from '../../core/config/header-nav.config';
 import SiteHeaderAuthActions from './SiteHeaderAuthActions';
+import RoomSearchBar from '../../../rooms/ui/components/RoomSearchBar';
 
 const SiteHeader = () => {
   const { itemCount } = useCart();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-md">
-      <PageContainer className="flex h-16 items-center justify-between gap-6">
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white">
+      <PageContainer className="flex h-20 items-center justify-between gap-6">
         <BrandLogo />
 
-        <nav className="hidden items-center gap-8 md:flex">
-          {headerNavLinks.map((link) => (
-            <Link
-              key={link.href}
-              to={link.href}
-              className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="hidden flex-1 justify-center md:flex">
+          <div className="w-full max-w-md">
+            <RoomSearchBar compact />
+          </div>
+        </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
+          <Link
+            to="/search"
+            className="hidden text-sm font-medium text-slate-600 transition hover:text-slate-900 md:block"
+          >
+            Logements
+          </Link>
           <Link
             to="/cart"
             aria-label={itemCount > 0 ? `Panier (${itemCount} article${itemCount > 1 ? 's' : ''})` : 'Panier'}
-            className="relative flex h-10 w-10 items-center justify-center rounded-full text-slate-700 transition hover:bg-slate-50"
+            className="relative flex h-10 w-10 items-center justify-center rounded-full text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
           >
             <FontAwesomeIcon icon={faCartShopping} className="h-4 w-4" />
             {itemCount > 0 ? (

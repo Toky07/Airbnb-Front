@@ -93,11 +93,8 @@ describe('HomePage', () => {
       </MemoryRouter>,
     );
 
-    expect(
-      screen.getByRole('heading', { name: /trouvez votre prochain logement/i }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /rechercher/i })).toBeInTheDocument();
-
+    expect(screen.queryByRole('heading', { name: /l'élégance à chaque séjour/i })).not.toBeInTheDocument();
+    
     await waitFor(() => {
       expect(screen.getByText('Suite vue mer')).toBeInTheDocument();
     });

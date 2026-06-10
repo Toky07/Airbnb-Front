@@ -5,7 +5,7 @@ import type { RoomListItem } from '../../../rooms/core/types/room.types';
 import { useAddToCart } from '../../../cart/ui/hooks/useAddToCart';
 
 const inputClassName =
-  'w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20';
+  'w-full rounded-sm border border-slate-200 px-4 py-3 text-sm outline-none transition-colors focus:border-brand focus:ring-1 focus:ring-brand';
 
 type RoomBookingPanelProps = {
   room: RoomListItem;
@@ -31,12 +31,12 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
 
   if (added) {
     return (
-      <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 shadow-lg shadow-emerald-100/60">
-        <h2 className="text-lg font-semibold text-emerald-900">Ajouté au panier</h2>
-        <p className="mt-2 text-sm text-emerald-800">
+      <div className="rounded-sm border border-emerald-200 bg-emerald-50 p-8 shadow-xl shadow-emerald-100/40">
+        <h2 className="font-serif text-2xl font-medium text-emerald-900">Ajouté au panier</h2>
+        <p className="mt-3 text-emerald-800">
           Votre séjour a été ajouté. Vous pouvez continuer vos recherches ou procéder au paiement.
         </p>
-        <div className="mt-6 flex flex-col gap-3">
+        <div className="mt-8 flex flex-col gap-4">
           <Button type="button" className="w-full" onClick={goToCart}>
             Voir le panier
           </Button>
@@ -49,13 +49,13 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
   }
 
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/50">
-      <p className="text-2xl font-bold text-slate-900">
+    <div className="rounded-sm border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/50">
+      <p className="text-3xl font-medium text-slate-900">
         {formatPricePerNight(room.pricePerNight)}
-        <span className="text-base font-normal text-slate-500"> / nuit</span>
+        <span className="text-lg font-normal text-slate-500"> / nuit</span>
       </p>
 
-      <form onSubmit={submit} className="mt-6 space-y-4">
+      <form onSubmit={submit} className="mt-8 space-y-5">
         <label className="block">
           <span className="mb-2 block text-sm font-medium text-slate-700">Arrivée</span>
           <input
@@ -95,12 +95,12 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
         </label>
 
         {preview ? (
-          <div className="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-600">
+          <div className="rounded-sm bg-slate-50 px-5 py-4 text-slate-700 border border-slate-100">
             <div className="flex items-center justify-between">
               <span>
                 {preview.nights} nuit{preview.nights > 1 ? 's' : ''}
               </span>
-              <span className="font-semibold text-slate-900">
+              <span className="text-lg font-medium text-slate-900">
                 {formatPricePerNight(preview.totalPrice)}
               </span>
             </div>
@@ -108,19 +108,19 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
         ) : null}
 
         {error ? (
-          <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p className="rounded-sm border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
             {error}
           </p>
         ) : null}
 
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" className="w-full mt-2" disabled={loading}>
           {loading ? 'Ajout…' : 'Ajouter au panier'}
         </Button>
       </form>
 
-      <p className="mt-4 text-center text-xs text-slate-500">
-        Pas besoin de compte pour ajouter au panier.{' '}
-        <Link to="/cart" className="font-medium text-brand hover:text-brand-dark">
+      <p className="mt-6 text-center text-sm text-slate-500">
+        Pas besoin de compte pour ajouter au panier.<br/>
+        <Link to="/cart" className="mt-1 inline-block font-medium tracking-wide text-brand hover:text-brand-dark">
           Voir le panier
         </Link>
       </p>
