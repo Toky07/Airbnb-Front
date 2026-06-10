@@ -4,20 +4,22 @@ import { useCart } from '../../../cart/ui/hooks/useCart';
 import type { BookingFormValues } from '../../../reservation/core/types/reservation.types';
 import {
   calculateStayAmountPreview,
-  getDefaultBookingDates,
+  getFirstAvailableDates,
 } from '../../../reservation/core/utils/calculate-stay-amount';
+import type { UnavailableDateRange } from '../../../rooms/core/types/room.types';
 
 type UseAddToCartOptions = {
   roomId: number;
   pricePerNight: number;
   maxGuests: number;
+  unavailableDates?: UnavailableDateRange[];
 };
 
-export function useAddToCart({ roomId, pricePerNight, maxGuests }: UseAddToCartOptions) {
+export function useAddToCart({ roomId, pricePerNight, maxGuests, unavailableDates = [] }: UseAddToCartOptions) {
   const navigate = useNavigate();
   const { addReservation } = useCart();
   const [form, setForm] = useState<BookingFormValues>(() => ({
-    ...getDefaultBookingDates(),
+    ...getFirstAvailableDates(unavailableDates),
     guestCount: 1,
   }));
   const [loading, setLoading] = useState(false);

@@ -18,6 +18,11 @@ export type PropertySummary = {
   propertyType: CategorySummary | null;
 };
 
+export type UnavailableDateRange = {
+  startDate: string;
+  endDate: string;
+};
+
 export type RoomListItem = {
   id: number;
   name: string;
@@ -35,6 +40,7 @@ export type RoomListItem = {
   roomTypeId: number | null;
   roomType: CategorySummary | null;
   images: string[];
+  unavailableDates?: UnavailableDateRange[];
 };
 
 export function mapRoomListItem(data: unknown): RoomListItem | null {
@@ -116,6 +122,15 @@ export function mapRoomListItem(data: unknown): RoomListItem | null {
           }
         : null,
     images,
+    unavailableDates: Array.isArray(record.unavailableDates)
+      ? record.unavailableDates.filter(
+          (r): r is UnavailableDateRange =>
+            r != null &&
+            typeof r === 'object' &&
+            typeof (r as Record<string, unknown>).startDate === 'string' &&
+            typeof (r as Record<string, unknown>).endDate === 'string',
+        )
+      : undefined,
   };
 }
 

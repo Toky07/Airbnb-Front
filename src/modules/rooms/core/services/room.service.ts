@@ -29,6 +29,7 @@ export class RoomService {
     const data: unknown = await response.json();
     return mapRoomListItem(data);
   }
+
 }
 
 let service: RoomService | null = null;

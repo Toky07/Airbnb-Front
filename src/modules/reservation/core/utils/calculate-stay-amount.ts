@@ -24,6 +24,36 @@ export function getDefaultBookingDates(
   };
 }
 
+export function getFirstAvailableDates(
+  unavailableRanges: Array<{ startDate: string; endDate: string }>,
+  referenceDate: Date = new Date(),
+): DefaultBookingDates {
+  const cursor = new Date(referenceDate);
+  cursor.setHours(0, 0, 0, 0);
+  cursor.setDate(cursor.getDate() + 1);
+
+  const maxAttempts = 365;
+
+  for (let i = 0; i < maxAttempts; i++) {
+    const startStr = formatDateInputValue(cursor);
+    const next = new Date(cursor);
+    next.setDate(next.getDate() + 1);
+    const endStr = formatDateInputValue(next);
+
+    const overlaps = unavailableRanges.some(
+      (r) => startStr < r.endDate && endStr > r.startDate,
+    );
+
+    if (!overlaps) {
+      return { startDate: startStr, endDate: endStr };
+    }
+
+    cursor.setDate(cursor.getDate() + 1);
+  }
+
+  return getDefaultBookingDates(referenceDate);
+}
+
 function formatDateInputValue(date: Date): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');

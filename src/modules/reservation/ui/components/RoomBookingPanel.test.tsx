@@ -31,6 +31,7 @@ const room: RoomListItem = {
   roomTypeId: null,
   roomType: null,
   images: [],
+  unavailableDates: [{ startDate: '2026-09-10', endDate: '2026-09-13' }],
 };
 
 const addReservation = vi.fn().mockResolvedValue({ success: true });
@@ -47,20 +48,67 @@ vi.mock('../../../cart/ui/hooks/useCart', () => ({
   }),
 }));
 
+
+function selectDate(dateStr: string) {
+  const btn = screen.getByTestId(`calendar-day-${dateStr}`);
+  fireEvent.click(btn);
+}
+
 describe('RoomBookingPanel', () => {
-  it('affiche le formulaire de réservation', () => {
+  it('affiche le calendrier et le bouton ajouter au panier', () => {
     render(
       <MemoryRouter>
         <RoomBookingPanel room={room} returnPath="/rooms/5" />
       </MemoryRouter>,
     );
 
-    expect(screen.getByLabelText('Arrivée')).toBeInTheDocument();
-    expect(screen.getByLabelText('Départ')).toBeInTheDocument();
+    expect(screen.getByText('Sélectionnez vos dates')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /ajouter au panier/i })).toBeInTheDocument();
   });
 
-  it('ajoute au panier sans connexion', async () => {
+  it('désactive les dates indisponibles dans le calendrier', () => {
+    render(
+      <MemoryRouter>
+        <RoomBookingPanel room={room} returnPath="/rooms/5" />
+      </MemoryRouter>,
+    );
+
+    const navNext = screen.getByLabelText('Mois suivant');
+    const currentMonth = new Date().getMonth();
+    const targetMonth = 8;
+    let clicks = targetMonth - currentMonth;
+    if (clicks < 0) clicks += 12;
+    for (let i = 0; i < clicks; i++) fireEvent.click(navNext);
+
+    const disabledDay = screen.getByTestId('calendar-day-2026-09-11');
+    expect(disabledDay).toBeDisabled();
+  });
+
+  it('désactive le bouton quand les dates chevauchent une réservation', () => {
+    render(
+      <MemoryRouter>
+        <RoomBookingPanel room={room} returnPath="/rooms/5" />
+      </MemoryRouter>,
+    );
+
+    const navNext = screen.getByLabelText('Mois suivant');
+    const currentMonth = new Date().getMonth();
+    const targetMonth = 8;
+    let clicks = targetMonth - currentMonth;
+    if (clicks < 0) clicks += 12;
+    for (let i = 0; i < clicks; i++) fireEvent.click(navNext);
+
+    selectDate('2026-09-08');
+    selectDate('2026-09-14');
+
+    expect(
+      screen.getByText(/n'est pas disponible pour les dates sélectionnées/i),
+    ).toBeInTheDocument();
+
+    expect(screen.getByRole('button', { name: /ajouter au panier/i })).toBeDisabled();
+  });
+
+  it('ajoute au panier avec des dates disponibles', async () => {
     addReservation.mockClear();
 
     render(
@@ -69,13 +117,20 @@ describe('RoomBookingPanel', () => {
       </MemoryRouter>,
     );
 
-    fireEvent.change(screen.getByLabelText('Arrivée'), {
-      target: { value: '2026-09-01' },
-    });
-    fireEvent.change(screen.getByLabelText('Départ'), {
-      target: { value: '2026-09-03' },
-    });
-    fireEvent.click(screen.getByRole('button', { name: /ajouter au panier/i }));
+    const navNext = screen.getByLabelText('Mois suivant');
+    const currentMonth = new Date().getMonth();
+    const targetMonth = 8;
+    let clicks = targetMonth - currentMonth;
+    if (clicks < 0) clicks += 12;
+    for (let i = 0; i < clicks; i++) fireEvent.click(navNext);
+
+    selectDate('2026-09-01');
+    selectDate('2026-09-03');
+
+    const submitBtn = screen.getByRole('button', { name: /ajouter au panier/i });
+    expect(submitBtn).not.toBeDisabled();
+
+    fireEvent.click(submitBtn);
 
     await waitFor(() => {
       expect(addReservation).toHaveBeenCalledWith({
