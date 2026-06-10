@@ -186,6 +186,96 @@ export class HostService {
   }
 }
 
+export type HostBookingItem = {
+  id: number;
+  roomName: string | null;
+  propertyName: string | null;
+  propertyCity: string | null;
+  startDate: string;
+  endDate: string;
+  guestCount: number;
+  nights: number;
+  totalPrice: number;
+  status: string;
+  imageUrl: string | null;
+};
+
+export type HostBookingOrder = {
+  paymentId: number;
+  paidAt: string;
+  amount: number;
+  currency: string;
+  paymentStatus: string;
+  customerName: string;
+  customerEmail: string;
+  itemCount: number;
+  previewLabel: string;
+  transactionId: string;
+};
+
+export type HostReservationStats = {
+  activeCount: number;
+  pendingCount: number;
+  monthlyRevenue: number;
+  totalCount: number;
+};
+
+function mapBookingOrder(data: unknown): HostBookingOrder | null {
+  if (!data || typeof data !== 'object') return null;
+  const r = data as Record<string, unknown>;
+  if (typeof r.paymentId !== 'number') return null;
+  return {
+    paymentId: r.paymentId,
+    paidAt: String(r.paidAt ?? ''),
+    amount: Number(r.amount ?? 0),
+    currency: String(r.currency ?? 'eur'),
+    paymentStatus: String(r.paymentStatus ?? 'pending'),
+    customerName: String(r.customerName ?? 'Client'),
+    customerEmail: String(r.customerEmail ?? ''),
+    itemCount: Number(r.itemCount ?? 0),
+    previewLabel: String(r.previewLabel ?? ''),
+    transactionId: String(r.transactionId ?? ''),
+  };
+}
+
+function mapReservationStats(data: unknown): HostReservationStats | null {
+  if (!data || typeof data !== 'object') return null;
+  const r = data as Record<string, unknown>;
+  return {
+    activeCount: Number(r.activeCount ?? 0),
+    pendingCount: Number(r.pendingCount ?? 0),
+    monthlyRevenue: Number(r.monthlyRevenue ?? 0),
+    totalCount: Number(r.totalCount ?? 0),
+  };
+}
+
+export class HostReservationService {
+  async listBookings(params: ListQueryParams = {}) {
+    const response = await getApiClient().get(`/reservations/bookings/host${buildListQuery(params)}`);
+    if (!response.ok) {
+      return { data: [] as HostBookingOrder[], meta: { page: 1, limit: 10, total: 0, totalPages: 0 } };
+    }
+    const data: unknown = await response.json();
+    return parsePaginatedResponse(data, mapBookingOrder);
+  }
+
+  async getStats(): Promise<HostReservationStats | null> {
+    const response = await getApiClient().get('/reservations/stats');
+    if (!response.ok) return null;
+    const data: unknown = await response.json();
+    return mapReservationStats(data);
+  }
+}
+
+let reservationService: HostReservationService | null = null;
+
+export function getHostReservationService(): HostReservationService {
+  if (!reservationService) {
+    reservationService = new HostReservationService();
+  }
+  return reservationService;
+}
+
 let service: HostService | null = null;
 
 export function getHostService(): HostService {

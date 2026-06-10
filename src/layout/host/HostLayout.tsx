@@ -1,4 +1,4 @@
-import { faBed, faHotel, faTableColumns } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faCalendarCheck, faHotel, faTableColumns } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, NavLink, Outlet } from 'react-router';
 import { BrandLogo, PageContainer, UserMenu } from '../../shared/ui';
@@ -7,6 +7,7 @@ import { notifyMessages, useNotification } from '../../shared/notifications';
 
 const navItems = [
   { to: '/host', label: 'Tableau de bord', icon: faTableColumns, end: true },
+  { to: '/host/reservations', label: 'Réservations', icon: faCalendarCheck },
   { to: '/host/property', label: 'Mon établissement', icon: faHotel },
   { to: '/host/rooms', label: 'Mes chambres', icon: faBed },
 ];

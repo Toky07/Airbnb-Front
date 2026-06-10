@@ -12,6 +12,7 @@ import MyPurchasesPage from './modules/account/ui/pages/MyPurchasesPage';
 import HostLayout from './layout/host/HostLayout';
 import HostDashboardPage from './modules/host/ui/pages/HostDashboardPage';
 import HostPropertyPage from './modules/host/ui/pages/HostPropertyPage';
+import HostReservationsPage from './modules/host/ui/pages/HostReservationsPage';
 import HostRoomsPage from './modules/host/ui/pages/HostRoomsPage';
 import HomePage from './modules/rooms/ui/pages/HomePage';
 import SearchPage from './modules/rooms/ui/pages/SearchPage';
@@ -117,6 +118,10 @@ const router = createBrowserRouter([
               {
                 index: true,
                 Component: HostDashboardPage,
+              },
+              {
+                path: 'reservations',
+                Component: HostReservationsPage,
               },
               {
                 path: 'property',
