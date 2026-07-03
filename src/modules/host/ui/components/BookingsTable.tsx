@@ -59,7 +59,10 @@ const BookingsTable = ({ bookings, loading }: BookingsTableProps) => {
         </thead>
         <tbody className="divide-y divide-slate-100">
           {bookings.map((booking) => (
-            <tr key={booking.paymentId} className="transition-colors hover:bg-slate-50/50">
+            <tr
+              key={`${booking.paymentId}-${booking.propertyId ?? 0}`}
+              className="transition-colors hover:bg-slate-50/50"
+            >
               <td className="whitespace-nowrap px-8 py-5">
                 <div>
                   <p className="font-bold text-slate-900">{booking.customerName}</p>
@@ -76,6 +79,11 @@ const BookingsTable = ({ bookings, loading }: BookingsTableProps) => {
                 {booking.previewLabel ? (
                   <p className="mt-1 max-w-[250px] truncate text-sm text-slate-500">
                     {booking.previewLabel}
+                  </p>
+                ) : null}
+                {booking.propertyName ? (
+                  <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-400">
+                    {booking.propertyName}
                   </p>
                 ) : null}
               </td>

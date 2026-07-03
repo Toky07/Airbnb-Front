@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   getHostReservationService,
+  getHostService,
 } from '../../core/services/host.service';
 import type {
   HostBookingOrder,
   HostReservationStats,
 } from '../../core/types/host-booking.types';
+import type { HostProperty } from '../../core/types/host.types';
 import type { PaginationMeta } from '../../../../shared/pagination/types';
 
 const DEFAULT_META: PaginationMeta = {
@@ -17,52 +19,65 @@ const DEFAULT_META: PaginationMeta = {
 
 export function useHostReservations() {
   const [bookings, setBookings] = useState<HostBookingOrder[]>([]);
+  const [properties, setProperties] = useState<HostProperty[]>([]);
   const [stats, setStats] = useState<HostReservationStats | null>(null);
   const [meta, setMeta] = useState<PaginationMeta>(DEFAULT_META);
   const [search, setSearch] = useState('');
+  const [propertyId, setPropertyId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const serviceRef = useRef(getHostReservationService());
 
-  const loadData = useCallback(async (page = 1, searchTerm = '') => {
+  const loadData = useCallback(async (page = 1, searchTerm = '', selectedPropertyId: number | null = null) => {
     setLoading(true);
     const svc = serviceRef.current;
-    const [bookingsRes, statsRes] = await Promise.all([
-      svc.listBookings({ page, limit: 10, search: searchTerm }),
+    const hostService = getHostService();
+    const [bookingsRes, statsRes, propertyList] = await Promise.all([
+      svc.listBookings({
+        page,
+        limit: 10,
+        search: searchTerm,
+        ...(selectedPropertyId ? { propertyId: selectedPropertyId } : {}),
+      }),
       svc.getStats(),
+      hostService.listProperties(),
     ]);
-    
+
     setBookings(bookingsRes.data);
     setMeta(bookingsRes.meta);
     setStats(statsRes);
+    setProperties(propertyList);
     setLoading(false);
   }, []);
 
   useEffect(() => {
-    void loadData();
-  }, [loadData]);
+    void loadData(1, '', propertyId);
+  }, [loadData, propertyId]);
 
   const handleSearch = useCallback(
     (event: React.FormEvent) => {
       event.preventDefault();
-      void loadData(1, search);
+      void loadData(1, search, propertyId);
     },
-    [loadData, search],
+    [loadData, propertyId, search],
   );
 
   const goToPage = useCallback(
     (page: number) => {
-      void loadData(page, search);
+      void loadData(page, search, propertyId);
     },
-    [loadData, search],
+    [loadData, propertyId, search],
   );
 
   return {
     bookings,
+    properties,
     stats,
     meta,
     search,
+    propertyId,
     loading,
     setSearch,
+    setPropertyId,
     handleSearch,
     goToPage,
   };

@@ -23,5 +23,7 @@ export function mapBookingOrderListItem(data: unknown): HostBookingOrder | null 
     transactionId: String(record.transactionId ?? ''),
     startDate: typeof record.startDate === 'string' ? record.startDate : null,
     endDate: typeof record.endDate === 'string' ? record.endDate : null,
+    propertyId: typeof record.propertyId === 'number' ? record.propertyId : null,
+    propertyName: typeof record.propertyName === 'string' ? record.propertyName : null,
   };
 }

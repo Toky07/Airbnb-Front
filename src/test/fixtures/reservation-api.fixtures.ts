@@ -40,4 +40,6 @@ export const sampleBookingOrderListItemApi = {
   transactionId: 'pi_test_123456',
   startDate: '2026-08-01',
   endDate: '2026-08-03',
+  propertyId: 1,
+  propertyName: 'Hotel Test',
 };

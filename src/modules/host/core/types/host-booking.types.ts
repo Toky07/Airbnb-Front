@@ -11,6 +11,8 @@ export type HostBookingOrder = {
   transactionId: string;
   startDate: string | null;
   endDate: string | null;
+  propertyId: number | null;
+  propertyName: string | null;
 };
 
 export type HostReservationStats = {

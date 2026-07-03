@@ -16,6 +16,8 @@ const booking: HostBookingOrder = {
   transactionId: 'pi_test_123456',
   startDate: '2026-08-01',
   endDate: '2026-08-03',
+  propertyId: 1,
+  propertyName: 'Hotel Test',
 };
 
 describe('BookingsTable', () => {
@@ -25,6 +27,7 @@ describe('BookingsTable', () => {
     expect(screen.getByText('Jean Dupont')).toBeInTheDocument();
     expect(screen.getByText('jean@example.com')).toBeInTheDocument();
     expect(screen.getByText('Suite Deluxe · Hotel Test')).toBeInTheDocument();
+    expect(screen.getByText('Payée')).toBeInTheDocument();
   });
 
   it('affiche l’état vide', () => {

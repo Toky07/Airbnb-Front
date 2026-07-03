@@ -15,7 +15,7 @@ import { formatHostCurrency } from '../utils/host-formatters';
 
 const HostReservationsPage = () => {
   usePageTitle('Réservations');
-  const { bookings, stats, meta, search, loading, setSearch, handleSearch, goToPage } =
+  const { bookings, properties, stats, meta, search, propertyId, loading, setSearch, setPropertyId, handleSearch, goToPage } =
     useHostReservations();
 
   return (
@@ -57,7 +57,25 @@ const HostReservationsPage = () => {
       <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm">
         <div className="flex flex-col items-start justify-between gap-4 border-b border-slate-100 px-8 py-6 sm:flex-row sm:items-center">
           <h2 className="font-serif text-2xl font-bold text-slate-900">Commandes récentes</h2>
-          <form onSubmit={handleSearch} className="flex w-full max-w-sm items-center gap-2">
+          <div className="flex w-full max-w-2xl flex-col gap-3 sm:flex-row sm:items-center">
+            {properties.length > 1 ? (
+              <select
+                value={propertyId ?? ''}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  setPropertyId(value ? Number.parseInt(value, 10) : null);
+                }}
+                className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+              >
+                <option value="">Tous les établissements</option>
+                {properties.map((property) => (
+                  <option key={property.id} value={property.id}>
+                    {property.name}
+                  </option>
+                ))}
+              </select>
+            ) : null}
+            <form onSubmit={handleSearch} className="flex flex-1 items-center gap-2">
             <div className="relative flex-1">
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
@@ -71,7 +89,8 @@ const HostReservationsPage = () => {
                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
               />
             </div>
-          </form>
+            </form>
+          </div>
         </div>
 
         <BookingsTable bookings={bookings} loading={loading} />
