@@ -1,10 +1,5 @@
-import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import {
   faChevronDown,
-  faHotel,
-  faReceipt,
-  faRightFromBracket,
-  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useId, useRef, useState } from 'react';
@@ -15,20 +10,7 @@ import {
   getUserInitials,
 } from '../../utils/user-display';
 import UserAvatar from './UserAvatar';
-
-export type UserMenuItem =
-  | {
-      type: 'link';
-      to: string;
-      label: string;
-      icon: IconDefinition;
-    }
-  | {
-      type: 'action';
-      label: string;
-      icon: IconDefinition;
-      onSelect: () => void;
-    };
+import { buildUserMenuItems } from './user-menu-items';
 
 type UserMenuProps = {
   session: AuthSession;
@@ -37,45 +19,6 @@ type UserMenuProps = {
   hasProperty?: boolean;
   onLogout: () => void;
 };
-
-export function buildUserMenuItems({
-  canAccessHostDashboard,
-  hasProperty,
-  onLogout,
-}: Pick<UserMenuProps, 'canAccessHostDashboard' | 'hasProperty' | 'onLogout'>): UserMenuItem[] {
-  const items: UserMenuItem[] = [
-    {
-      type: 'link',
-      to: '/account/profile',
-      label: 'Mon profil',
-      icon: faUser,
-    },
-    {
-      type: 'link',
-      to: '/account/purchases',
-      label: 'Mes achats',
-      icon: faReceipt,
-    },
-  ];
-
-  if (canAccessHostDashboard || hasProperty) {
-    items.push({
-      type: 'link',
-      to: '/host',
-      label: 'Gérer mon hôtel',
-      icon: faHotel,
-    });
-  }
-
-  items.push({
-    type: 'action',
-    label: 'Déconnexion',
-    icon: faRightFromBracket,
-    onSelect: onLogout,
-  });
-
-  return items;
-}
 
 const UserMenu = ({
   session,

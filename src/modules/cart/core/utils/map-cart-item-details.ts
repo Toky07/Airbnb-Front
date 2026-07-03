@@ -1,7 +1,5 @@
-import {
-  parseProductLabel,
-  type StayProductDetails,
-} from '../../../../shared/ui/product/StayProductCard';
+import { parseProductLabel } from '../../../../shared/ui/product/parse-product-label';
+import type { StayProductDetails } from '../../../../shared/ui/product/StayProductCard';
 import { formatCartPrice, type CartItem } from '../../core/types/cart.types';
 
 export function mapCartItemToProductDetails(item: CartItem): StayProductDetails {

@@ -1,15 +1,25 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  // Tailwind is not needed for unit tests and slows down startup.
+  plugins: [react()],
   resolve: {
     dedupe: ['react', 'react-dom'],
   },
   test: {
+    name: 'frontend',
     globals: true,
-    environment: 'jsdom',
+    environment: 'happy-dom',
     setupFiles: ['./src/test/setup.ts'],
+    pool: 'threads',
+    css: false,
+    deps: {
+      optimizer: {
+        web: {
+          enabled: true,
+        },
+      },
+    },
   },
 });

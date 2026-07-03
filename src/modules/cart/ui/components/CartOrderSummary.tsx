@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import type { CartItem } from '../../core/types/cart.types';
 import { formatCartPrice } from '../../core/types/cart.types';
 import { Button } from '../../../../shared/ui';
-import { parseProductLabel } from '../../../../shared/ui/product/StayProductCard';
+import { parseProductLabel } from '../../../../shared/ui/product/parse-product-label';
 
 type CartOrderSummaryProps = {
   items: CartItem[];

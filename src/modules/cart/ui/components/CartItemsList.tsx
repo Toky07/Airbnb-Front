@@ -1,9 +1,7 @@
 import type { CartItem, UpdateCartItemPayload } from '../../core/types/cart.types';
 import { mapCartItemToProductDetails } from '../../core/utils/map-cart-item-details';
-import {
-  StayProductCard,
-  parseProductLabel,
-} from '../../../../shared/ui/product/StayProductCard';
+import { StayProductCard } from '../../../../shared/ui/product/StayProductCard';
+import { parseProductLabel } from '../../../../shared/ui/product/parse-product-label';
 import CartReservationEditor from './CartReservationEditor';
 
 type CartItemsListProps = {

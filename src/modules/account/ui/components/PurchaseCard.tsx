@@ -3,10 +3,8 @@ import {
   type Reservation,
 } from '../../../reservation/core/types/reservation.types';
 import { formatPricePerNight } from '../../../rooms/core/types/room.types';
-import {
-  StayProductCard,
-  parseProductLabel,
-} from '../../../../shared/ui/product/StayProductCard';
+import { StayProductCard } from '../../../../shared/ui/product/StayProductCard';
+import { parseProductLabel } from '../../../../shared/ui/product/parse-product-label';
 
 function getStatusTone(
   status: Reservation['status'],

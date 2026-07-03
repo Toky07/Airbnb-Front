@@ -1,7 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
-import UserMenu, { buildUserMenuItems } from './UserMenu';
+import UserMenu from './UserMenu';
+import { buildUserMenuItems } from './user-menu-items';
 import type { AuthSession } from '../../../modules/auth/core/types/auth.types';
 
 const session: AuthSession = {

@@ -1,5 +1,4 @@
 import {
-  createContext,
   useCallback,
   useMemo,
   useState,
@@ -11,20 +10,8 @@ import {
   type NotificationType,
   type NotifyOptions,
 } from './notification.types';
+import { NotificationContext, type NotificationContextValue } from './notification.context';
 import NotificationContainer from './NotificationContainer';
-
-type NotificationContextValue = {
-  notify: (message: string, options?: NotifyOptions) => string;
-  success: (message: string, options?: Omit<NotifyOptions, 'type'>) => string;
-  error: (message: string, options?: Omit<NotifyOptions, 'type'>) => string;
-  info: (message: string, options?: Omit<NotifyOptions, 'type'>) => string;
-  warning: (message: string, options?: Omit<NotifyOptions, 'type'>) => string;
-  dismiss: (id: string) => void;
-};
-
-export const NotificationContext = createContext<NotificationContextValue | null>(
-  null,
-);
 
 let notificationCounter = 0;
 
