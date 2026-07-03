@@ -2,14 +2,18 @@ import { useEffect, useState } from 'react';
 import {
   getHostReservationService,
   getHostService,
-  type HostReservationStats,
 } from '../../core/services/host.service';
+import type {
+  HostReservationActivity,
+  HostReservationStats,
+} from '../../core/types/host-booking.types';
 import type { HostProfile } from '../../core/types/host.types';
 
 export function useHostDashboard() {
   const [profile, setProfile] = useState<HostProfile | null>(null);
   const [roomsCount, setRoomsCount] = useState(0);
   const [reservationStats, setReservationStats] = useState<HostReservationStats | null>(null);
+  const [recentActivity, setRecentActivity] = useState<HostReservationActivity[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,9 +21,9 @@ export function useHostDashboard() {
       setLoading(true);
       const hostService = getHostService();
       const reservationService = getHostReservationService();
-      const [profileData, statsData] = await Promise.all([
+      const [profileData, statsOverview] = await Promise.all([
         hostService.getProfile(),
-        reservationService.getStats(),
+        reservationService.getStatsOverview(),
       ]);
 
       const properties = profileData?.properties ?? [];
@@ -36,12 +40,13 @@ export function useHostDashboard() {
 
       setProfile(profileData);
       setRoomsCount(totalRooms);
-      setReservationStats(statsData);
+      setReservationStats(statsOverview.stats);
+      setRecentActivity(statsOverview.recentActivity);
       setLoading(false);
     }
 
     void load();
   }, []);
 
-  return { profile, roomsCount, reservationStats, loading };
+  return { profile, roomsCount, reservationStats, recentActivity, loading };
 }

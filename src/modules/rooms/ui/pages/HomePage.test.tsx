@@ -1,9 +1,6 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
+import { screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import AuthProvider from '../../../auth/ui/providers/AuthProvider';
-import CartProvider from '../../../cart/ui/providers/CartProvider';
-import { NotificationProvider } from '../../../../shared/notifications';
+import { renderWithProviders } from '../../../../test/render-with-providers';
 import HomePage from './HomePage';
 
 vi.mock('../../../cart/core/services/cart.service', () => ({
@@ -31,9 +28,9 @@ vi.mock('../../../cart/core/services/cart.service', () => ({
       },
     }),
     addReservation: vi.fn(),
+    updateItem: vi.fn(),
     removeItem: vi.fn(),
     checkout: vi.fn(),
-    clear: vi.fn(),
   }),
 }));
 
@@ -81,20 +78,10 @@ describe('HomePage', () => {
       new Response(JSON.stringify(mockRooms), { status: 200 }),
     );
 
-    render(
-      <MemoryRouter>
-        <NotificationProvider>
-          <AuthProvider>
-            <CartProvider>
-              <HomePage />
-            </CartProvider>
-          </AuthProvider>
-        </NotificationProvider>
-      </MemoryRouter>,
-    );
+    renderWithProviders(<HomePage />);
 
     expect(screen.queryByRole('heading', { name: /l'élégance à chaque séjour/i })).not.toBeInTheDocument();
-    
+
     await waitFor(() => {
       expect(screen.getByText('Suite vue mer')).toBeInTheDocument();
     });

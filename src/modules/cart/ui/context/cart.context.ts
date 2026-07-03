@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { Cart } from '../../core/types/cart.types';
+import type { Cart, UpdateCartItemPayload } from '../../core/types/cart.types';
 
 export type CartContextValue = {
   cart: Cart | null;
@@ -12,6 +12,10 @@ export type CartContextValue = {
     endDate: string;
     guestCount: number;
   }) => Promise<{ success: boolean; error?: string }>;
+  updateItem: (
+    itemId: number,
+    payload: UpdateCartItemPayload,
+  ) => Promise<{ success: boolean; error?: string }>;
   removeItem: (itemId: number) => Promise<{ success: boolean; error?: string }>;
   itemCount: number;
 };

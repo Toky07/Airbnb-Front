@@ -2,6 +2,7 @@ import { type FormEvent, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../../auth/ui/hooks/useAuth';
 import type { PaymentIntentResult } from '../../../payment/core/types/payment.types';
+import type { UpdateCartItemPayload } from '../../core/types/cart.types';
 import { getCartService } from '../../core/services/cart.service';
 import { formatCartPrice } from '../../core/types/cart.types';
 import { useCart } from './useCart';
@@ -11,10 +12,11 @@ export type CheckoutStep = 'review' | 'payment' | 'success';
 export function useCartCheckout() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const { cart, isLoading, removeItem, syncCart } = useCart();
+  const { cart, isLoading, removeItem, updateItem, syncCart } = useCart();
   const [step, setStep] = useState<CheckoutStep>('review');
   const [loading, setLoading] = useState(false);
   const [removingId, setRemovingId] = useState<number | null>(null);
+  const [updatingId, setUpdatingId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [paymentIntent, setPaymentIntent] = useState<PaymentIntentResult | null>(null);
 
@@ -34,6 +36,14 @@ export function useCartCheckout() {
     if (!result.success) {
       setError(result.error ?? 'Impossible de retirer l’article.');
     }
+  };
+
+  const handleUpdate = async (itemId: number, payload: UpdateCartItemPayload) => {
+    setUpdatingId(itemId);
+    setError(null);
+    const result = await updateItem(itemId, payload);
+    setUpdatingId(null);
+    return result;
   };
 
   const handleCheckout = async (event: FormEvent) => {
@@ -83,12 +93,14 @@ export function useCartCheckout() {
     step,
     loading,
     removingId,
+    updatingId,
     error,
     paymentIntent,
     totalLabel,
     itemCount,
     isAuthenticated,
     handleRemove,
+    handleUpdate,
     handleCheckout,
     handlePaymentSuccess,
     setStep,

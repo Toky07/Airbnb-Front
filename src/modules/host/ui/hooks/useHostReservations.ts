@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   getHostReservationService,
-  type HostBookingOrder,
-  type HostReservationStats,
 } from '../../core/services/host.service';
+import type {
+  HostBookingOrder,
+  HostReservationStats,
+} from '../../core/types/host-booking.types';
 import type { PaginationMeta } from '../../../../shared/pagination/types';
 
 const DEFAULT_META: PaginationMeta = {
@@ -28,6 +30,7 @@ export function useHostReservations() {
       svc.listBookings({ page, limit: 10, search: searchTerm }),
       svc.getStats(),
     ]);
+    
     setBookings(bookingsRes.data);
     setMeta(bookingsRes.meta);
     setStats(statsRes);

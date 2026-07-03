@@ -38,6 +38,13 @@ export type AddReservationToCartPayload = {
   guestCount: number;
 };
 
+export type UpdateCartItemPayload = {
+  startDate?: string;
+  endDate?: string;
+  guestCount?: number;
+  quantity?: number;
+};
+
 export function mapCartItem(data: unknown): CartItem | null {
   if (!data || typeof data !== 'object') {
     return null;

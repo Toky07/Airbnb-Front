@@ -1,6 +1,6 @@
 import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { HostBookingOrder } from '../../core/services/host.service';
+import type { HostBookingOrder } from '../../core/types/host-booking.types';
 import { formatHostCurrency, formatHostDate } from '../utils/host-formatters';
 import PaymentBadge from './PaymentBadge';
 
@@ -71,7 +71,7 @@ const BookingsTable = ({ bookings, loading }: BookingsTableProps) => {
               </td>
               <td className="px-8 py-5">
                 <span className="font-medium text-slate-900">
-                  {booking.itemCount} séjour{booking.itemCount > 1 ? 's' : ''}
+                  {booking.itemCount} chambre{booking.itemCount > 1 ? 's' : ''}
                 </span>
                 {booking.previewLabel ? (
                   <p className="mt-1 max-w-[250px] truncate text-sm text-slate-500">

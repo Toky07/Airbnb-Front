@@ -15,12 +15,14 @@ const CartPage = () => {
     step,
     loading,
     removingId,
+    updatingId,
     error,
     paymentIntent,
     totalLabel,
     itemCount,
     isAuthenticated,
     handleRemove,
+    handleUpdate,
     handleCheckout,
     handlePaymentSuccess,
     setStep,
@@ -88,7 +90,9 @@ const CartPage = () => {
                 <CartItemsList
                   items={cart.items}
                   removingId={removingId}
+                  updatingId={updatingId}
                   onRemove={handleRemove}
+                  onUpdate={handleUpdate}
                 />
                 <CartOrderSummary
                   items={cart.items}

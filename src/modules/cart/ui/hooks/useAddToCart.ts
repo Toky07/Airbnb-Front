@@ -6,6 +6,7 @@ import {
   calculateStayAmountPreview,
   getFirstAvailableDates,
 } from '../../../reservation/core/utils/calculate-stay-amount';
+import { isBookingRangeAvailable } from '../../../reservation/core/utils/date-range-availability';
 import type { UnavailableDateRange } from '../../../rooms/core/types/room.types';
 
 type UseAddToCartOptions = {
@@ -52,6 +53,11 @@ export function useAddToCart({ roomId, pricePerNight, maxGuests, unavailableDate
 
     if (!preview) {
       setError('Veuillez sélectionner des dates de séjour valides.');
+      return;
+    }
+
+    if (!isBookingRangeAvailable(form.startDate, form.endDate, unavailableDates)) {
+      setError('Cette chambre n’est pas disponible pour les dates sélectionnées.');
       return;
     }
 

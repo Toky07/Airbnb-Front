@@ -1,25 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
+import { sampleReservationOutputApi } from '../../../../test/fixtures/reservation-api.fixtures';
 import { getReservationService } from './reservation.service';
 
 describe('ReservationService', () => {
-  it('crée une réservation', async () => {
+  it('crée une réservation à partir d’un ReservationOutput API', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(
-      new Response(
-        JSON.stringify({
-          id: 12,
-          roomId: 3,
-          userId: 5,
-          startDate: '2026-08-01',
-          endDate: '2026-08-03',
-          guestCount: 2,
-          totalPrice: 200,
-          nights: 2,
-          status: 'pending',
-          createdAt: '2026-06-01T00:00:00.000Z',
-          updatedAt: '2026-06-01T00:00:00.000Z',
-        }),
-        { status: 201 },
-      ),
+      new Response(JSON.stringify(sampleReservationOutputApi), { status: 201 }),
     );
 
     const result = await getReservationService().create({
@@ -32,7 +18,8 @@ describe('ReservationService', () => {
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.reservation.id).toBe(12);
-      expect(result.reservation.status).toBe('pending');
+      expect(result.reservation.roomId).toBe(3);
+      expect(result.reservation.status).toBe('confirmed');
     }
   });
 
@@ -49,5 +36,25 @@ describe('ReservationService', () => {
     });
 
     expect(result).toEqual({ success: false, error: 'Dates indisponibles' });
+  });
+
+  it('aplatit les réservations paginées pour /reservations/me', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          data: [sampleReservationOutputApi],
+          meta: { page: 1, limit: 20, total: 1, totalPages: 1 },
+        }),
+        { status: 200 },
+      ),
+    );
+
+    const result = await getReservationService().listMine();
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.reservations).toHaveLength(1);
+      expect(result.reservations[0]?.roomName).toBe('Suite Deluxe');
+    }
   });
 });

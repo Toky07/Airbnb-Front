@@ -1,4 +1,9 @@
-import { useCallback, useMemo, useState } from 'react';
+import {
+  formatCalendarDateStr,
+  MONTH_LABELS,
+  WEEKDAY_LABELS,
+} from './calendar.utils';
+import { useDatePickerCalendar } from './useDatePickerCalendar';
 
 type DatePickerCalendarProps = {
   selectedStart: string;
@@ -9,21 +14,6 @@ type DatePickerCalendarProps = {
   minDate?: string;
 };
 
-const WEEKDAY_LABELS = ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'];
-const MONTH_LABELS = [
-  'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-  'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
-];
-
-function formatDateStr(year: number, month: number, day: number): string {
-  return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-}
-
-function toLocalDate(dateStr: string): Date {
-  const [y, m, d] = dateStr.split('-').map(Number);
-  return new Date(y, m - 1, d);
-}
-
 const DatePickerCalendar = ({
   selectedStart,
   selectedEnd,
@@ -32,65 +22,26 @@ const DatePickerCalendar = ({
   isDateDisabled,
   minDate,
 }: DatePickerCalendarProps) => {
-  const today = useMemo(() => {
-    const d = new Date();
-    return formatDateStr(d.getFullYear(), d.getMonth(), d.getDate());
-  }, []);
-
-  const effectiveMin = minDate ?? today;
-
-  const [viewDate, setViewDate] = useState(() => {
-    if (selectedStart) {
-      const d = toLocalDate(selectedStart);
-      return { year: d.getFullYear(), month: d.getMonth() };
-    }
-    const now = new Date();
-    return { year: now.getFullYear(), month: now.getMonth() };
+  const {
+    viewDate,
+    today,
+    selectingEnd,
+    daysInMonth,
+    firstDayOfWeek,
+    prevMonth,
+    nextMonth,
+    handleDayClick,
+    isInRange,
+    isDayDisabled,
+    canGoPrev,
+  } = useDatePickerCalendar({
+    selectedStart,
+    selectedEnd,
+    onSelectStart,
+    onSelectEnd,
+    isDateDisabled,
+    minDate,
   });
-
-  const [selectingEnd, setSelectingEnd] = useState(false);
-
-  const prevMonth = useCallback(() => {
-    setViewDate((v) => {
-      if (v.month === 0) return { year: v.year - 1, month: 11 };
-      return { year: v.year, month: v.month - 1 };
-    });
-  }, []);
-
-  const nextMonth = useCallback(() => {
-    setViewDate((v) => {
-      if (v.month === 11) return { year: v.year + 1, month: 0 };
-      return { year: v.year, month: v.month + 1 };
-    });
-  }, []);
-
-  const daysInMonth = new Date(viewDate.year, viewDate.month + 1, 0).getDate();
-  const firstDayOfWeek = (new Date(viewDate.year, viewDate.month, 1).getDay() + 6) % 7;
-
-  const handleDayClick = (dateStr: string) => {
-    if (isDateDisabled?.(dateStr)) return;
-    if (dateStr < effectiveMin) return;
-
-    if (!selectingEnd || !selectedStart || dateStr < selectedStart) {
-      onSelectStart(dateStr);
-      onSelectEnd('');
-      setSelectingEnd(true);
-    } else {
-      onSelectEnd(dateStr);
-      setSelectingEnd(false);
-    }
-  };
-
-  const isInRange = (dateStr: string): boolean => {
-    if (!selectedStart || !selectedEnd) return false;
-    return dateStr > selectedStart && dateStr < selectedEnd;
-  };
-
-  const canGoPrev = useMemo(() => {
-    const minD = toLocalDate(effectiveMin);
-    return viewDate.year > minD.getFullYear() ||
-      (viewDate.year === minD.getFullYear() && viewDate.month > minD.getMonth());
-  }, [viewDate, effectiveMin]);
 
   return (
     <div className="select-none">
@@ -134,8 +85,8 @@ const DatePickerCalendar = ({
 
         {Array.from({ length: daysInMonth }).map((_, i) => {
           const day = i + 1;
-          const dateStr = formatDateStr(viewDate.year, viewDate.month, day);
-          const disabled = dateStr < effectiveMin || (isDateDisabled?.(dateStr) ?? false);
+          const dateStr = formatCalendarDateStr(viewDate.year, viewDate.month, day);
+          const disabled = isDayDisabled(dateStr);
           const isStart = dateStr === selectedStart;
           const isEnd = dateStr === selectedEnd;
           const inRange = isInRange(dateStr);

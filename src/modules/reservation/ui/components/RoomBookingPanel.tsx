@@ -1,10 +1,10 @@
-import { useCallback, useMemo } from 'react';
 import { Link } from 'react-router';
 import { Button } from '../../../../shared/ui';
 import DatePickerCalendar from '../../../../shared/ui/calendar/DatePickerCalendar';
 import { formatPricePerNight } from '../../../rooms/core/types/room.types';
 import type { RoomListItem } from '../../../rooms/core/types/room.types';
 import { useAddToCart } from '../../../cart/ui/hooks/useAddToCart';
+import { useDateRangeAvailability } from '../hooks/useDateRangeAvailability';
 
 type RoomBookingPanelProps = {
   room: RoomListItem;
@@ -29,18 +29,11 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
     unavailableDates: room.unavailableDates,
   });
 
-  const ranges = useMemo(() => room.unavailableDates ?? [], [room.unavailableDates]);
-
-  const isDateUnavailable = useCallback(
-    (dateStr: string): boolean =>
-      ranges.some((r) => dateStr >= r.startDate && dateStr < r.endDate),
-    [ranges],
+  const { isDateUnavailable, rangeAvailable } = useDateRangeAvailability(
+    room.unavailableDates ?? [],
+    form.startDate,
+    form.endDate,
   );
-
-  const rangeAvailable = useMemo(() => {
-    if (!form.startDate || !form.endDate) return true;
-    return !ranges.some((r) => form.startDate < r.endDate && form.endDate > r.startDate);
-  }, [form.startDate, form.endDate, ranges]);
 
   const canSubmit =
     !!form.startDate &&

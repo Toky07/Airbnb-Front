@@ -6,6 +6,7 @@ import {
   mapCart,
   type AddReservationToCartPayload,
   type Cart,
+  type UpdateCartItemPayload,
 } from '../types/cart.types';
 
 export class CartService {
@@ -55,16 +56,17 @@ export class CartService {
     return { success: true, cart };
   }
 
-  async removeItem(
+  async updateItem(
     itemId: number,
+    payload: UpdateCartItemPayload,
   ): Promise<{ success: true; cart: Cart } | { success: false; error: string }> {
-    const response = await getApiClient().delete(`/cart/items/${itemId}`);
+    const response = await getApiClient().patch(`/cart/items/${itemId}`, payload);
     const data: unknown = await response.json();
 
     if (!response.ok) {
       return {
         success: false,
-        error: parseApiError(data, 'Impossible de retirer l’article.'),
+        error: parseApiError(data, 'Impossible de modifier l’article.'),
       };
     }
 
@@ -77,14 +79,16 @@ export class CartService {
     return { success: true, cart };
   }
 
-  async clear(): Promise<{ success: true; cart: Cart } | { success: false; error: string }> {
-    const response = await getApiClient().delete('/cart');
+  async removeItem(
+    itemId: number,
+  ): Promise<{ success: true; cart: Cart } | { success: false; error: string }> {
+    const response = await getApiClient().delete(`/cart/items/${itemId}`);
     const data: unknown = await response.json();
 
     if (!response.ok) {
       return {
         success: false,
-        error: parseApiError(data, 'Impossible de vider le panier.'),
+        error: parseApiError(data, 'Impossible de retirer l’article.'),
       };
     }
 

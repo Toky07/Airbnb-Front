@@ -1,3 +1,5 @@
+import { isBookingRangeAvailable } from './date-range-availability';
+
 export type StayAmountPreview = {
   nights: number;
   totalPrice: number;
@@ -40,11 +42,7 @@ export function getFirstAvailableDates(
     next.setDate(next.getDate() + 1);
     const endStr = formatDateInputValue(next);
 
-    const overlaps = unavailableRanges.some(
-      (r) => startStr < r.endDate && endStr > r.startDate,
-    );
-
-    if (!overlaps) {
+    if (isBookingRangeAvailable(startStr, endStr, unavailableRanges)) {
       return { startDate: startStr, endDate: endStr };
     }
 

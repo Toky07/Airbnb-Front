@@ -59,6 +59,20 @@ const CartProvider = ({ children }: CartProviderProps) => {
     [cartService],
   );
 
+  const updateItem: CartContextValue['updateItem'] = useCallback(
+    async (itemId, payload) => {
+      const result = await cartService.updateItem(itemId, payload);
+
+      if (!result.success) {
+        return { success: false, error: result.error };
+      }
+
+      setCart(result.cart);
+      return { success: true };
+    },
+    [cartService],
+  );
+
   const removeItem: CartContextValue['removeItem'] = useCallback(
     async (itemId) => {
       const result = await cartService.removeItem(itemId);
@@ -80,10 +94,11 @@ const CartProvider = ({ children }: CartProviderProps) => {
       refreshCart,
       syncCart,
       addReservation,
+      updateItem,
       removeItem,
       itemCount: cart?.itemCount ?? 0,
     }),
-    [cart, isLoading, refreshCart, syncCart, addReservation, removeItem],
+    [cart, isLoading, refreshCart, syncCart, addReservation, updateItem, removeItem],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

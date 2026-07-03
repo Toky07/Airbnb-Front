@@ -51,6 +51,14 @@ export class ApiClient {
     });
   }
 
+  async patch(url: string, body: unknown): Promise<Response> {
+    return this.request(url, {
+      method: 'PATCH',
+      headers: this.buildHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(body),
+    });
+  }
+
   async delete(url: string): Promise<Response> {
     return this.request(url, { method: 'DELETE', headers: this.buildHeaders() });
   }

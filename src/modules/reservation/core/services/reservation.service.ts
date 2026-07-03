@@ -1,17 +1,16 @@
 import { getApiClient } from '../../../../shared/http/api-client';
 import { parseApiError } from '../../../../shared/http/parse-api-error';
-import { parsePaginatedResponse } from '../../../../shared/pagination/parse-paginated-response';
 import {
-  mapReservation,
-  type CreateReservationPayload,
-  type Reservation,
-} from '../types/reservation.types';
+  mapFirstReservation,
+  parsePaginatedReservationList,
+} from '../mappers/map-reservation-output';
+import type { CreateReservationPayload, Reservation } from '../types/reservation.types';
 
 export class ReservationService {
-  async create(payload: CreateReservationPayload): Promise<{
-    success: true;
-    reservation: Reservation;
-  } | { success: false; error: string }> {
+  async create(payload: CreateReservationPayload): Promise<
+    | { success: true; reservation: Reservation }
+    | { success: false; error: string }
+  > {
     const response = await getApiClient().post('/reservations', payload);
     const data: unknown = await response.json();
 
@@ -22,7 +21,7 @@ export class ReservationService {
       };
     }
 
-    const reservation = mapReservation(data);
+    const reservation = mapFirstReservation(data);
     if (!reservation) {
       return { success: false, error: 'Réponse de réservation invalide.' };
     }
@@ -30,11 +29,10 @@ export class ReservationService {
     return { success: true, reservation };
   }
 
-  async listMine(page = 1, limit = 20): Promise<{
-    success: true;
-    reservations: Reservation[];
-    total: number;
-  } | { success: false; error: string }> {
+  async listMine(page = 1, limit = 20): Promise<
+    | { success: true; reservations: Reservation[]; total: number }
+    | { success: false; error: string }
+  > {
     const response = await getApiClient().get(
       `/reservations/me?page=${page}&limit=${limit}`,
     );
@@ -47,7 +45,7 @@ export class ReservationService {
       };
     }
 
-    const parsed = parsePaginatedResponse(data, mapReservation);
+    const parsed = parsePaginatedReservationList(data);
 
     return {
       success: true,

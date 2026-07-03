@@ -40,6 +40,7 @@ const addReservation = vi.fn().mockResolvedValue({ success: true });
 vi.mock('../../../cart/ui/hooks/useCart', () => ({
   useCart: () => ({
     addReservation,
+    updateItem: vi.fn(),
     cart: null,
     isLoading: false,
     refreshCart: vi.fn(),

@@ -4,12 +4,6 @@ export type PaymentIntentResult = {
   amount: number;
   currency: string;
   publishableKey: string;
-  nights: number;
-  pricePerNight: number;
-};
-
-export type CreatePaymentIntentPayload = {
-  reservationId: number;
 };
 
 export function mapPaymentIntent(data: unknown): PaymentIntentResult | null {
@@ -33,8 +27,6 @@ export function mapPaymentIntent(data: unknown): PaymentIntentResult | null {
     amount: Number(record.amount ?? 0),
     currency: String(record.currency ?? 'eur'),
     publishableKey: record.publishableKey,
-    nights: Number(record.nights ?? 0),
-    pricePerNight: Number(record.pricePerNight ?? 0),
   };
 }
 
