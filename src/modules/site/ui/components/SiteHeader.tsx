@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import { BrandLogo, PageContainer } from '../../../../shared/ui';
 import { useCart } from '../../../cart/ui/hooks/useCart';
 import SiteHeaderAuthActions from './SiteHeaderAuthActions';
-import RoomSearchBar from '../../../rooms/ui/components/RoomSearchBar';
 
 const SiteHeader = () => {
   const { itemCount } = useCart();
@@ -13,13 +12,6 @@ const SiteHeader = () => {
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white">
       <PageContainer className="flex h-20 items-center justify-between gap-6">
         <BrandLogo />
-
-        <div className="hidden flex-1 justify-center md:flex">
-          <div className="w-full max-w-md">
-            <RoomSearchBar compact />
-          </div>
-        </div>
-
         <div className="flex items-center gap-4">
           <Link
             to="/search"
