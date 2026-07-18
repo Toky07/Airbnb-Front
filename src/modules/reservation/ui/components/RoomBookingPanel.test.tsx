@@ -86,7 +86,7 @@ describe('RoomBookingPanel', () => {
     expect(disabledDay).toBeDisabled();
   });
 
-  it('désactive le bouton quand les dates chevauchent une réservation', () => {
+  it('désactive une date de départ qui chevaucherait une réservation', () => {
     render(
       <MemoryRouter>
         <RoomBookingPanel room={room} returnPath="/rooms/5" />
@@ -101,12 +101,27 @@ describe('RoomBookingPanel', () => {
     for (let i = 0; i < clicks; i++) fireEvent.click(navNext);
 
     selectDate('2026-09-08');
-    selectDate('2026-09-14');
 
-    expect(
-      screen.getByText(/n'est pas disponible pour les dates sélectionnées/i),
-    ).toBeInTheDocument();
+    expect(screen.getByTestId('calendar-day-2026-09-14')).toBeDisabled();
+  });
 
+  it('empêche de choisir une plage en conflit avec une réservation', () => {
+    render(
+      <MemoryRouter>
+        <RoomBookingPanel room={room} returnPath="/rooms/5" />
+      </MemoryRouter>,
+    );
+
+    const navNext = screen.getByLabelText('Mois suivant');
+    const currentMonth = new Date().getMonth();
+    const targetMonth = 8;
+    let clicks = targetMonth - currentMonth;
+    if (clicks < 0) clicks += 12;
+    for (let i = 0; i < clicks; i++) fireEvent.click(navNext);
+
+    selectDate('2026-09-08');
+
+    expect(screen.getByTestId('calendar-day-2026-09-14')).toBeDisabled();
     expect(screen.getByRole('button', { name: /ajouter au panier/i })).toBeDisabled();
   });
 

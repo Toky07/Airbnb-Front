@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   bookingRangeOverlapsUnavailable,
   isBookingRangeAvailable,
+  isCalendarDateDisabled,
   isDateInUnavailableRange,
 } from './date-range-availability';
 
@@ -42,5 +43,23 @@ describe('isBookingRangeAvailable', () => {
 
   it('retourne true si les dates ne sont pas encore choisies', () => {
     expect(isBookingRangeAvailable('', '2026-09-03', unavailable)).toBe(true);
+  });
+});
+
+describe('isCalendarDateDisabled', () => {
+  it('désactive une nuit indisponible', () => {
+    expect(isCalendarDateDisabled('2026-09-11', unavailable)).toBe(true);
+  });
+
+  it('désactive une date de départ qui chevaucherait une réservation', () => {
+    expect(
+      isCalendarDateDisabled('2026-09-14', unavailable, '2026-09-08', ''),
+    ).toBe(true);
+  });
+
+  it('laisse sélectionner une date de départ valide', () => {
+    expect(
+      isCalendarDateDisabled('2026-09-03', unavailable, '2026-09-01', ''),
+    ).toBe(false);
   });
 });

@@ -26,3 +26,24 @@ export function isBookingRangeAvailable(
 
   return !ranges.some((range) => bookingRangeOverlapsUnavailable(startDate, endDate, range));
 }
+
+export function isCalendarDateDisabled(
+  dateStr: string,
+  ranges: DateRange[],
+  selectedStart?: string,
+  selectedEnd?: string,
+): boolean {
+  if (isDateInUnavailableRange(dateStr, ranges)) {
+    return true;
+  }
+
+  if (selectedStart && !selectedEnd) {
+    if (dateStr <= selectedStart) {
+      return true;
+    }
+
+    return !isBookingRangeAvailable(selectedStart, dateStr, ranges);
+  }
+
+  return false;
+}

@@ -29,7 +29,7 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
     unavailableDates: room.unavailableDates,
   });
 
-  const { isDateUnavailable, rangeAvailable } = useDateRangeAvailability(
+  const { isDateDisabled, rangeAvailable } = useDateRangeAvailability(
     room.unavailableDates ?? [],
     form.startDate,
     form.endDate,
@@ -78,7 +78,7 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
               selectedEnd={form.endDate}
               onSelectStart={(date) => updateField('startDate', date)}
               onSelectEnd={(date) => updateField('endDate', date)}
-              isDateDisabled={isDateUnavailable}
+              isDateDisabled={isDateDisabled}
             />
         </div>
 
