@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  buildAuthRouteWithRedirect,
   resolveHostAdminLabel,
   resolvePostLoginRedirect,
 } from './resolve-post-login-redirect';
@@ -29,6 +30,19 @@ const hostSession: AuthSession = {
 };
 
 describe('resolve-post-login-redirect', () => {
+  it('construit une route auth avec redirect interne', () => {
+    expect(buildAuthRouteWithRedirect('/login', '/cart')).toBe(
+      '/login?redirect=%2Fcart',
+    );
+    expect(buildAuthRouteWithRedirect('/register', '/cart')).toBe(
+      '/register?redirect=%2Fcart',
+    );
+  });
+
+  it('ignore un redirect externe dans la route auth', () => {
+    expect(buildAuthRouteWithRedirect('/login', '//evil.test')).toBe('/login');
+  });
+
   it('redirige un hôte vers /host', () => {
     expect(resolvePostLoginRedirect(hostSession)).toBe('/host');
   });

@@ -1,7 +1,7 @@
 import { type FormEvent, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { getAuthService } from '../../core/services/auth.service';
-import { resolvePostLoginRedirect } from '../../core/services/resolve-post-login-redirect';
+import { resolvePostLoginRedirect, buildAuthRouteWithRedirect } from '../../core/services/resolve-post-login-redirect';
 import { useAuth } from '../hooks/useAuth';
 import { Button, PageContainer } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
@@ -12,6 +12,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get('redirect');
+  const registerHref = buildAuthRouteWithRedirect('/register', redirect);
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -79,7 +80,7 @@ const LoginPage = () => {
 
         <p className="mt-6 text-center text-sm text-slate-500">
           Pas encore de compte ?{' '}
-          <Link to="/register" className="font-semibold text-brand hover:text-brand-dark">
+          <Link to={registerHref} className="font-semibold text-brand hover:text-brand-dark">
             S&apos;inscrire
           </Link>
         </p>

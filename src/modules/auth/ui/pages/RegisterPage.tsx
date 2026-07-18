@@ -1,12 +1,16 @@
 import { type FormEvent, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 import { getAuthService } from '../../core/services/auth.service';
+import { buildAuthRouteWithRedirect } from '../../core/services/resolve-post-login-redirect';
 import { Button, PageContainer } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import { notifyMessages, useNotification } from '../../../../shared/notifications';
 
 const RegisterPage = () => {
   usePageTitle('Inscription');
+  const [searchParams] = useSearchParams();
+  const redirect = searchParams.get('redirect');
+  const loginHref = buildAuthRouteWithRedirect('/login', redirect);
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -49,7 +53,7 @@ const RegisterPage = () => {
             Un email vous a été envoyé avec un lien pour définir votre mot de passe et activer votre compte.
           </p>
           <Link
-            to="/login"
+            to={loginHref}
             className="mt-6 inline-flex rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white"
           >
             Aller à la connexion
@@ -121,7 +125,7 @@ const RegisterPage = () => {
 
         <p className="mt-6 text-center text-sm text-slate-500">
           Déjà inscrit ?{' '}
-          <Link to="/login" className="font-semibold text-brand hover:text-brand-dark">
+          <Link to={loginHref} className="font-semibold text-brand hover:text-brand-dark">
             Se connecter
           </Link>
         </p>
