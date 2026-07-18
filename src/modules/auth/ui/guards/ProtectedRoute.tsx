@@ -1,11 +1,12 @@
 import { Navigate, Outlet } from 'react-router';
 import { useAuth } from '../hooks/useAuth';
+import AuthRouteGuardFallback from './AuthRouteGuardFallback';
 
 const ProtectedRoute = () => {
   const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
-    return null;
+    return <AuthRouteGuardFallback />;
   }
 
   if (!isAuthenticated) {

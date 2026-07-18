@@ -18,6 +18,7 @@ export { default as SearchDivider } from './search/SearchDivider';
 export { default as SearchField } from './search/SearchField';
 export { default as SearchShell } from './search/SearchShell';
 export { default as SectionHeader } from './section/SectionHeader';
+export { default as Spinner } from './spinner/Spinner';
 export { default as StatCard } from './stat/StatCard';
 export { default as UserAvatar } from './user/UserAvatar';
 export { default as UserMenu } from './user/UserMenu';
