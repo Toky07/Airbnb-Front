@@ -2,7 +2,6 @@ export { default as Badge } from './badge/Badge';
 export { default as BrandLogo } from './brand/BrandLogo';
 export { default as Button } from './button/Button';
 export { default as ButtonLink } from './button/ButtonLink';
-export { default as FavoriteButton } from './card/FavoriteButton';
 export { default as MediaCard } from './card/MediaCard';
 export { default as MediaCardImage } from './card/MediaCardImage';
 export { default as OverlayMediaCard } from './card/OverlayMediaCard';

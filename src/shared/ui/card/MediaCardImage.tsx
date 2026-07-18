@@ -1,13 +1,11 @@
 import type { ReactNode } from 'react';
 import Badge from '../badge/Badge';
-import FavoriteButton from './FavoriteButton';
 
 type MediaCardImageProps = {
   src: string;
   alt: string;
   aspectClass?: string;
   tag?: string;
-  showFavorite?: boolean;
   children?: ReactNode;
 };
 
@@ -16,7 +14,6 @@ const MediaCardImage = ({
   alt,
   aspectClass = 'aspect-[4/3]',
   tag,
-  showFavorite = true,
   children,
 }: MediaCardImageProps) => (
   <div className={['relative overflow-hidden rounded-2xl bg-slate-100', aspectClass].join(' ')}>
@@ -31,7 +28,6 @@ const MediaCardImage = ({
         <Badge variant="overlay">{tag}</Badge>
       </span>
     )}
-    {showFavorite && <FavoriteButton />}
     {children}
   </div>
 );
