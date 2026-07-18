@@ -1,6 +1,17 @@
 import type { AuthSession } from '../types/auth.types';
 import { isSafeInternalRedirect } from '../../../../shared/http/parse-api-error';
 
+export function buildAuthRouteWithRedirect(
+  route: '/login' | '/register',
+  redirectPath?: string | null,
+): string {
+  if (!isSafeInternalRedirect(redirectPath)) {
+    return route;
+  }
+
+  return `${route}?redirect=${encodeURIComponent(redirectPath)}`;
+}
+
 export function resolvePostLoginRedirect(
   session: AuthSession,
   redirectPath?: string | null,

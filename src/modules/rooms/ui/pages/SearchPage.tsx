@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useSearchParams } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 import PublicPageLayout from '../../../site/ui/components/PublicPageLayout';
 import { PageContainer } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
@@ -43,6 +43,15 @@ const SearchPage = () => {
     return rooms.filter((room) => room.status === 'available');
   }, [result.data, roomType]);
 
+  const allTypesSearch = useMemo(() => {
+    const params = new URLSearchParams();
+    if (query) {
+      params.set('q', query);
+    }
+    const queryString = params.toString();
+    return queryString ? `/search?${queryString}` : '/search';
+  }, [query]);
+
   return (
     <PublicPageLayout>
       <PageContainer className="py-8 md:py-12">
@@ -65,8 +74,8 @@ const SearchPage = () => {
 
         {roomTypes.length > 0 ? (
           <div className="mt-6 flex flex-wrap gap-2">
-            <a
-              href="/search"
+            <Link
+              to={allTypesSearch}
               className={[
                 'rounded-full px-4 py-2 text-sm font-medium transition',
                 !roomType
@@ -75,7 +84,7 @@ const SearchPage = () => {
               ].join(' ')}
             >
               Tous
-            </a>
+            </Link>
             {roomTypes.map((type) => {
               const params = new URLSearchParams(searchParams);
               if (query) {
@@ -84,9 +93,9 @@ const SearchPage = () => {
               params.set('type', type.slug);
               params.delete('page');
               return (
-                <a
+                <Link
                   key={type.slug}
-                  href={`/search?${params.toString()}`}
+                  to={`/search?${params.toString()}`}
                   className={[
                     'rounded-full px-4 py-2 text-sm font-medium transition',
                     roomType === type.slug
@@ -95,7 +104,7 @@ const SearchPage = () => {
                   ].join(' ')}
                 >
                   {type.name}
-                </a>
+                </Link>
               );
             })}
           </div>

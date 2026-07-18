@@ -1,4 +1,4 @@
-import { type FormEvent, useMemo, useState } from 'react';
+import { type FormEvent, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useCart } from '../../../cart/ui/hooks/useCart';
 import type { BookingFormValues } from '../../../reservation/core/types/reservation.types';
@@ -19,6 +19,7 @@ type UseAddToCartOptions = {
 export function useAddToCart({ roomId, pricePerNight, maxGuests, unavailableDates = [] }: UseAddToCartOptions) {
   const navigate = useNavigate();
   const { addReservation } = useCart();
+  const unavailableKey = JSON.stringify(unavailableDates);
   const [form, setForm] = useState<BookingFormValues>(() => ({
     ...getFirstAvailableDates(unavailableDates),
     guestCount: 1,
@@ -26,6 +27,23 @@ export function useAddToCart({ roomId, pricePerNight, maxGuests, unavailableDate
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
+
+  useEffect(() => {
+    setForm((current) => {
+      if (
+        isBookingRangeAvailable(current.startDate, current.endDate, unavailableDates)
+      ) {
+        return current;
+      }
+
+      return {
+        ...getFirstAvailableDates(unavailableDates),
+        guestCount: current.guestCount,
+      };
+    });
+    setAdded(false);
+    setError(null);
+  }, [roomId, unavailableKey]);
 
   const preview = useMemo(
     () => calculateStayAmountPreview(form.startDate, form.endDate, pricePerNight),

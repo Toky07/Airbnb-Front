@@ -1,7 +1,7 @@
 import { type FormEvent, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { getAuthService } from '../../core/services/auth.service';
-import { resolvePostLoginRedirect } from '../../core/services/resolve-post-login-redirect';
+import { resolvePostLoginRedirect, buildAuthRouteWithRedirect } from '../../core/services/resolve-post-login-redirect';
 import { useAuth } from '../hooks/useAuth';
 import { Button, PageContainer } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
@@ -12,6 +12,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get('redirect');
+  const registerHref = buildAuthRouteWithRedirect('/register', redirect);
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -41,8 +42,10 @@ const LoginPage = () => {
     <PageContainer className="flex min-h-[70vh] items-center justify-center py-12">
       <form onSubmit={handleSubmit} className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-slate-900">Connexion hôte</h1>
-          <p className="mt-2 text-sm text-slate-500">Gérez votre établissement et vos chambres</p>
+          <h1 className="text-2xl font-bold text-slate-900">Connexion</h1>
+          <p className="mt-2 text-sm text-slate-500">
+            Connectez-vous pour réserver un séjour ou accéder à votre espace hôte
+          </p>
         </div>
 
         {error ? (
@@ -79,7 +82,7 @@ const LoginPage = () => {
 
         <p className="mt-6 text-center text-sm text-slate-500">
           Pas encore de compte ?{' '}
-          <Link to="/register" className="font-semibold text-brand hover:text-brand-dark">
+          <Link to={registerHref} className="font-semibold text-brand hover:text-brand-dark">
             S&apos;inscrire
           </Link>
         </p>

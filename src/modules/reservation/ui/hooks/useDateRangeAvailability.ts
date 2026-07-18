@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import {
   isBookingRangeAvailable,
+  isCalendarDateDisabled,
   isDateInUnavailableRange,
   type DateRange,
 } from '../../core/utils/date-range-availability';
@@ -15,10 +16,21 @@ export function useDateRangeAvailability(
     [unavailableRanges],
   );
 
+  const isDateDisabled = useCallback(
+    (dateStr: string) =>
+      isCalendarDateDisabled(
+        dateStr,
+        unavailableRanges,
+        selectedStart,
+        selectedEnd,
+      ),
+    [selectedEnd, selectedStart, unavailableRanges],
+  );
+
   const rangeAvailable = useMemo(
     () => isBookingRangeAvailable(selectedStart ?? '', selectedEnd ?? '', unavailableRanges),
     [selectedStart, selectedEnd, unavailableRanges],
   );
 
-  return { isDateUnavailable, rangeAvailable };
+  return { isDateUnavailable, isDateDisabled, rangeAvailable };
 }

@@ -1,5 +1,6 @@
 import { type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { onUnauthorized } from '../../../../shared/http/token-storage';
+import { clearCartSessionId } from '../../../../shared/http/cart-session.storage';
 import { canAccess } from '../../../../shared/permissions/permissions';
 import type { PermissionKey } from '../../../../shared/permissions/permissions';
 import {
@@ -47,6 +48,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = useCallback(() => {
     sessionService.clearSession();
+    clearCartSessionId();
     setToken(null);
     setSession(emptyAuthSession);
   }, [sessionService]);
