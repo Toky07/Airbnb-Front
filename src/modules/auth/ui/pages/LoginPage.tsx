@@ -42,8 +42,10 @@ const LoginPage = () => {
     <PageContainer className="flex min-h-[70vh] items-center justify-center py-12">
       <form onSubmit={handleSubmit} className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-slate-900">Connexion hôte</h1>
-          <p className="mt-2 text-sm text-slate-500">Gérez votre établissement et vos chambres</p>
+          <h1 className="text-2xl font-bold text-slate-900">Connexion</h1>
+          <p className="mt-2 text-sm text-slate-500">
+            Connectez-vous pour réserver un séjour ou accéder à votre espace hôte
+          </p>
         </div>
 
         {error ? (
