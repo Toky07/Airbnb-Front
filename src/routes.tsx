@@ -20,6 +20,7 @@ import SearchPage from './modules/rooms/ui/pages/SearchPage';
 import RoomDetailPage from './modules/rooms/ui/pages/RoomDetailPage';
 import CartPage from './modules/cart/ui/pages/CartPage';
 import PublicPageLayout from './modules/site/ui/components/PublicPageLayout';
+import NotFoundPage from './modules/site/ui/pages/NotFoundPage';
 
 const LoginRoute = () => (
   <PublicPageLayout>
@@ -139,6 +140,10 @@ const router = createBrowserRouter([
             ],
           },
         ],
+      },
+      {
+        path: '*',
+        Component: NotFoundPage,
       },
     ],
   },
