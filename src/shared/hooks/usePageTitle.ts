@@ -7,7 +7,7 @@ export function usePageTitle(title?: string) {
 
   useEffect(() => {
     const previous = prevTitle.current;
-    document.title = title ? `${title} | ${APP_NAME}` : APP_NAME;
+    document.title = title ? title : APP_NAME;
 
     return () => {
       document.title = previous;
