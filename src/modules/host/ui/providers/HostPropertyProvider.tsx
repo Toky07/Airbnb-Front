@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { getHostService } from '../../core/services/host.service';
+import { getListHostPropertiesUseCase } from '../../application/property/composition/host-property.composition';
 import type { HostProperty } from '../../core/types/host.types';
 import { HostPropertyContext } from '../context/host-property.context';
 
@@ -8,15 +8,16 @@ type HostPropertyProviderProps = {
 };
 
 const HostPropertyProvider = ({ children }: HostPropertyProviderProps) => {
+  const listHostPropertiesUseCase = useMemo(() => getListHostPropertiesUseCase(), []);
   const [properties, setProperties] = useState<HostProperty[]>([]);
   const [loading, setLoading] = useState(true);
 
   const refreshProperties = useCallback(async () => {
     setLoading(true);
-    const items = await getHostService().listProperties();
+    const items = await listHostPropertiesUseCase.execute();
     setProperties(items);
     setLoading(false);
-  }, []);
+  }, [listHostPropertiesUseCase]);
 
   useEffect(() => {
     void refreshProperties();

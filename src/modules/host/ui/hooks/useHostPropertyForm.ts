@@ -1,6 +1,14 @@
-import { type FormEvent, useCallback, useEffect, useState } from 'react';
-import { getHostAmenityService } from '../../../amenity/core/services/host-amenity.service';
-import { getHostService } from '../../core/services/host.service';
+import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  getListPropertyAmenitiesUseCase,
+  getSyncPropertyAmenitiesUseCase,
+} from '../../../amenity/application/composition/host-amenity.composition';
+import {
+  getCreateHostPropertyUseCase,
+  getGetHostPropertyUseCase,
+  getUpdateHostPropertyUseCase,
+} from '../../application/property/composition/host-property.composition';
+import { getListHostPropertyTypeOptionsUseCase } from '../../application/room/composition/host-room.composition';
 import type { HostProperty, PropertyFormPayload } from '../../core/types/host.types';
 import type { CategorySummary } from '../../../rooms/core/types/room.types';
 import { resolveMediaUrl } from '../../../../shared/utils/resolve-media-url';
@@ -15,6 +23,15 @@ import {
 type PropertyFormMode = 'create' | 'edit';
 
 export function useHostPropertyForm(mode: PropertyFormMode, propertyId: number | null) {
+  const getHostPropertyUseCase = useMemo(() => getGetHostPropertyUseCase(), []);
+  const createHostPropertyUseCase = useMemo(() => getCreateHostPropertyUseCase(), []);
+  const updateHostPropertyUseCase = useMemo(() => getUpdateHostPropertyUseCase(), []);
+  const listHostPropertyTypeOptionsUseCase = useMemo(
+    () => getListHostPropertyTypeOptionsUseCase(),
+    [],
+  );
+  const listPropertyAmenitiesUseCase = useMemo(() => getListPropertyAmenitiesUseCase(), []);
+  const syncPropertyAmenitiesUseCase = useMemo(() => getSyncPropertyAmenitiesUseCase(), []);
   const [property, setProperty] = useState<HostProperty | null>(null);
   const [types, setTypes] = useState<CategorySummary[]>([]);
   const [form, setForm] = useState<PropertyFormPayload>(emptyPropertyForm);
@@ -30,23 +47,18 @@ export function useHostPropertyForm(mode: PropertyFormMode, propertyId: number |
   useEffect(() => {
     async function load() {
       setLoading(true);
-      const hostService = getHostService();
-      const typeOptions = await hostService.listPropertyTypeOptions();
+      const typeOptions = await listHostPropertyTypeOptionsUseCase.execute();
       setTypes(typeOptions);
 
       if (mode === 'edit' && propertyId) {
-        const propertyData = await hostService.getProperty(propertyId);
+        const propertyData = await getHostPropertyUseCase.execute(propertyId);
         setProperty(propertyData);
 
         if (propertyData) {
           setForm(propertyToFormPayload(propertyData));
           setImagePreview(propertyData.image ?? '');
-          try {
-            const assigned = await getHostAmenityService().listForProperty(propertyData.id);
-            setAmenityIds(assigned.map((item) => item.id));
-          } catch {
-            setAmenityIds([]);
-          }
+          const assigned = await listPropertyAmenitiesUseCase.execute(propertyData.id);
+          setAmenityIds(assigned.success ? assigned.amenities.map((item) => item.id) : []);
         } else {
           setForm(emptyPropertyForm);
           setImagePreview('');
@@ -63,7 +75,7 @@ export function useHostPropertyForm(mode: PropertyFormMode, propertyId: number |
     }
 
     void load();
-  }, [mode, propertyId]);
+  }, [getHostPropertyUseCase, listHostPropertyTypeOptionsUseCase, listPropertyAmenitiesUseCase, mode, propertyId]);
 
   const update = useCallback(
     <K extends keyof PropertyFormPayload>(key: K, value: PropertyFormPayload[K]) => {
@@ -78,11 +90,10 @@ export function useHostPropertyForm(mode: PropertyFormMode, propertyId: number |
       setSaving(true);
       setError(null);
 
-      const hostService = getHostService();
       const result =
         mode === 'edit' && propertyId
-          ? await hostService.updateProperty(propertyId, form)
-          : await hostService.createProperty(form);
+          ? await updateHostPropertyUseCase.execute(propertyId, form)
+          : await createHostPropertyUseCase.execute(form);
 
       setSaving(false);
 
@@ -94,13 +105,11 @@ export function useHostPropertyForm(mode: PropertyFormMode, propertyId: number |
       const savedProperty = result.property ?? null;
 
       if (savedProperty) {
-        try {
-          await getHostAmenityService().syncForProperty(savedProperty.id, amenityIds);
-        } catch (syncError) {
+        const syncResult = await syncPropertyAmenitiesUseCase.execute(savedProperty.id, amenityIds);
+        if (!syncResult.success) {
           setError(
-            syncError instanceof Error
-              ? syncError.message
-              : 'Établissement enregistré, mais les équipements n’ont pas pu être mis à jour.',
+            syncResult.error ??
+              'Établissement enregistré, mais les équipements n’ont pas pu être mis à jour.',
           );
           return;
         }
@@ -118,12 +127,15 @@ export function useHostPropertyForm(mode: PropertyFormMode, propertyId: number |
     },
     [
       amenityIds,
+      createHostPropertyUseCase,
+      syncPropertyAmenitiesUseCase,
       form,
       mode,
       notifySuccess,
       propertyId,
       refreshProperties,
       refreshSession,
+      updateHostPropertyUseCase,
     ],
   );
 

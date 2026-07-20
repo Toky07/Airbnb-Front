@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-import {
-  getHostReservationService,
-  getHostService,
-} from '../../core/services/host.service';
+import { useEffect, useMemo, useState } from 'react';
+import { getGetHostProfileUseCase } from '../../application/property/composition/host-property.composition';
+import { getGetHostReservationStatsOverviewUseCase } from '../../application/reservation/composition/host-reservation.composition';
+import { getListHostRoomsUseCase } from '../../application/room/composition/host-room.composition';
 import type {
   HostReservationActivity,
   HostReservationStats,
@@ -10,6 +9,12 @@ import type {
 import type { HostProfile } from '../../core/types/host.types';
 
 export function useHostDashboard() {
+  const getHostProfileUseCase = useMemo(() => getGetHostProfileUseCase(), []);
+  const getHostReservationStatsOverviewUseCase = useMemo(
+    () => getGetHostReservationStatsOverviewUseCase(),
+    [],
+  );
+  const listHostRoomsUseCase = useMemo(() => getListHostRoomsUseCase(), []);
   const [profile, setProfile] = useState<HostProfile | null>(null);
   const [roomsCount, setRoomsCount] = useState(0);
   const [reservationStats, setReservationStats] = useState<HostReservationStats | null>(null);
@@ -19,11 +24,9 @@ export function useHostDashboard() {
   useEffect(() => {
     async function load() {
       setLoading(true);
-      const hostService = getHostService();
-      const reservationService = getHostReservationService();
       const [profileData, statsOverview] = await Promise.all([
-        hostService.getProfile(),
-        reservationService.getStatsOverview(),
+        getHostProfileUseCase.execute(),
+        getHostReservationStatsOverviewUseCase.execute(),
       ]);
 
       const properties = profileData?.properties ?? [];
@@ -32,7 +35,7 @@ export function useHostDashboard() {
       if (properties.length > 0) {
         const roomResults = await Promise.all(
           properties.map((property) =>
-            hostService.listRooms(property.id, { page: 1, limit: 10 }),
+            listHostRoomsUseCase.execute(property.id, { page: 1, limit: 10 }),
           ),
         );
         totalRooms = roomResults.reduce((sum, result) => sum + result.meta.total, 0);
@@ -46,7 +49,7 @@ export function useHostDashboard() {
     }
 
     void load();
-  }, []);
+  }, [getHostProfileUseCase, getHostReservationStatsOverviewUseCase, listHostRoomsUseCase]);
 
   return { profile, roomsCount, reservationStats, recentActivity, loading };
 }

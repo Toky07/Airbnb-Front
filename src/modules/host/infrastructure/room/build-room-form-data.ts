@@ -1,4 +1,4 @@
-import type { RoomFormPayload } from '../types/host.types';
+import type { RoomFormPayload } from '../../core/types/host.types';
 
 export function buildRoomFormData(payload: RoomFormPayload): FormData {
   const form = new FormData();
@@ -12,12 +12,16 @@ export function buildRoomFormData(payload: RoomFormPayload): FormData {
   form.append('quantity', String(payload.quantity));
   form.append('size', String(payload.size));
   form.append('status', payload.status);
+
   if (payload.roomTypeId) {
     form.append('roomTypeId', String(payload.roomTypeId));
   }
-  payload.imageFiles?.forEach((file) => form.append('images', file));
+
+  payload.imageFiles?.forEach((file: File) => form.append('images', file));
+
   if (payload.keptImagePaths) {
     form.append('keptImages', JSON.stringify(payload.keptImagePaths));
   }
+
   return form;
 }

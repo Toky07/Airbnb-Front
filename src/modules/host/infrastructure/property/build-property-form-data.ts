@@ -1,4 +1,4 @@
-import type { PropertyFormPayload } from '../types/host.types';
+import type { PropertyFormPayload } from '../../core/types/host.types';
 
 export function buildPropertyFormData(payload: PropertyFormPayload): FormData {
   const form = new FormData();
@@ -11,11 +11,14 @@ export function buildPropertyFormData(payload: PropertyFormPayload): FormData {
   form.append('longitude', String(payload.longitude));
   form.append('checkInTime', payload.checkInTime);
   form.append('checkOutTime', payload.checkOutTime);
+
   if (payload.propertyTypeId) {
     form.append('propertyTypeId', String(payload.propertyTypeId));
   }
+
   if (payload.imageFile) {
     form.append('image', payload.imageFile);
   }
+
   return form;
 }

@@ -1,12 +1,8 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { sampleBookingOrderListItemApi } from '../../../../test/fixtures/reservation-api.fixtures';
-import { getHostReservationService } from './host-reservation.service';
+import { HttpHostReservationRepository } from './http-host-reservation.repository';
 
-describe('HostReservationService', () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
+describe('HttpHostReservationRepository', () => {
   it('mappe les commandes host paginées', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       new Response(
@@ -18,13 +14,18 @@ describe('HostReservationService', () => {
       ),
     );
 
-    const result = await getHostReservationService().listBookings();
+    const repository = new HttpHostReservationRepository();
+    const result = await repository.listBookings();
 
     expect(result.data[0]?.paymentId).toBe(9);
     expect(result.data[0]?.customerName).toBe('Jean Dupont');
+    expect(fetch).toHaveBeenCalledWith(
+      expect.stringContaining('/reservations/bookings/host'),
+      expect.objectContaining({ method: 'GET' }),
+    );
   });
 
-  it('mappe stats et activité récente en un seul appel', async () => {
+  it('mappe stats et activité récente via GET /reservations/stats', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       new Response(
         JSON.stringify({
@@ -46,10 +47,10 @@ describe('HostReservationService', () => {
       ),
     );
 
-    const result = await getHostReservationService().getStatsOverview();
+    const repository = new HttpHostReservationRepository();
+    const result = await repository.getStatsOverview();
 
     expect(result.stats?.occupancyRate).toBe(42);
     expect(result.recentActivity).toHaveLength(1);
-    expect(fetch).toHaveBeenCalledTimes(1);
   });
 });
