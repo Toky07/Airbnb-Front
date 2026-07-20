@@ -4,7 +4,6 @@ import { loadCartWithItems } from './state/cart.state';
 import { server } from './server';
 import { apiUrl } from './api-base-url';
 import { sampleRoomsListApi } from '../fixtures/rooms-api.fixtures';
-import { sampleCartApi } from '../fixtures/cart-api.fixtures';
 
 describe('MSW server', () => {
   it('intercepte GET /rooms', async () => {

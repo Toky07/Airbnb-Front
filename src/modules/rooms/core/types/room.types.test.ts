@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { formatPricePerNight, mapRoomListItem } from '../types/room.types';
+import { mapRoomListItem } from '../mappers/map-room-list-item';
+import { formatPricePerNight } from '../types/room.types';
 
 describe('formatPricePerNight', () => {
   it('formate un prix en euros', () => {

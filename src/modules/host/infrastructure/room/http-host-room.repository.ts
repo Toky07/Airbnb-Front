@@ -5,7 +5,7 @@ import { buildListQuery } from '../../../../shared/pagination/build-list-query';
 import { parsePaginatedResponse } from '../../../../shared/pagination/parse-paginated-response';
 import type { ListQueryParams, PaginatedResponse } from '../../../../shared/pagination/types';
 import type { CategorySummary, RoomListItem } from '../../../rooms/core/types/room.types';
-import { mapRoomListItem } from '../../../rooms/core/types/room.types';
+import { mapRoomListItem } from '../../../rooms/core/mappers/map-room-list-item';
 import { mapCategoryOption } from '../../core/mappers/map-host-property';
 import type {
   DeleteRoomResult,

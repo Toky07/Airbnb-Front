@@ -3,7 +3,8 @@ import { getHttpClient } from '../../../shared/http/composition/http.composition
 import { buildListQuery } from '../../../shared/pagination/build-list-query';
 import { parsePaginatedResponse } from '../../../shared/pagination/parse-paginated-response';
 import type { ListQueryParams, PaginatedResponse } from '../../../shared/pagination/types';
-import { mapRoomListItem, type RoomListItem } from '../core/types/room.types';
+import { mapRoomListItem } from '../core/mappers/map-room-list-item';
+import type { RoomListItem } from '../core/types/room.types';
 import type { RoomRepository } from '../application/ports/room.repository';
 
 const EMPTY_LIST_RESULT: PaginatedResponse<RoomListItem> = {

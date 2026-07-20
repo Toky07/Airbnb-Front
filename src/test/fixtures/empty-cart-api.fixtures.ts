@@ -2,7 +2,7 @@ import { sampleCartApi } from './cart-api.fixtures';
 
 export const emptyCartApi = {
   ...sampleCartApi,
-  items: [],
+  items: [] as typeof sampleCartApi.items,
   totalPrice: 0,
   itemCount: 0,
 };

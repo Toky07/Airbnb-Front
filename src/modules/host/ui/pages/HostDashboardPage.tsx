@@ -1,7 +1,7 @@
 import { faBed, faCalendarCheck, faChartLine, faEuroSign, faHotel, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router';
-import { Button } from '../../../../shared/ui';
+import { Button, PageSkeleton } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import HostDashboardStatCard from '../components/HostDashboardStatCard';
 import HostRecentActivityList from '../components/HostRecentActivityList';
@@ -13,9 +13,7 @@ const HostDashboardPage = () => {
   const { profile, roomsCount, reservationStats, recentActivity, loading } = useHostDashboard();
 
   if (loading) {
-    return (
-      <div className="h-64 animate-pulse rounded-3xl border border-slate-100 bg-white p-8 shadow-sm" />
-    );
+    return <PageSkeleton className="h-64" />;
   }
 
   const properties = profile?.properties ?? [];
