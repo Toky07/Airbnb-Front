@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom/vitest';
+import { cleanup } from '@testing-library/react';
 import { afterEach, vi } from 'vitest';
 
 class LocalStorageMock implements Storage {
@@ -51,6 +52,7 @@ if (typeof globalThis.window === 'undefined') {
 }
 
 afterEach(() => {
+  cleanup();
   localStorageMock.clear();
   vi.restoreAllMocks();
 });

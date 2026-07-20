@@ -5,10 +5,11 @@ export const sampleAuthMeApi = {
   permissions: [],
   isSuperAdmin: false,
   profile: {
+    userId: 1,
     firstName: 'Jean',
     lastName: 'Dupont',
-    phoneNumber: null,
-    avatarUrl: null,
+    phoneNumber: '',
+    avatar: '',
   },
   hostAccess: null,
 };
