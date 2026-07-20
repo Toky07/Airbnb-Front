@@ -1,16 +1,20 @@
-import { getApiClient } from '../../../../shared/http/api-client';
-import { parseApiError } from '../../../../shared/http/parse-api-error';
+import { getApiClient } from '../../../shared/http/api-client';
+import { parseApiError } from '../../../shared/http/parse-api-error';
 import {
   mapFirstReservation,
   parsePaginatedReservationList,
-} from '../mappers/map-reservation-output';
-import type { CreateReservationPayload, Reservation } from '../types/reservation.types';
+} from '../core/mappers/map-reservation-output';
+import type {
+  CreateReservationPayload,
+} from '../core/types/reservation.types';
+import type {
+  CreateReservationResult,
+  ListMyReservationsResult,
+  ReservationRepository,
+} from '../application/ports/reservation.repository';
 
-export class ReservationService {
-  async create(payload: CreateReservationPayload): Promise<
-    | { success: true; reservation: Reservation }
-    | { success: false; error: string }
-  > {
+export class HttpReservationRepository implements ReservationRepository {
+  async create(payload: CreateReservationPayload): Promise<CreateReservationResult> {
     const response = await getApiClient().post('/reservations', payload);
     const data: unknown = await response.json();
 
@@ -29,10 +33,7 @@ export class ReservationService {
     return { success: true, reservation };
   }
 
-  async listMine(page = 1, limit = 20): Promise<
-    | { success: true; reservations: Reservation[]; total: number }
-    | { success: false; error: string }
-  > {
+  async listMine(page = 1, limit = 20): Promise<ListMyReservationsResult> {
     const response = await getApiClient().get(
       `/reservations/me?page=${page}&limit=${limit}`,
     );
@@ -53,13 +54,4 @@ export class ReservationService {
       total: parsed.meta.total,
     };
   }
-}
-
-let service: ReservationService | null = null;
-
-export function getReservationService(): ReservationService {
-  if (!service) {
-    service = new ReservationService();
-  }
-  return service;
 }

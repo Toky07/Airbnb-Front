@@ -1,14 +1,15 @@
 import { describe, expect, it, vi } from 'vitest';
-import { sampleReservationOutputApi } from '../../../../test/fixtures/reservation-api.fixtures';
-import { getReservationService } from './reservation.service';
+import { sampleReservationOutputApi } from '../../../test/fixtures/reservation-api.fixtures';
+import { HttpReservationRepository } from './http-reservation.repository';
 
-describe('ReservationService', () => {
+describe('HttpReservationRepository', () => {
   it('crée une réservation à partir d’un ReservationOutput API', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       new Response(JSON.stringify(sampleReservationOutputApi), { status: 201 }),
     );
 
-    const result = await getReservationService().create({
+    const repository = new HttpReservationRepository();
+    const result = await repository.create({
       roomId: 3,
       startDate: '2026-08-01',
       endDate: '2026-08-03',
@@ -21,14 +22,20 @@ describe('ReservationService', () => {
       expect(result.reservation.roomId).toBe(3);
       expect(result.reservation.status).toBe('confirmed');
     }
+
+    expect(fetch).toHaveBeenCalledWith(
+      expect.stringContaining('/reservations'),
+      expect.objectContaining({ method: 'POST' }),
+    );
   });
 
-  it('retourne une erreur API', async () => {
+  it('retourne une erreur API lors de la création', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       new Response(JSON.stringify({ message: 'Dates indisponibles' }), { status: 400 }),
     );
 
-    const result = await getReservationService().create({
+    const repository = new HttpReservationRepository();
+    const result = await repository.create({
       roomId: 3,
       startDate: '2026-08-01',
       endDate: '2026-08-03',
@@ -49,12 +56,18 @@ describe('ReservationService', () => {
       ),
     );
 
-    const result = await getReservationService().listMine();
+    const repository = new HttpReservationRepository();
+    const result = await repository.listMine();
 
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.reservations).toHaveLength(1);
       expect(result.reservations[0]?.roomName).toBe('Suite Deluxe');
     }
+
+    expect(fetch).toHaveBeenCalledWith(
+      expect.stringContaining('/reservations/me?page=1&limit=20'),
+      expect.objectContaining({ method: 'GET' }),
+    );
   });
 });
