@@ -1,3 +1,4 @@
+import { getHttpClient } from '../../../../../shared/http/composition/http.composition';
 import type { HostRoomRepository } from '../ports/host-room.repository';
 import {
   CreateHostRoomUseCase,
@@ -19,7 +20,7 @@ let listHostRoomTypeOptionsUseCase: ListHostRoomTypeOptionsUseCase | null = null
 
 export function getHostRoomRepository(): HostRoomRepository {
   if (!hostRoomRepository) {
-    hostRoomRepository = new HttpHostRoomRepository();
+    hostRoomRepository = new HttpHostRoomRepository(getHttpClient());
   }
   return hostRoomRepository;
 }

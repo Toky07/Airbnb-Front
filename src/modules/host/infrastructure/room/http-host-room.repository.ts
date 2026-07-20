@@ -1,4 +1,5 @@
-import { getApiClient } from '../../../../shared/http/api-client';
+import type { HttpClient } from '../../../../shared/http/ports/http-client';
+import { getHttpClient } from '../../../../shared/http/composition/http.composition';
 import { parseApiError } from '../../../../shared/http/parse-api-error';
 import { buildListQuery } from '../../../../shared/pagination/build-list-query';
 import { parsePaginatedResponse } from '../../../../shared/pagination/parse-paginated-response';
@@ -44,8 +45,14 @@ function mapCategoryOptions(data: unknown): CategorySummary[] {
 }
 
 export class HttpHostRoomRepository implements HostRoomRepository {
+  private readonly httpClient: HttpClient;
+
+  constructor(httpClient?: HttpClient) {
+    this.httpClient = httpClient ?? getHttpClient();
+  }
+
   async listRooms(propertyId: number, params: ListQueryParams = {}) {
-    const response = await getApiClient().get(
+    const response = await this.httpClient.get(
       `/host/rooms${buildListQuery({ ...params, propertyId })}`,
     );
 
@@ -58,7 +65,7 @@ export class HttpHostRoomRepository implements HostRoomRepository {
   }
 
   createRoom(propertyId: number, payload: RoomFormPayload): Promise<RoomMutationResult> {
-    return getApiClient()
+    return this.httpClient
       .postFormData(`/host/rooms?propertyId=${propertyId}`, buildRoomFormData(payload))
       .then((response) => parseRoomMutationResponse(response, 'Création impossible.'));
   }
@@ -68,13 +75,13 @@ export class HttpHostRoomRepository implements HostRoomRepository {
     id: number,
     payload: RoomFormPayload,
   ): Promise<RoomMutationResult> {
-    return getApiClient()
+    return this.httpClient
       .putFormData(`/host/rooms/${id}?propertyId=${propertyId}`, buildRoomFormData(payload))
       .then((response) => parseRoomMutationResponse(response, 'Modification impossible.'));
   }
 
   async deleteRoom(propertyId: number, id: number): Promise<DeleteRoomResult> {
-    const response = await getApiClient().delete(`/host/rooms/${id}?propertyId=${propertyId}`);
+    const response = await this.httpClient.delete(`/host/rooms/${id}?propertyId=${propertyId}`);
     const data: unknown = await response.json().catch(() => null);
 
     if (!response.ok) {
@@ -85,7 +92,7 @@ export class HttpHostRoomRepository implements HostRoomRepository {
   }
 
   async listPropertyTypeOptions() {
-    const response = await getApiClient().get('/host/property-types/options');
+    const response = await this.httpClient.get('/host/property-types/options');
     if (!response.ok) {
       return [];
     }
@@ -95,7 +102,7 @@ export class HttpHostRoomRepository implements HostRoomRepository {
   }
 
   async listRoomTypeOptions() {
-    const response = await getApiClient().get('/host/room-types/options');
+    const response = await this.httpClient.get('/host/room-types/options');
     if (!response.ok) {
       return [];
     }

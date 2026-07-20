@@ -1,3 +1,4 @@
+import { getHttpClient } from '../../../../../shared/http/composition/http.composition';
 import type { HostPropertyRepository } from '../ports/host-property.repository';
 import {
   CreateHostPropertyUseCase,
@@ -17,7 +18,7 @@ let updateHostPropertyUseCase: UpdateHostPropertyUseCase | null = null;
 
 export function getHostPropertyRepository(): HostPropertyRepository {
   if (!hostPropertyRepository) {
-    hostPropertyRepository = new HttpHostPropertyRepository();
+    hostPropertyRepository = new HttpHostPropertyRepository(getHttpClient());
   }
   return hostPropertyRepository;
 }

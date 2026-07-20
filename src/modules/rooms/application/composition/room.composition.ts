@@ -1,3 +1,4 @@
+import { getHttpClient } from '../../../../shared/http/composition/http.composition';
 import type { RoomRepository } from '../ports/room.repository';
 import {
   GetRoomByIdUseCase,
@@ -13,7 +14,7 @@ let getRoomBySlugUseCase: GetRoomBySlugUseCase | null = null;
 
 export function getRoomRepository(): RoomRepository {
   if (!roomRepository) {
-    roomRepository = new HttpRoomRepository();
+    roomRepository = new HttpRoomRepository(getHttpClient());
   }
   return roomRepository;
 }

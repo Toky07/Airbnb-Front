@@ -1,4 +1,5 @@
-import { getApiClient } from '../../../shared/http/api-client';
+import type { HttpClient } from '../../../shared/http/ports/http-client';
+import { getHttpClient } from '../../../shared/http/composition/http.composition';
 import { buildListQuery } from '../../../shared/pagination/build-list-query';
 import { parsePaginatedResponse } from '../../../shared/pagination/parse-paginated-response';
 import type { ListQueryParams, PaginatedResponse } from '../../../shared/pagination/types';
@@ -11,8 +12,14 @@ const EMPTY_LIST_RESULT: PaginatedResponse<RoomListItem> = {
 };
 
 export class HttpRoomRepository implements RoomRepository {
+  private readonly httpClient: HttpClient;
+
+  constructor(httpClient?: HttpClient) {
+    this.httpClient = httpClient ?? getHttpClient();
+  }
+
   async list(params: ListQueryParams = {}): Promise<PaginatedResponse<RoomListItem>> {
-    const response = await getApiClient().get(`/rooms${buildListQuery(params)}`);
+    const response = await this.httpClient.get(`/rooms${buildListQuery(params)}`);
 
     if (!response.ok) {
       return EMPTY_LIST_RESULT;
@@ -23,7 +30,7 @@ export class HttpRoomRepository implements RoomRepository {
   }
 
   async getById(id: number): Promise<RoomListItem | null> {
-    const response = await getApiClient().get(`/rooms/${id}`);
+    const response = await this.httpClient.get(`/rooms/${id}`);
 
     if (!response.ok) {
       return null;
@@ -34,7 +41,7 @@ export class HttpRoomRepository implements RoomRepository {
   }
 
   async getBySlug(slug: string): Promise<RoomListItem | null> {
-    const response = await getApiClient().get(`/rooms/by-slug/${slug}`);
+    const response = await this.httpClient.get(`/rooms/by-slug/${slug}`);
 
     if (!response.ok) {
       return null;

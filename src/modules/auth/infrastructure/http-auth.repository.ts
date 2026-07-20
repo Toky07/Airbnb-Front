@@ -1,4 +1,5 @@
-import { getApiClient } from '../../../shared/http/api-client';
+import type { HttpClient } from '../../../shared/http/ports/http-client';
+import { getHttpClient } from '../../../shared/http/composition/http.composition';
 import { extractApiToken, parseApiError } from '../../../shared/http/parse-api-error';
 import { mapMeResponse } from '../core/services/resolve-auth-session';
 import type {
@@ -11,8 +12,14 @@ import type {
 } from '../application/ports/auth.repository';
 
 export class HttpAuthRepository implements AuthRepository {
+  private readonly httpClient: HttpClient;
+
+  constructor(httpClient?: HttpClient) {
+    this.httpClient = httpClient ?? getHttpClient();
+  }
+
   async login(credentials: LoginCredentials): Promise<LoginResult> {
-    const response = await getApiClient().post('/auth/login', credentials);
+    const response = await this.httpClient.post('/auth/login', credentials);
     const data: unknown = await response.json();
 
     if (!response.ok) {
@@ -31,7 +38,7 @@ export class HttpAuthRepository implements AuthRepository {
   }
 
   async register(payload: RegisterPayload): Promise<MutationResult> {
-    const response = await getApiClient().post('/auth/register', payload);
+    const response = await this.httpClient.post('/auth/register', payload);
     const data: unknown = await response.json();
 
     if (!response.ok) {
@@ -45,7 +52,7 @@ export class HttpAuthRepository implements AuthRepository {
   }
 
   async validatePasswordSetup(token: string): Promise<PasswordSetupValidation> {
-    const response = await getApiClient().get(
+    const response = await this.httpClient.get(
       `/auth/password-setup/validate?token=${encodeURIComponent(token)}`,
     );
 
@@ -69,7 +76,7 @@ export class HttpAuthRepository implements AuthRepository {
   }
 
   async setPassword(token: string, password: string): Promise<MutationResult> {
-    const response = await getApiClient().post('/auth/password-setup', {
+    const response = await this.httpClient.post('/auth/password-setup', {
       token,
       password,
     });
@@ -86,7 +93,7 @@ export class HttpAuthRepository implements AuthRepository {
   }
 
   async fetchMe() {
-    const response = await getApiClient().get('/auth/me');
+    const response = await this.httpClient.get('/auth/me');
     if (!response.ok) {
       return null;
     }

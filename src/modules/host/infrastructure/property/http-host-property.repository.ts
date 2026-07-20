@@ -1,4 +1,5 @@
-import { getApiClient } from '../../../../shared/http/api-client';
+import type { HttpClient } from '../../../../shared/http/ports/http-client';
+import { getHttpClient } from '../../../../shared/http/composition/http.composition';
 import { parseApiError } from '../../../../shared/http/parse-api-error';
 import { mapHostProfile, mapHostProperty } from '../../core/mappers/map-host-property';
 import type {
@@ -27,8 +28,14 @@ async function parsePropertyMutationResponse(
 }
 
 export class HttpHostPropertyRepository implements HostPropertyRepository {
+  private readonly httpClient: HttpClient;
+
+  constructor(httpClient?: HttpClient) {
+    this.httpClient = httpClient ?? getHttpClient();
+  }
+
   async getProfile() {
-    const response = await getApiClient().get('/host/profile');
+    const response = await this.httpClient.get('/host/profile');
     if (!response.ok) {
       return null;
     }
@@ -38,7 +45,7 @@ export class HttpHostPropertyRepository implements HostPropertyRepository {
   }
 
   async listProperties() {
-    const response = await getApiClient().get('/host/properties');
+    const response = await this.httpClient.get('/host/properties');
     if (!response.ok) {
       return [];
     }
@@ -50,7 +57,7 @@ export class HttpHostPropertyRepository implements HostPropertyRepository {
   }
 
   async getProperty(propertyId: number) {
-    const response = await getApiClient().get(`/host/properties/${propertyId}`);
+    const response = await this.httpClient.get(`/host/properties/${propertyId}`);
     if (!response.ok) {
       return null;
     }
@@ -60,7 +67,7 @@ export class HttpHostPropertyRepository implements HostPropertyRepository {
   }
 
   createProperty(payload: PropertyFormPayload): Promise<PropertyMutationResult> {
-    return getApiClient()
+    return this.httpClient
       .postFormData('/host/properties', buildPropertyFormData(payload))
       .then((response) => parsePropertyMutationResponse(response, 'Création impossible.'));
   }
@@ -69,7 +76,7 @@ export class HttpHostPropertyRepository implements HostPropertyRepository {
     propertyId: number,
     payload: PropertyFormPayload,
   ): Promise<PropertyMutationResult> {
-    return getApiClient()
+    return this.httpClient
       .putFormData(`/host/properties/${propertyId}`, buildPropertyFormData(payload))
       .then((response) => parsePropertyMutationResponse(response, 'Modification impossible.'));
   }

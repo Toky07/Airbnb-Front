@@ -1,3 +1,4 @@
+import { getHttpClient } from '../../../../shared/http/composition/http.composition';
 import type { AuthRepository } from '../ports/auth.repository';
 import type { SessionStore } from '../ports/session.store';
 import { LoginUseCase } from '../use-cases/login.use-case';
@@ -17,7 +18,7 @@ let setPasswordUseCase: SetPasswordUseCase | null = null;
 
 export function getAuthRepository(): AuthRepository {
   if (!authRepository) {
-    authRepository = new HttpAuthRepository();
+    authRepository = new HttpAuthRepository(getHttpClient());
   }
   return authRepository;
 }

@@ -1,4 +1,5 @@
-import { getApiClient } from '../../../../shared/http/api-client';
+import type { HttpClient } from '../../../../shared/http/ports/http-client';
+import { getHttpClient } from '../../../../shared/http/composition/http.composition';
 import { buildListQuery } from '../../../../shared/pagination/build-list-query';
 import { parsePaginatedResponse } from '../../../../shared/pagination/parse-paginated-response';
 import type { ListQueryParams, PaginatedResponse } from '../../../../shared/pagination/types';
@@ -21,8 +22,14 @@ const EMPTY_STATS_OVERVIEW: HostReservationStatsOverview = {
 };
 
 export class HttpHostReservationRepository implements HostReservationRepository {
+  private readonly httpClient: HttpClient;
+
+  constructor(httpClient?: HttpClient) {
+    this.httpClient = httpClient ?? getHttpClient();
+  }
+
   async listBookings(params: ListQueryParams = {}) {
-    const response = await getApiClient().get(
+    const response = await this.httpClient.get(
       `/reservations/bookings/host${buildListQuery(params)}`,
     );
 
@@ -35,7 +42,7 @@ export class HttpHostReservationRepository implements HostReservationRepository 
   }
 
   async getStatsOverview() {
-    const response = await getApiClient().get('/reservations/stats');
+    const response = await this.httpClient.get('/reservations/stats');
     if (!response.ok) {
       return EMPTY_STATS_OVERVIEW;
     }

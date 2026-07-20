@@ -1,3 +1,4 @@
+import { getHttpClient } from '../../../../shared/http/composition/http.composition';
 import type { CartRepository } from '../ports/cart.repository';
 import {
   AddReservationToCartUseCase,
@@ -24,7 +25,7 @@ let completeCheckoutUseCase: CompleteCheckoutUseCase | null = null;
 export function getCartRepository(): CartRepository {
   if (!cartRepository) {
     cartRepository = new SessionPersistingCartRepository(
-      new HttpCartRepository(),
+      new HttpCartRepository(getHttpClient()),
       getLocalStorageCartSessionStore(),
     );
   }

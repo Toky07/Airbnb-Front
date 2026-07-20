@@ -1,3 +1,4 @@
+import { getHttpClient } from '../../../../shared/http/composition/http.composition';
 import type { ReservationRepository } from '../ports/reservation.repository';
 import {
   CreateReservationUseCase,
@@ -11,7 +12,7 @@ let listMyReservationsUseCase: ListMyReservationsUseCase | null = null;
 
 export function getReservationRepository(): ReservationRepository {
   if (!reservationRepository) {
-    reservationRepository = new HttpReservationRepository();
+    reservationRepository = new HttpReservationRepository(getHttpClient());
   }
   return reservationRepository;
 }

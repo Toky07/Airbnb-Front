@@ -1,11 +1,14 @@
-import { getTokenStorage, notifyUnauthorized } from './token-storage';
 import { getCartSessionId } from './cart-session.storage';
+import type { HttpClient } from './ports/http-client';
+import { getTokenStorage, notifyUnauthorized } from './token-storage';
 
-const baseUrl = import.meta.env.VITE_API_URL?.replace(/\/$/, '') ?? 'http://localhost:3000';
-
-export class ApiClient {
-  private readonly baseUrl = baseUrl;
+export class FetchHttpClient implements HttpClient {
+  private readonly baseUrl: string;
   private readonly tokenStorage = getTokenStorage();
+
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
 
   private buildHeaders(extra?: Record<string, string>): Record<string, string> {
     const headers: Record<string, string> = { Accept: 'application/json', ...extra };
@@ -31,11 +34,11 @@ export class ApiClient {
     return response;
   }
 
-  async get(url: string): Promise<Response> {
+  get(url: string): Promise<Response> {
     return this.request(url, { method: 'GET', headers: this.buildHeaders() });
   }
 
-  async post(url: string, body: unknown): Promise<Response> {
+  post(url: string, body: unknown): Promise<Response> {
     return this.request(url, {
       method: 'POST',
       headers: this.buildHeaders({ 'Content-Type': 'application/json' }),
@@ -43,7 +46,7 @@ export class ApiClient {
     });
   }
 
-  async put(url: string, body: unknown): Promise<Response> {
+  put(url: string, body: unknown): Promise<Response> {
     return this.request(url, {
       method: 'PUT',
       headers: this.buildHeaders({ 'Content-Type': 'application/json' }),
@@ -51,7 +54,7 @@ export class ApiClient {
     });
   }
 
-  async patch(url: string, body: unknown): Promise<Response> {
+  patch(url: string, body: unknown): Promise<Response> {
     return this.request(url, {
       method: 'PATCH',
       headers: this.buildHeaders({ 'Content-Type': 'application/json' }),
@@ -59,24 +62,15 @@ export class ApiClient {
     });
   }
 
-  async delete(url: string): Promise<Response> {
+  delete(url: string): Promise<Response> {
     return this.request(url, { method: 'DELETE', headers: this.buildHeaders() });
   }
 
-  async postFormData(url: string, body: FormData): Promise<Response> {
+  postFormData(url: string, body: FormData): Promise<Response> {
     return this.request(url, { method: 'POST', headers: this.buildHeaders(), body });
   }
 
-  async putFormData(url: string, body: FormData): Promise<Response> {
+  putFormData(url: string, body: FormData): Promise<Response> {
     return this.request(url, { method: 'PUT', headers: this.buildHeaders(), body });
   }
-}
-
-let client: ApiClient | null = null;
-
-export function getApiClient(): ApiClient {
-  if (!client) {
-    client = new ApiClient();
-  }
-  return client;
 }

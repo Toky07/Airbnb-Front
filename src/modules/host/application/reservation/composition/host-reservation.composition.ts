@@ -1,3 +1,4 @@
+import { getHttpClient } from '../../../../../shared/http/composition/http.composition';
 import type { HostReservationRepository } from '../ports/host-reservation.repository';
 import {
   GetHostReservationStatsOverviewUseCase,
@@ -11,7 +12,7 @@ let getHostReservationStatsOverviewUseCase: GetHostReservationStatsOverviewUseCa
 
 export function getHostReservationRepository(): HostReservationRepository {
   if (!hostReservationRepository) {
-    hostReservationRepository = new HttpHostReservationRepository();
+    hostReservationRepository = new HttpHostReservationRepository(getHttpClient());
   }
   return hostReservationRepository;
 }

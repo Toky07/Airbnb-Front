@@ -1,3 +1,4 @@
+import { getHttpClient } from '../../../../shared/http/composition/http.composition';
 import type { HostAmenityRepository } from '../ports/host-amenity.repository';
 import {
   ListHostAmenityOptionsUseCase,
@@ -17,7 +18,7 @@ let syncRoomAmenitiesUseCase: SyncRoomAmenitiesUseCase | null = null;
 
 export function getHostAmenityRepository(): HostAmenityRepository {
   if (!hostAmenityRepository) {
-    hostAmenityRepository = new HttpHostAmenityRepository();
+    hostAmenityRepository = new HttpHostAmenityRepository(getHttpClient());
   }
   return hostAmenityRepository;
 }
