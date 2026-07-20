@@ -3,54 +3,46 @@ import AuthProvider from './modules/auth/ui/providers/AuthProvider';
 import CartProvider from './modules/cart/ui/providers/CartProvider';
 import GuestRoute from './modules/auth/ui/guards/GuestRoute';
 import HostRoute from './modules/auth/ui/guards/HostRoute';
-import LoginPage from './modules/auth/ui/pages/LoginPage';
-import RegisterPage from './modules/auth/ui/pages/RegisterPage';
-import SetPasswordPage from './modules/auth/ui/pages/SetPasswordPage';
 import ProtectedRoute from './modules/auth/ui/guards/ProtectedRoute';
-import ProfilePage from './modules/account/ui/pages/ProfilePage';
-import MyPurchasesPage from './modules/account/ui/pages/MyPurchasesPage';
 import HostLayout from './layout/host/HostLayout';
-import HostDashboardPage from './modules/host/ui/pages/HostDashboardPage';
-import HostPropertiesListPage from './modules/host/ui/pages/HostPropertiesListPage';
-import HostPropertyCreatePage from './modules/host/ui/pages/HostPropertyCreatePage';
-import HostPropertyDetailPage from './modules/host/ui/pages/HostPropertyDetailPage';
-import HostReservationsPage from './modules/host/ui/pages/HostReservationsPage';
 import HomePage from './modules/rooms/ui/pages/HomePage';
-import SearchPage from './modules/rooms/ui/pages/SearchPage';
-import RoomDetailPage from './modules/rooms/ui/pages/RoomDetailPage';
-import CartPage from './modules/cart/ui/pages/CartPage';
 import PublicPageLayout from './modules/site/ui/components/PublicPageLayout';
-import NotFoundPage from './modules/site/ui/pages/NotFoundPage';
+import { lazyRoute } from './shared/routing/lazy-route';
 
-const LoginRoute = () => (
+const SearchPage = lazyRoute(() => import('./modules/rooms/ui/pages/SearchPage'));
+const RoomDetailPage = lazyRoute(() => import('./modules/rooms/ui/pages/RoomDetailPage'));
+const CartPage = lazyRoute(() => import('./modules/cart/ui/pages/CartPage'));
+const LoginPage = lazyRoute(() => import('./modules/auth/ui/pages/LoginPage'));
+const RegisterPage = lazyRoute(() => import('./modules/auth/ui/pages/RegisterPage'));
+const SetPasswordPage = lazyRoute(() => import('./modules/auth/ui/pages/SetPasswordPage'));
+const ProfilePage = lazyRoute(() => import('./modules/account/ui/pages/ProfilePage'));
+const MyPurchasesPage = lazyRoute(() => import('./modules/account/ui/pages/MyPurchasesPage'));
+const HostDashboardPage = lazyRoute(() => import('./modules/host/ui/pages/HostDashboardPage'));
+const HostPropertiesListPage = lazyRoute(
+  () => import('./modules/host/ui/pages/HostPropertiesListPage'),
+);
+const HostPropertyCreatePage = lazyRoute(
+  () => import('./modules/host/ui/pages/HostPropertyCreatePage'),
+);
+const HostPropertyDetailPage = lazyRoute(
+  () => import('./modules/host/ui/pages/HostPropertyDetailPage'),
+);
+const HostReservationsPage = lazyRoute(
+  () => import('./modules/host/ui/pages/HostReservationsPage'),
+);
+const NotFoundPage = lazyRoute(() => import('./modules/site/ui/pages/NotFoundPage'));
+
+const withPublicLayout = (Page: ReturnType<typeof lazyRoute>) => () => (
   <PublicPageLayout>
-    <LoginPage />
+    <Page />
   </PublicPageLayout>
 );
 
-const RegisterRoute = () => (
-  <PublicPageLayout>
-    <RegisterPage />
-  </PublicPageLayout>
-);
-
-const SetPasswordRoute = () => (
-  <PublicPageLayout>
-    <SetPasswordPage />
-  </PublicPageLayout>
-);
-
-const ProfileRoute = () => (
-  <PublicPageLayout>
-    <ProfilePage />
-  </PublicPageLayout>
-);
-
-const MyPurchasesRoute = () => (
-  <PublicPageLayout>
-    <MyPurchasesPage />
-  </PublicPageLayout>
-);
+const LoginRoute = withPublicLayout(LoginPage);
+const RegisterRoute = withPublicLayout(RegisterPage);
+const SetPasswordRoute = withPublicLayout(SetPasswordPage);
+const ProfileRoute = withPublicLayout(ProfilePage);
+const MyPurchasesRoute = withPublicLayout(MyPurchasesPage);
 
 const AuthShell = () => (
   <AuthProvider>
@@ -64,50 +56,23 @@ const router = createBrowserRouter([
   {
     Component: AuthShell,
     children: [
-      {
-        path: '/',
-        Component: HomePage,
-      },
-      {
-        path: '/search',
-        Component: SearchPage,
-      },
-      {
-        path: '/rooms/:slug',
-        Component: RoomDetailPage,
-      },
-      {
-        path: '/cart',
-        Component: CartPage,
-      },
+      { path: '/', Component: HomePage },
+      { path: '/search', Component: SearchPage },
+      { path: '/rooms/:slug', Component: RoomDetailPage },
+      { path: '/cart', Component: CartPage },
       {
         Component: GuestRoute,
         children: [
-          {
-            path: '/login',
-            Component: LoginRoute,
-          },
-          {
-            path: '/register',
-            Component: RegisterRoute,
-          },
-          {
-            path: '/set-password',
-            Component: SetPasswordRoute,
-          },
+          { path: '/login', Component: LoginRoute },
+          { path: '/register', Component: RegisterRoute },
+          { path: '/set-password', Component: SetPasswordRoute },
         ],
       },
       {
         Component: ProtectedRoute,
         children: [
-          {
-            path: '/account/profile',
-            Component: ProfileRoute,
-          },
-          {
-            path: '/account/purchases',
-            Component: MyPurchasesRoute,
-          },
+          { path: '/account/profile', Component: ProfileRoute },
+          { path: '/account/purchases', Component: MyPurchasesRoute },
         ],
       },
       {
@@ -117,34 +82,16 @@ const router = createBrowserRouter([
             path: '/host',
             Component: HostLayout,
             children: [
-              {
-                index: true,
-                Component: HostDashboardPage,
-              },
-              {
-                path: 'reservations',
-                Component: HostReservationsPage,
-              },
-              {
-                path: 'property',
-                Component: HostPropertiesListPage,
-              },
-              {
-                path: 'property/new',
-                Component: HostPropertyCreatePage,
-              },
-              {
-                path: 'property/:id',
-                Component: HostPropertyDetailPage,
-              },
+              { index: true, Component: HostDashboardPage },
+              { path: 'reservations', Component: HostReservationsPage },
+              { path: 'property', Component: HostPropertiesListPage },
+              { path: 'property/new', Component: HostPropertyCreatePage },
+              { path: 'property/:id', Component: HostPropertyDetailPage },
             ],
           },
         ],
       },
-      {
-        path: '*',
-        Component: NotFoundPage,
-      },
+      { path: '*', Component: NotFoundPage },
     ],
   },
 ]);

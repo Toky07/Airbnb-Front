@@ -1,4 +1,3 @@
-import { faHotel, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router';
 import { Button } from '../../../../shared/ui';
@@ -27,7 +26,7 @@ const HostPropertiesListPage = () => {
         </div>
         <Link to="/host/property/new">
           <Button className="px-6 py-3">
-            <FontAwesomeIcon icon={faPlus} className="mr-2 h-4 w-4" />
+            <FontAwesomeIcon icon="plus" className="mr-2 h-4 w-4" />
             Ajouter un établissement
           </Button>
         </Link>
@@ -36,7 +35,7 @@ const HostPropertiesListPage = () => {
       {properties.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-200 bg-white px-8 py-16 text-center shadow-sm">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-500">
-            <FontAwesomeIcon icon={faHotel} className="h-7 w-7" />
+            <FontAwesomeIcon icon="hotel" className="h-7 w-7" />
           </div>
           <h2 className="mt-6 text-2xl font-semibold text-slate-900">Aucun établissement</h2>
           <p className="mx-auto mt-3 max-w-md text-slate-500">

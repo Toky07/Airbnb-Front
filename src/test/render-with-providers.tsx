@@ -1,26 +1,57 @@
-import { render, type RenderOptions } from '@testing-library/react';
-import type { ReactElement } from 'react';
-import { MemoryRouter, type MemoryRouterProps } from 'react-router';
-import AuthProvider from '../modules/auth/ui/providers/AuthProvider';
-import CartProvider from '../modules/cart/ui/providers/CartProvider';
-import { NotificationProvider } from '../shared/notifications';
+import { type ReactElement, type ReactNode } from 'react';
+import { render, waitFor, type RenderOptions } from '@testing-library/react';
+import { Route, Routes, type MemoryRouterProps } from 'react-router';
+import { AppProviders } from './app-providers';
 
 type RenderWithProvidersOptions = RenderOptions & {
   routerInitialEntries?: MemoryRouterProps['initialEntries'];
 };
 
-export function renderWithProviders(
+export async function waitForProvidersReady(): Promise<void> {
+  await waitFor(() => {
+    const readyMarker = document.querySelector('[data-testid="providers-ready"]');
+    expect(readyMarker).toHaveAttribute('data-ready', 'true');
+  });
+}
+
+export async function renderWithProviders(
   ui: ReactElement,
   { routerInitialEntries, ...options }: RenderWithProvidersOptions = {},
 ) {
-  return render(
-    <MemoryRouter initialEntries={routerInitialEntries}>
-      <NotificationProvider>
-        <AuthProvider>
-          <CartProvider>{ui}</CartProvider>
-        </AuthProvider>
-      </NotificationProvider>
-    </MemoryRouter>,
-    options,
+  const view = render(ui, {
+    wrapper: ({ children }) => (
+      <AppProviders routerInitialEntries={routerInitialEntries}>{children}</AppProviders>
+    ),
+    ...options,
+  });
+
+  await waitForProvidersReady();
+
+  return view;
+}
+
+export async function renderWithRoute(
+  routePath: string,
+  ui: ReactElement,
+  {
+    routerInitialEntries,
+    ...options
+  }: RenderWithProvidersOptions & { routerInitialEntries: MemoryRouterProps['initialEntries'] },
+) {
+  return renderWithProviders(
+    <Routes>
+      <Route path={routePath} element={ui} />
+    </Routes>,
+    { routerInitialEntries, ...options },
   );
+}
+
+export function createAppWrapper(options: RenderWithProvidersOptions = {}) {
+  return function AppWrapper({ children }: { children: ReactNode }) {
+    return (
+      <AppProviders routerInitialEntries={options.routerInitialEntries}>
+        {children}
+      </AppProviders>
+    );
+  };
 }

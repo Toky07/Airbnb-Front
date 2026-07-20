@@ -1,5 +1,4 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { faImage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from '../../../../shared/ui/Modal';
 import IconPickerModal from '../../../../shared/ui/amenity/IconPickerModal';
@@ -95,7 +94,7 @@ const AmenityFormModal = ({
                   {icon ? (
                     <FontAwesomeIcon icon={resolveAmenityIcon(icon)} className="h-4 w-4" />
                   ) : (
-                    <FontAwesomeIcon icon={faImage} className="h-4 w-4 text-slate-400" />
+                    <FontAwesomeIcon icon="image" className="h-4 w-4 text-slate-400" />
                   )}
                 </span>
                 {icon ? 'Modifier l’icône' : 'Choisir une icône'}

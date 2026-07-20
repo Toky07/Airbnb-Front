@@ -154,7 +154,7 @@ export function useImageFileInput({
         inputRef.current.value = '';
       }
     },
-    [items, multiple, onFileSelect, onFilesSelect, updateItemsAndEmit],
+    [items, onFileSelect, updateItemsAndEmit],
   );
 
   const handleFilesSelected = useCallback(
@@ -215,7 +215,7 @@ export function useImageFileInput({
         inputRef.current.value = '';
       }
     },
-    [items, maxSizeMb, multiple, resolvedMaxFiles, updateItemsAndEmit],
+    [items, maxSizeMb, multiple, resolvedMaxFiles, updateItemsAndEmit, onFileSelect],
   );
 
   return {

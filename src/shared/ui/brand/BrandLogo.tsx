@@ -1,4 +1,3 @@
-import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router';
 
@@ -15,7 +14,7 @@ const BrandLogo = ({ variant = 'dark', to = '/' }: BrandLogoProps) => (
       variant === 'light' ? 'text-white' : 'text-[var(--color-brand)]',
     ].join(' ')}
   >
-    <FontAwesomeIcon icon={faHouse} className="h-8 w-8" />
+    <FontAwesomeIcon icon="house" className="h-8 w-8" />
     <span className="hidden text-xl font-bold tracking-tight md:block">airbnb</span>
   </Link>
 );

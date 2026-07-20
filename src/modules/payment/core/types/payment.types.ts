@@ -1,38 +1,29 @@
-export type PaymentIntentResult = {
+export const PAYMENT_PROVIDER = {
+  STRIPE: 'stripe',
+} as const;
+
+export type PaymentProvider = (typeof PAYMENT_PROVIDER)[keyof typeof PAYMENT_PROVIDER];
+
+export type PaymentSessionBase = {
   paymentId: number;
-  clientSecret: string;
   amount: number;
   currency: string;
+  provider: PaymentProvider;
+};
+
+export type StripePaymentSession = PaymentSessionBase & {
+  provider: typeof PAYMENT_PROVIDER.STRIPE;
+  clientSecret: string;
   publishableKey: string;
 };
 
-export function mapPaymentIntent(data: unknown): PaymentIntentResult | null {
-  if (!data || typeof data !== 'object') {
-    return null;
-  }
+export type PaymentSession = StripePaymentSession;
 
-  const record = data as Record<string, unknown>;
+/** @deprecated Utiliser PaymentSession */
+export type PaymentIntentResult = PaymentSession;
 
-  if (
-    typeof record.paymentId !== 'number' ||
-    typeof record.clientSecret !== 'string' ||
-    typeof record.publishableKey !== 'string'
-  ) {
-    return null;
-  }
-
-  return {
-    paymentId: record.paymentId,
-    clientSecret: record.clientSecret,
-    amount: Number(record.amount ?? 0),
-    currency: String(record.currency ?? 'eur'),
-    publishableKey: record.publishableKey,
-  };
-}
-
-export function formatPaymentAmount(amountInCents: number, currency = 'eur'): string {
-  return new Intl.NumberFormat('fr-FR', {
-    style: 'currency',
-    currency: currency.toUpperCase(),
-  }).format(amountInCents / 100);
+export function isStripePaymentSession(
+  session: PaymentSession,
+): session is StripePaymentSession {
+  return session.provider === PAYMENT_PROVIDER.STRIPE;
 }

@@ -1,4 +1,3 @@
-import { faBed, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   formatPricePerNight,
@@ -50,7 +49,7 @@ const HostRoomsTable = ({ rooms, onEdit, onDelete }: HostRoomsTableProps) => (
                       <img src={image} alt="" className="h-full w-full object-cover" />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-slate-400">
-                        <FontAwesomeIcon icon={faBed} className="h-4 w-4" />
+                        <FontAwesomeIcon icon="bed" className="h-4 w-4" />
                       </div>
                     )}
                   </div>
@@ -92,7 +91,7 @@ const HostRoomsTable = ({ rooms, onEdit, onDelete }: HostRoomsTableProps) => (
                     className="inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
                     aria-label={`Modifier ${room.name}`}
                   >
-                    <FontAwesomeIcon icon={faPen} className="h-3.5 w-3.5" />
+                    <FontAwesomeIcon icon="pen" className="h-3.5 w-3.5" />
                   </button>
                   <button
                     type="button"
@@ -100,7 +99,7 @@ const HostRoomsTable = ({ rooms, onEdit, onDelete }: HostRoomsTableProps) => (
                     className="inline-flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition hover:bg-red-50 hover:text-red-600"
                     aria-label={`Supprimer ${room.name}`}
                   >
-                    <FontAwesomeIcon icon={faTrash} className="h-3.5 w-3.5" />
+                    <FontAwesomeIcon icon="trash" className="h-3.5 w-3.5" />
                   </button>
                 </div>
               </HostDataTableCell>

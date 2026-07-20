@@ -1,9 +1,16 @@
-import { useCallback, useEffect, useState } from 'react';
-import { getHostService } from '../../core/services/host.service';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  getDeleteHostRoomUseCase,
+  getListHostRoomsUseCase,
+  getListHostRoomTypeOptionsUseCase,
+} from '../../application/room/composition/host-room.composition';
 import type { CategorySummary, RoomListItem } from '../../../rooms/core/types/room.types';
 import { notifyMessages, useNotification } from '../../../../shared/notifications';
 
 export function useHostRooms(propertyId: number | null) {
+  const listHostRoomsUseCase = useMemo(() => getListHostRoomsUseCase(), []);
+  const listHostRoomTypeOptionsUseCase = useMemo(() => getListHostRoomTypeOptionsUseCase(), []);
+  const deleteHostRoomUseCase = useMemo(() => getDeleteHostRoomUseCase(), []);
   const [rooms, setRooms] = useState<RoomListItem[]>([]);
   const [roomTypes, setRoomTypes] = useState<CategorySummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -18,15 +25,14 @@ export function useHostRooms(propertyId: number | null) {
     }
 
     setLoading(true);
-    const hostService = getHostService();
     const [roomsData, types] = await Promise.all([
-      hostService.listRooms(propertyId, { page: 1, limit: 25 }),
-      hostService.listRoomTypeOptions(),
+      listHostRoomsUseCase.execute(propertyId, { page: 1, limit: 25 }),
+      listHostRoomTypeOptionsUseCase.execute(),
     ]);
     setRooms(roomsData.data);
     setRoomTypes(types);
     setLoading(false);
-  }, [propertyId]);
+  }, [listHostRoomsUseCase, listHostRoomTypeOptionsUseCase, propertyId]);
 
   useEffect(() => {
     void loadRooms();
@@ -43,7 +49,7 @@ export function useHostRooms(propertyId: number | null) {
         return;
       }
 
-      const result = await getHostService().deleteRoom(propertyId, room.id);
+      const result = await deleteHostRoomUseCase.execute(propertyId, room.id);
       if (!result.success) {
         setError(result.error ?? 'Suppression impossible.');
         return;
@@ -52,7 +58,7 @@ export function useHostRooms(propertyId: number | null) {
       notifySuccess(notifyMessages.room.deleted(room.name));
       await loadRooms();
     },
-    [loadRooms, notifySuccess, propertyId],
+    [deleteHostRoomUseCase, loadRooms, notifySuccess, propertyId],
   );
 
   return {

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router';
 import {
   formatPricePerNight,
@@ -12,15 +13,12 @@ type RoomCardProps = {
   room: RoomListItem;
 };
 
-const RoomCard = ({ room }: RoomCardProps) => {
+const RoomCard = memo(function RoomCard({ room }: RoomCardProps) {
   const imageUrl = getRoomPrimaryImage(room);
   const bookable = isRoomBookable(room);
 
   return (
-    <Link
-      to={`/rooms/${room.slug}`}
-      className="group block"
-    >
+    <Link to={`/rooms/${room.slug}`} className="group block">
       <div className="relative aspect-square overflow-hidden rounded-xl bg-slate-200">
         {imageUrl ? (
           <img
@@ -28,6 +26,7 @@ const RoomCard = ({ room }: RoomCardProps) => {
             alt={room.name}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
+            decoding="async"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-slate-400">
@@ -43,24 +42,28 @@ const RoomCard = ({ room }: RoomCardProps) => {
 
       <div className="mt-3 flex flex-col">
         <div className="flex items-start justify-between">
-          <h3 className="line-clamp-1 text-base font-semibold text-slate-900">{getRoomLocation(room)}</h3>
+          <h3 className="line-clamp-1 text-base font-semibold text-slate-900">
+            {getRoomLocation(room)}
+          </h3>
           {room.roomType ? (
-            <span className="shrink-0 text-sm text-slate-500">
-              {room.roomType.name}
-            </span>
+            <span className="shrink-0 text-sm text-slate-500">{room.roomType.name}</span>
           ) : null}
         </div>
 
         <p className="line-clamp-1 text-sm text-slate-500">{room.name}</p>
-        <p className="text-sm text-slate-500">{room.maxGuests} voyageurs · {room.bedrooms} ch.</p>
+        <p className="text-sm text-slate-500">
+          {room.maxGuests} voyageurs · {room.bedrooms} ch.
+        </p>
 
         <div className="mt-1 flex items-baseline gap-1">
-          <span className="text-base font-semibold text-slate-900">{formatPricePerNight(room.pricePerNight)}</span>
+          <span className="text-base font-semibold text-slate-900">
+            {formatPricePerNight(room.pricePerNight)}
+          </span>
           <span className="text-sm text-slate-900">par nuit</span>
         </div>
       </div>
     </Link>
   );
-};
+});
 
 export default RoomCard;

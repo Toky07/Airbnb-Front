@@ -1,22 +1,16 @@
-import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import {
-  faHotel,
-  faReceipt,
-  faRightFromBracket,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons';
+import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 export type UserMenuItem =
   | {
       type: 'link';
       to: string;
       label: string;
-      icon: IconDefinition;
+      icon: IconProp;
     }
   | {
       type: 'action';
       label: string;
-      icon: IconDefinition;
+      icon: IconProp;
       onSelect: () => void;
     };
 
@@ -36,13 +30,13 @@ export function buildUserMenuItems({
       type: 'link',
       to: '/account/profile',
       label: 'Mon profil',
-      icon: faUser,
+      icon: 'user',
     },
     {
       type: 'link',
       to: '/account/purchases',
       label: 'Mes achats',
-      icon: faReceipt,
+      icon: 'receipt',
     },
   ];
 
@@ -51,14 +45,14 @@ export function buildUserMenuItems({
       type: 'link',
       to: '/host',
       label: 'Gérer mon hôtel',
-      icon: faHotel,
+      icon: 'hotel',
     });
   }
 
   items.push({
     type: 'action',
     label: 'Déconnexion',
-    icon: faRightFromBracket,
+    icon: 'right-from-bracket',
     onSelect: onLogout,
   });
 

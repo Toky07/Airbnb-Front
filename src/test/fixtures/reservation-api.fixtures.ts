@@ -27,6 +27,16 @@ export const sampleReservationOutputApi = {
   updatedAt: '2026-06-01T00:00:00.000Z',
 };
 
+export const sampleReservationsListApi = {
+  data: [sampleReservationOutputApi],
+  meta: { page: 1, limit: 20, total: 1, totalPages: 1 },
+};
+
+export const emptyReservationsListApi = {
+  data: [],
+  meta: { page: 1, limit: 20, total: 0, totalPages: 0 },
+};
+
 export const sampleBookingOrderListItemApi = {
   paymentId: 9,
   paidAt: '2026-06-02T10:00:00.000Z',

@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
 import AmenityMultiSelect from '../../../../shared/ui/amenity/AmenityMultiSelect';
-import { getHostAmenityService } from '../../core/services/host-amenity.service';
-import type { AmenityItem, AmenityScope } from '../../core/types/amenity.types';
+import type { AmenityScope } from '../../core/types/amenity.types';
+import { useHostAmenityOptions } from '../hooks/useHostAmenityOptions';
 
 type HostAmenityFieldProps = {
   scope: AmenityScope;
@@ -18,27 +17,7 @@ const HostAmenityField = ({
   label,
   hint,
 }: HostAmenityFieldProps) => {
-  const [options, setOptions] = useState<AmenityItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const loadOptions = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const items = await getHostAmenityService().listOptions(scope);
-      setOptions(items);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Chargement impossible.');
-      setOptions([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [scope]);
-
-  useEffect(() => {
-    void loadOptions();
-  }, [loadOptions]);
+  const { options, loading, error } = useHostAmenityOptions(scope);
 
   return (
     <div className="space-y-4 md:col-span-2">

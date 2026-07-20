@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { getRoomService } from '../../core/services/room.service';
+import { useEffect, useMemo, useState } from 'react';
+import { getListRoomsUseCase } from '../../application/composition/room.composition';
 import type { RoomListItem } from '../../core/types/room.types';
 import type { ListQueryParams, PaginatedResponse } from '../../../../shared/pagination/types';
 
@@ -15,6 +15,7 @@ const emptyResult: PaginatedResponse<RoomListItem> = {
 };
 
 export function useRoomsList(params: ListQueryParams): UseRoomsListResult {
+  const listRoomsUseCase = useMemo(() => getListRoomsUseCase(), []);
   const [result, setResult] = useState<PaginatedResponse<RoomListItem>>(emptyResult);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +28,7 @@ export function useRoomsList(params: ListQueryParams): UseRoomsListResult {
       setError(null);
 
       try {
-        const response = await getRoomService().list(params);
+        const response = await listRoomsUseCase.execute(params);
         if (!cancelled) {
           setResult(response);
         }
@@ -48,7 +49,9 @@ export function useRoomsList(params: ListQueryParams): UseRoomsListResult {
     return () => {
       cancelled = true;
     };
-  }, [params.page, params.limit, params.search, params.propertyId]);
+    // Primitive deps avoid refetch loops when callers pass inline `{ page, limit }` objects.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- params fields tracked individually
+  }, [listRoomsUseCase, params.page, params.limit, params.search, params.propertyId]);
 
   return { result, loading, error };
 }

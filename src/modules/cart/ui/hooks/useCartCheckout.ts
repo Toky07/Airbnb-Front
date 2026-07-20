@@ -1,9 +1,12 @@
 import { type FormEvent, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../../auth/ui/hooks/useAuth';
-import type { PaymentIntentResult } from '../../../payment/core/types/payment.types';
+import type { PaymentSession } from '../../../payment/core/types/payment.types';
+import {
+  getCompleteCheckoutUseCase,
+  getInitiateCheckoutUseCase,
+} from '../../application/composition/cart.composition';
 import type { UpdateCartItemPayload } from '../../core/types/cart.types';
-import { getCartService } from '../../core/services/cart.service';
 import { formatCartPrice } from '../../core/types/cart.types';
 import { useCart } from './useCart';
 
@@ -13,12 +16,14 @@ export function useCartCheckout() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { cart, isLoading, removeItem, updateItem, syncCart } = useCart();
+  const initiateCheckoutUseCase = useMemo(() => getInitiateCheckoutUseCase(), []);
+  const completeCheckoutUseCase = useMemo(() => getCompleteCheckoutUseCase(), []);
   const [step, setStep] = useState<CheckoutStep>('review');
   const [loading, setLoading] = useState(false);
   const [removingId, setRemovingId] = useState<number | null>(null);
   const [updatingId, setUpdatingId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [paymentIntent, setPaymentIntent] = useState<PaymentIntentResult | null>(null);
+  const [paymentSession, setPaymentSession] = useState<PaymentSession | null>(null);
 
   const totalLabel = useMemo(
     () => formatCartPrice(cart?.totalPrice ?? 0),
@@ -55,13 +60,8 @@ export function useCartCheckout() {
       return;
     }
 
-    if (!cart?.items.length) {
-      setError('Votre panier est vide.');
-      return;
-    }
-
     setLoading(true);
-    const result = await getCartService().checkout();
+    const result = await initiateCheckoutUseCase.execute(cart);
     setLoading(false);
 
     if (!result.success) {
@@ -69,16 +69,16 @@ export function useCartCheckout() {
       return;
     }
 
-    setPaymentIntent(result.intent);
+    setPaymentSession(result.session);
     setStep('payment');
   };
 
   const handlePaymentSuccess = async () => {
-    if (!paymentIntent) {
+    if (!paymentSession) {
       return;
     }
 
-    const result = await getCartService().completeCheckout(paymentIntent.paymentId);
+    const result = await completeCheckoutUseCase.execute(paymentSession.paymentId);
 
     if (result.success) {
       syncCart(result.cart);
@@ -95,7 +95,7 @@ export function useCartCheckout() {
     removingId,
     updatingId,
     error,
-    paymentIntent,
+    paymentSession,
     totalLabel,
     itemCount,
     isAuthenticated,

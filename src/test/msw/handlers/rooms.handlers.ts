@@ -1,0 +1,43 @@
+import { http, HttpResponse } from 'msw';
+import { sampleRoomApi, sampleRoomsListApi } from '../../fixtures/rooms-api.fixtures';
+import { apiUrl } from '../api-base-url';
+
+export const roomsHandlers = [
+  http.get(apiUrl('/rooms'), ({ request }) => {
+    const url = new URL(request.url);
+    const search = url.searchParams.get('search')?.toLowerCase() ?? '';
+
+    if (!search) {
+      return HttpResponse.json(sampleRoomsListApi);
+    }
+
+    const matchesSearch = sampleRoomApi.name.toLowerCase().includes(search)
+      || sampleRoomApi.property.city.toLowerCase().includes(search);
+
+    return HttpResponse.json({
+      data: matchesSearch ? [sampleRoomApi] : [],
+      meta: {
+        page: 1,
+        limit: 10,
+        total: matchesSearch ? 1 : 0,
+        totalPages: matchesSearch ? 1 : 0,
+      },
+    });
+  }),
+
+  http.get(apiUrl('/rooms/by-slug/:slug'), ({ params }) => {
+    if (params.slug === sampleRoomApi.slug) {
+      return HttpResponse.json(sampleRoomApi);
+    }
+
+    return new HttpResponse(null, { status: 404 });
+  }),
+
+  http.get(apiUrl('/rooms/:id'), ({ params }) => {
+    if (String(params.id) === String(sampleRoomApi.id)) {
+      return HttpResponse.json(sampleRoomApi);
+    }
+
+    return new HttpResponse(null, { status: 404 });
+  }),
+];

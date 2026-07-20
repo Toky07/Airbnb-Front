@@ -1,0 +1,34 @@
+export const sampleRoomApi = {
+  id: 1,
+  name: 'Suite vue mer',
+  slug: 'suite-vue-mer',
+  description: 'Belle chambre',
+  pricePerNight: 120,
+  maxGuests: 2,
+  bedrooms: 1,
+  bathrooms: 1,
+  beds: 1,
+  quantity: 1,
+  size: 35,
+  status: 'available',
+  propertyId: 1,
+  property: {
+    id: 1,
+    name: 'Hôtel Azur',
+    city: 'Nice',
+    country: 'France',
+    address: '1 Promenade',
+    description: '',
+    checkInTime: '15:00',
+    checkOutTime: '11:00',
+    propertyType: null,
+  },
+  roomTypeId: null,
+  roomType: null,
+  images: [],
+};
+
+export const sampleRoomsListApi = {
+  data: [sampleRoomApi],
+  meta: { page: 1, limit: 10, total: 1, totalPages: 1 },
+};

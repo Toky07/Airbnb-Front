@@ -1,14 +1,38 @@
 import { useMemo } from 'react';
-import { Link, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 import PublicPageLayout from '../../../site/ui/components/PublicPageLayout';
-import { PageContainer } from '../../../../shared/ui';
+import { EmptyState, InlineErrorPanel, PageContainer, RoomGridSkeleton } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import { DEFAULT_PAGE_SIZE } from '../../../../shared/pagination/types';
 import { useRoomsList } from '../hooks/useRoomsList';
 import RoomGrid from '../components/RoomGrid';
 import RoomPagination from '../components/RoomPagination';
 import RoomSearchBar from '../components/RoomSearchBar';
+import RoomTypeFilterBar from '../components/search/RoomTypeFilterBar';
+import SearchResultsHeader from '../components/search/SearchResultsHeader';
 import type { RoomListItem } from '../../core/types/room.types';
+
+function useSearchFilters(rooms: RoomListItem[], roomType: string) {
+  const roomTypes = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const room of rooms) {
+      if (room.roomType) {
+        map.set(room.roomType.slug, room.roomType.name);
+      }
+    }
+    return Array.from(map.entries()).map(([slug, name]) => ({ slug, name }));
+  }, [rooms]);
+
+  const filteredRooms = useMemo(() => {
+    let next = rooms;
+    if (roomType) {
+      next = next.filter((room) => room.roomType?.slug === roomType);
+    }
+    return next.filter((room) => room.status === 'available');
+  }, [rooms, roomType]);
+
+  return { roomTypes, filteredRooms };
+}
 
 const SearchPage = () => {
   usePageTitle('Recherche');
@@ -23,25 +47,7 @@ const SearchPage = () => {
     search: query || undefined,
   });
 
-  const roomTypes = useMemo(() => {
-    const map = new Map<string, string>();
-    for (const room of result.data) {
-      if (room.roomType) {
-        map.set(room.roomType.slug, room.roomType.name);
-      }
-    }
-    return Array.from(map.entries()).map(([slug, name]) => ({ slug, name }));
-  }, [result.data]);
-
-  const filteredRooms = useMemo(() => {
-    let rooms: RoomListItem[] = result.data;
-
-    if (roomType) {
-      rooms = rooms.filter((room) => room.roomType?.slug === roomType);
-    }
-
-    return rooms.filter((room) => room.status === 'available');
-  }, [result.data, roomType]);
+  const { roomTypes, filteredRooms } = useSearchFilters(result.data, roomType);
 
   const allTypesSearch = useMemo(() => {
     const params = new URLSearchParams();
@@ -52,6 +58,16 @@ const SearchPage = () => {
     return queryString ? `/search?${queryString}` : '/search';
   }, [query]);
 
+  const buildTypeHref = (slug: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (query) {
+      params.set('q', query);
+    }
+    params.set('type', slug);
+    params.delete('page');
+    return `/search?${params.toString()}`;
+  };
+
   return (
     <PublicPageLayout>
       <PageContainer className="py-8 md:py-12">
@@ -60,83 +76,28 @@ const SearchPage = () => {
         </div>
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900">
-              {query ? `Résultats pour « ${query} »` : 'Tous les logements'}
-            </h1>
-            <p className="mt-1 text-sm text-slate-500">
-              {loading
-                ? 'Chargement…'
-                : `${result.meta.total} logement${result.meta.total > 1 ? 's' : ''} trouvé${result.meta.total > 1 ? 's' : ''}`}
-            </p>
-          </div>
+          <SearchResultsHeader query={query} loading={loading} total={result.meta.total} />
         </div>
 
-        {roomTypes.length > 0 ? (
-          <div className="mt-6 flex flex-wrap gap-2">
-            <Link
-              to={allTypesSearch}
-              className={[
-                'rounded-full px-4 py-2 text-sm font-medium transition',
-                !roomType
-                  ? 'bg-slate-900 text-white'
-                  : 'border border-slate-200 text-slate-600 hover:border-slate-300',
-              ].join(' ')}
-            >
-              Tous
-            </Link>
-            {roomTypes.map((type) => {
-              const params = new URLSearchParams(searchParams);
-              if (query) {
-                params.set('q', query);
-              }
-              params.set('type', type.slug);
-              params.delete('page');
-              return (
-                <Link
-                  key={type.slug}
-                  to={`/search?${params.toString()}`}
-                  className={[
-                    'rounded-full px-4 py-2 text-sm font-medium transition',
-                    roomType === type.slug
-                      ? 'bg-slate-900 text-white'
-                      : 'border border-slate-200 text-slate-600 hover:border-slate-300',
-                  ].join(' ')}
-                >
-                  {type.name}
-                </Link>
-              );
-            })}
-          </div>
-        ) : null}
+        <RoomTypeFilterBar
+          roomTypes={roomTypes}
+          activeType={roomType}
+          allTypesHref={allTypesSearch}
+          buildTypeHref={buildTypeHref}
+        />
 
-        {loading ? (
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {Array.from({ length: 8 }).map((_, index) => (
-              <div key={index} className="animate-pulse overflow-hidden rounded-2xl border border-slate-200">
-                <div className="aspect-[4/3] bg-slate-100" />
-                <div className="space-y-3 p-4">
-                  <div className="h-4 rounded bg-slate-100" />
-                  <div className="h-3 w-2/3 rounded bg-slate-100" />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : null}
+        {loading ? <div className="mt-10"><RoomGridSkeleton variant="search" /></div> : null}
 
         {!loading && error ? (
-          <div className="mt-10 rounded-2xl border border-red-200 bg-red-50 px-6 py-8 text-center text-red-700">
-            {error}
-          </div>
+          <InlineErrorPanel message={error} className="mt-10" />
         ) : null}
 
         {!loading && !error && filteredRooms.length === 0 ? (
-          <div className="mt-10 rounded-2xl border border-dashed border-slate-300 px-6 py-16 text-center">
-            <p className="text-lg font-medium text-slate-700">Aucun résultat</p>
-            <p className="mt-2 text-sm text-slate-500">
-              Essayez un autre mot-clé ou parcourez tous les logements.
-            </p>
-          </div>
+          <EmptyState
+            className="mt-10"
+            title="Aucun résultat"
+            description="Essayez un autre mot-clé ou parcourez tous les logements."
+          />
         ) : null}
 
         {!loading && !error && filteredRooms.length > 0 ? (

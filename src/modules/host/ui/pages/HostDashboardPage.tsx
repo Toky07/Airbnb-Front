@@ -1,7 +1,6 @@
-import { faBed, faCalendarCheck, faChartLine, faEuroSign, faHotel, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router';
-import { Button } from '../../../../shared/ui';
+import { Button, PageSkeleton } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import HostDashboardStatCard from '../components/HostDashboardStatCard';
 import HostRecentActivityList from '../components/HostRecentActivityList';
@@ -13,9 +12,7 @@ const HostDashboardPage = () => {
   const { profile, roomsCount, reservationStats, recentActivity, loading } = useHostDashboard();
 
   if (loading) {
-    return (
-      <div className="h-64 animate-pulse rounded-3xl border border-slate-100 bg-white p-8 shadow-sm" />
-    );
+    return <PageSkeleton className="h-64" />;
   }
 
   const properties = profile?.properties ?? [];
@@ -49,7 +46,7 @@ const HostDashboardPage = () => {
               ) : null}
             </div>
             <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-brand">
-              <FontAwesomeIcon icon={faHotel} className="h-5 w-5" />
+              <FontAwesomeIcon icon="hotel" className="h-5 w-5" />
             </span>
           </div>
           <Link to="/host/property" className="mt-8 inline-block">
@@ -68,12 +65,12 @@ const HostDashboardPage = () => {
               <p className="mt-3 font-serif text-3xl font-bold text-slate-900">{roomsCount}</p>
             </div>
             <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-700">
-              <FontAwesomeIcon icon={faBed} className="h-5 w-5" />
+              <FontAwesomeIcon icon="bed" className="h-5 w-5" />
             </span>
           </div>
           <Link to="/host/property" className="mt-8 inline-block">
             <Button variant="secondary" size="sm" disabled={!hasProperties}>
-              <FontAwesomeIcon icon={faPlus} className="mr-2 h-3.5 w-3.5" />
+              <FontAwesomeIcon icon="plus" className="mr-2 h-3.5 w-3.5" />
               Voir les établissements
             </Button>
           </Link>
@@ -101,7 +98,7 @@ const HostDashboardPage = () => {
               )}
             </div>
             <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
-              <FontAwesomeIcon icon={faCalendarCheck} className="h-5 w-5" />
+              <FontAwesomeIcon icon="calendar-check" className="h-5 w-5" />
             </span>
           </div>
           <Link to="/host/reservations" className="mt-8 inline-block">
@@ -112,7 +109,7 @@ const HostDashboardPage = () => {
         </div>
 
         <HostDashboardStatCard
-          icon={faChartLine}
+          icon="chart-line"
           label="Taux d'occupation"
           value={`${Math.round(reservationStats?.occupancyRate ?? 0)} %`}
           accent="bg-sky-50 text-sky-600"
@@ -138,7 +135,7 @@ const HostDashboardPage = () => {
         </section>
 
         <HostDashboardStatCard
-          icon={faEuroSign}
+          icon="euro-sign"
           label="Revenus du mois"
           value={formatHostCurrency(reservationStats?.monthlyRevenue ?? 0)}
           accent="bg-amber-50 text-amber-600"

@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { useAuth } from '../../../auth/ui/hooks/useAuth';
-import { Button, ImageFileInput, PageContainer } from '../../../../shared/ui';
+import { Button, FormErrorAlert, ImageFileInput, PageContainer, TextField } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import { getUserDisplayName, getUserInitials } from '../../../../shared/utils/user-display';
 import { useProfileForm } from '../hooks/useProfileForm';
@@ -50,48 +50,29 @@ const ProfilePage = () => {
             />
           </div>
 
-          {error ? (
-            <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-              {error}
-            </div>
-          ) : null}
+          {error ? <FormErrorAlert message={error} className="mb-6" /> : null}
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Prénom</span>
-              <input
-                value={form.firstName}
-                onChange={(event) => update('firstName', event.target.value)}
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-                required
-              />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Nom</span>
-              <input
-                value={form.lastName}
-                onChange={(event) => update('lastName', event.target.value)}
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-                required
-              />
-            </label>
-            <label className="block sm:col-span-2">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Email</span>
-              <input
-                value={email ?? ''}
-                disabled
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500"
-              />
-            </label>
-            <label className="block sm:col-span-2">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Téléphone</span>
-              <input
-                value={form.phoneNumber}
-                onChange={(event) => update('phoneNumber', event.target.value)}
-                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-                required
-              />
-            </label>
+            <TextField
+              label="Prénom"
+              value={form.firstName}
+              onChange={(event) => update('firstName', event.target.value)}
+              required
+            />
+            <TextField
+              label="Nom"
+              value={form.lastName}
+              onChange={(event) => update('lastName', event.target.value)}
+              required
+            />
+            <TextField label="Email" value={email ?? ''} disabled fullWidth />
+            <TextField
+              label="Téléphone"
+              value={form.phoneNumber}
+              onChange={(event) => update('phoneNumber', event.target.value)}
+              required
+              fullWidth
+            />
           </div>
 
           <div className="mt-8 flex flex-wrap gap-3">

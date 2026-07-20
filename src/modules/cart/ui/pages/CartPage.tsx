@@ -17,7 +17,7 @@ const CartPage = () => {
     removingId,
     updatingId,
     error,
-    paymentIntent,
+    paymentSession,
     totalLabel,
     itemCount,
     isAuthenticated,
@@ -48,10 +48,10 @@ const CartPage = () => {
     );
   }
 
-  if (step === 'payment' && paymentIntent) {
+  if (step === 'payment' && paymentSession) {
     return (
       <CartPaymentView
-        paymentIntent={paymentIntent}
+        paymentSession={paymentSession}
         onSuccess={handlePaymentSuccess}
         onCancel={() => setStep('review')}
       />

@@ -1,4 +1,3 @@
-import { faArrowRight, faHotel } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router';
 import type { HostProperty } from '../../core/types/host.types';
@@ -43,7 +42,7 @@ const HostPropertiesTable = ({ properties }: HostPropertiesTableProps) => (
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-slate-400">
-                        <FontAwesomeIcon icon={faHotel} className="h-4 w-4" />
+                        <FontAwesomeIcon icon="hotel" className="h-4 w-4" />
                       </div>
                     )}
                   </div>
@@ -74,7 +73,7 @@ const HostPropertiesTable = ({ properties }: HostPropertiesTableProps) => (
                   className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800"
                 >
                   Gérer
-                  <FontAwesomeIcon icon={faArrowRight} className="h-3 w-3" />
+                  <FontAwesomeIcon icon="arrow-right" className="h-3 w-3" />
                 </Link>
               </HostDataTableCell>
             </HostDataTableRow>

@@ -1,10 +1,11 @@
-import { type FormEvent, useEffect, useState } from 'react';
+import { type FormEvent, useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../../../auth/ui/hooks/useAuth';
-import { getProfileService } from '../../core/services/profile.service';
+import { getUpdateProfileUseCase } from '../../application/composition/account.composition';
 import { useNotification } from '../../../../shared/notifications';
 
 export function useProfileForm() {
   const { session, refreshSession } = useAuth();
+  const updateProfileUseCase = useMemo(() => getUpdateProfileUseCase(), []);
   const { success: notifySuccess } = useNotification();
   const [form, setForm] = useState({
     firstName: '',
@@ -37,7 +38,7 @@ export function useProfileForm() {
     setSaving(true);
     setError(null);
 
-    const result = await getProfileService().updateProfile({
+    const result = await updateProfileUseCase.execute({
       ...form,
       avatarFile,
     });

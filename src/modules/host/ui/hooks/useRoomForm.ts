@@ -1,6 +1,12 @@
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { getHostAmenityService } from '../../../amenity/core/services/host-amenity.service';
-import { getHostService } from '../../core/services/host.service';
+import {
+  getListRoomAmenitiesUseCase,
+  getSyncRoomAmenitiesUseCase,
+} from '../../../amenity/application/composition/host-amenity.composition';
+import {
+  getCreateHostRoomUseCase,
+  getUpdateHostRoomUseCase,
+} from '../../application/room/composition/host-room.composition';
 import type { RoomFormPayload } from '../../core/types/host.types';
 import type { RoomListItem } from '../../../rooms/core/types/room.types';
 import { notifyMessages, useNotification } from '../../../../shared/notifications';
@@ -16,6 +22,10 @@ type UseRoomFormOptions = {
 };
 
 export function useRoomForm({ propertyId, onSaved }: UseRoomFormOptions) {
+  const createHostRoomUseCase = useMemo(() => getCreateHostRoomUseCase(), []);
+  const updateHostRoomUseCase = useMemo(() => getUpdateHostRoomUseCase(), []);
+  const listRoomAmenitiesUseCase = useMemo(() => getListRoomAmenitiesUseCase(), []);
+  const syncRoomAmenitiesUseCase = useMemo(() => getSyncRoomAmenitiesUseCase(), []);
   const [showForm, setShowForm] = useState(false);
   const [editingRoom, setEditingRoom] = useState<RoomListItem | null>(null);
   const [form, setForm] = useState<RoomFormPayload>(emptyRoomForm);
@@ -53,15 +63,9 @@ export function useRoomForm({ propertyId, onSaved }: UseRoomFormOptions) {
     let cancelled = false;
 
     async function loadAmenities() {
-      try {
-        const assigned = await getHostAmenityService().listForRoom(propertyId, editingRoom!.id);
-        if (!cancelled) {
-          setAmenityIds(assigned.map((item) => item.id));
-        }
-      } catch {
-        if (!cancelled) {
-          setAmenityIds([]);
-        }
+      const assigned = await listRoomAmenitiesUseCase.execute(propertyId, editingRoom!.id);
+      if (!cancelled) {
+        setAmenityIds(assigned.success ? assigned.amenities.map((item) => item.id) : []);
       }
     }
 
@@ -70,7 +74,7 @@ export function useRoomForm({ propertyId, onSaved }: UseRoomFormOptions) {
     return () => {
       cancelled = true;
     };
-  }, [showForm, editingRoom, propertyId]);
+  }, [showForm, editingRoom, propertyId, listRoomAmenitiesUseCase]);
 
   const update = useCallback(
     <K extends keyof RoomFormPayload>(key: K, value: RoomFormPayload[K]) => {
@@ -79,7 +83,7 @@ export function useRoomForm({ propertyId, onSaved }: UseRoomFormOptions) {
     [],
   );
 
-  const existingImages = form.keptImagePaths ?? [];
+  const existingImages = useMemo(() => form.keptImagePaths ?? [], [form.keptImagePaths]);
 
   const removeExistingImage = useCallback(
     (imagePath: string) => {
@@ -97,10 +101,9 @@ export function useRoomForm({ propertyId, onSaved }: UseRoomFormOptions) {
       setSaving(true);
       setError(null);
 
-      const hostService = getHostService();
       const result = editingRoom
-        ? await hostService.updateRoom(propertyId, editingRoom.id, form)
-        : await hostService.createRoom(propertyId, form);
+        ? await updateHostRoomUseCase.execute(propertyId, editingRoom.id, form)
+        : await createHostRoomUseCase.execute(propertyId, form);
 
       setSaving(false);
 
@@ -111,13 +114,15 @@ export function useRoomForm({ propertyId, onSaved }: UseRoomFormOptions) {
 
       const savedRoom = result.room;
       if (savedRoom) {
-        try {
-          await getHostAmenityService().syncForRoom(propertyId, savedRoom.id, amenityIds);
-        } catch (syncError) {
+        const syncResult = await syncRoomAmenitiesUseCase.execute(
+          propertyId,
+          savedRoom.id,
+          amenityIds,
+        );
+        if (!syncResult.success) {
           setError(
-            syncError instanceof Error
-              ? syncError.message
-              : 'Chambre enregistrée, mais les équipements n’ont pas pu être mis à jour.',
+            syncResult.error ??
+              'Chambre enregistrée, mais les équipements n’ont pas pu être mis à jour.',
           );
           return;
         }
@@ -131,7 +136,17 @@ export function useRoomForm({ propertyId, onSaved }: UseRoomFormOptions) {
       );
       await onSaved();
     },
-    [amenityIds, editingRoom, form, notifySuccess, onSaved, propertyId],
+    [
+      amenityIds,
+      createHostRoomUseCase,
+      editingRoom,
+      form,
+      notifySuccess,
+      onSaved,
+      propertyId,
+      syncRoomAmenitiesUseCase,
+      updateHostRoomUseCase,
+    ],
   );
 
   return {
