@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { getRoomService } from '../../core/services/room.service';
+import { useEffect, useMemo, useState } from 'react';
+import { getGetRoomBySlugUseCase } from '../../application/composition/room.composition';
 import type { RoomListItem } from '../../core/types/room.types';
 
 type UseRoomDetailResult = {
@@ -9,6 +9,7 @@ type UseRoomDetailResult = {
 };
 
 export function useRoomDetail(slug: string | null): UseRoomDetailResult {
+  const getRoomBySlugUseCase = useMemo(() => getGetRoomBySlugUseCase(), []);
   const [room, setRoom] = useState<RoomListItem | null>(null);
   const [loading, setLoading] = useState(Boolean(slug));
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +29,7 @@ export function useRoomDetail(slug: string | null): UseRoomDetailResult {
       setError(null);
 
       try {
-        const data = await getRoomService().getBySlug(slug as string);
+        const data = await getRoomBySlugUseCase.execute(slug as string);
         if (!cancelled) {
           setRoom(data);
           if (!data) {
@@ -52,7 +53,7 @@ export function useRoomDetail(slug: string | null): UseRoomDetailResult {
     return () => {
       cancelled = true;
     };
-  }, [slug]);
+  }, [getRoomBySlugUseCase, slug]);
 
   return { room, loading, error };
 }
