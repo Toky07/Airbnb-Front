@@ -49,7 +49,7 @@ export function useRoomsList(params: ListQueryParams): UseRoomsListResult {
     return () => {
       cancelled = true;
     };
-  }, [listRoomsUseCase, params.page, params.limit, params.search, params.propertyId]);
+  }, [listRoomsUseCase, params]);
 
   return { result, loading, error };
 }

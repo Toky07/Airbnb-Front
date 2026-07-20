@@ -19,7 +19,6 @@ type UseAddToCartOptions = {
 export function useAddToCart({ roomId, pricePerNight, maxGuests, unavailableDates = [] }: UseAddToCartOptions) {
   const navigate = useNavigate();
   const { addReservation } = useCart();
-  const unavailableKey = JSON.stringify(unavailableDates);
   const [form, setForm] = useState<BookingFormValues>(() => ({
     ...getFirstAvailableDates(unavailableDates),
     guestCount: 1,
@@ -43,7 +42,7 @@ export function useAddToCart({ roomId, pricePerNight, maxGuests, unavailableDate
     });
     setAdded(false);
     setError(null);
-  }, [roomId, unavailableKey]);
+  }, [roomId, unavailableDates]);
 
   const preview = useMemo(
     () => calculateStayAmountPreview(form.startDate, form.endDate, pricePerNight),

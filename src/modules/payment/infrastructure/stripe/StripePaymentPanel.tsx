@@ -19,7 +19,7 @@ const StripePaymentPanel = ({ session, onSuccess, onCancel }: PaymentPanelProps)
   const stripeSession = isStripePaymentSession(session) ? session : null;
   const stripePromise = useMemo(
     () => (stripeSession ? getStripePromise(stripeSession.publishableKey) : null),
-    [stripeSession?.publishableKey],
+    [stripeSession],
   );
 
   if (!stripeSession) {

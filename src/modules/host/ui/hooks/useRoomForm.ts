@@ -83,7 +83,7 @@ export function useRoomForm({ propertyId, onSaved }: UseRoomFormOptions) {
     [],
   );
 
-  const existingImages = form.keptImagePaths ?? [];
+  const existingImages = useMemo(() => form.keptImagePaths ?? [], [form.keptImagePaths]);
 
   const removeExistingImage = useCallback(
     (imagePath: string) => {
