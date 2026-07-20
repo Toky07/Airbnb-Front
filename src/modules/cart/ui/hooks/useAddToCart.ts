@@ -9,6 +9,8 @@ import {
 import { isBookingRangeAvailable } from '../../../reservation/core/utils/date-range-availability';
 import type { UnavailableDateRange } from '../../../rooms/core/types/room.types';
 
+const EMPTY_UNAVAILABLE_DATES: UnavailableDateRange[] = [];
+
 type UseAddToCartOptions = {
   roomId: number;
   pricePerNight: number;
@@ -16,9 +18,15 @@ type UseAddToCartOptions = {
   unavailableDates?: UnavailableDateRange[];
 };
 
-export function useAddToCart({ roomId, pricePerNight, maxGuests, unavailableDates = [] }: UseAddToCartOptions) {
+export function useAddToCart({
+  roomId,
+  pricePerNight,
+  maxGuests,
+  unavailableDates = EMPTY_UNAVAILABLE_DATES,
+}: UseAddToCartOptions) {
   const navigate = useNavigate();
   const { addReservation } = useCart();
+  const unavailableKey = JSON.stringify(unavailableDates);
   const [form, setForm] = useState<BookingFormValues>(() => ({
     ...getFirstAvailableDates(unavailableDates),
     guestCount: 1,
@@ -42,7 +50,9 @@ export function useAddToCart({ roomId, pricePerNight, maxGuests, unavailableDate
     });
     setAdded(false);
     setError(null);
-  }, [roomId, unavailableDates]);
+    // unavailableKey serializes unavailableDates to avoid effect churn on new array references.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- unavailableKey tracks unavailableDates content
+  }, [roomId, unavailableKey]);
 
   const preview = useMemo(
     () => calculateStayAmountPreview(form.startDate, form.endDate, pricePerNight),

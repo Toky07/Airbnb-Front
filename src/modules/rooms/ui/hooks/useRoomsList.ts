@@ -49,7 +49,9 @@ export function useRoomsList(params: ListQueryParams): UseRoomsListResult {
     return () => {
       cancelled = true;
     };
-  }, [listRoomsUseCase, params]);
+    // Primitive deps avoid refetch loops when callers pass inline `{ page, limit }` objects.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- params fields tracked individually
+  }, [listRoomsUseCase, params.page, params.limit, params.search, params.propertyId]);
 
   return { result, loading, error };
 }
