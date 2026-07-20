@@ -1,11 +1,18 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { Route, Routes } from 'react-router';
 import { describe, expect, it } from 'vitest';
-import { renderWithRoute } from '../../../../test/render-with-providers';
+import { renderWithProviders, renderWithRoute } from '../../../../test/render-with-providers';
 import LoginPage from './LoginPage';
 
 describe('LoginPage (integration)', () => {
   it('connecte l’utilisateur via le formulaire et POST /auth/login', async () => {
-    renderWithRoute('/login', <LoginPage />, { routerInitialEntries: ['/login'] });
+    await renderWithProviders(
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<div>Accueil</div>} />
+      </Routes>,
+      { routerInitialEntries: ['/login'] },
+    );
 
     fireEvent.change(screen.getByLabelText(/email/i), {
       target: { value: 'user@test.com' },
@@ -21,7 +28,7 @@ describe('LoginPage (integration)', () => {
   });
 
   it('affiche l’erreur API lorsque les identifiants sont invalides', async () => {
-    renderWithRoute('/login', <LoginPage />, { routerInitialEntries: ['/login'] });
+    await renderWithRoute('/login', <LoginPage />, { routerInitialEntries: ['/login'] });
 
     fireEvent.change(screen.getByLabelText(/email/i), {
       target: { value: 'user@test.com' },

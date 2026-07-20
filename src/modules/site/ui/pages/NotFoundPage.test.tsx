@@ -27,8 +27,8 @@ vi.mock('../../../cart/application/composition/cart.composition', () => ({
 }));
 
 describe('NotFoundPage', () => {
-  it('affiche le message 404 et les liens de navigation', () => {
-    renderWithProviders(<NotFoundPage />);
+  it('affiche le message 404 et les liens de navigation', async () => {
+    await renderWithProviders(<NotFoundPage />);
 
     expect(screen.getByRole('heading', { name: 'Page introuvable' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: "Retour à l'accueil" })).toHaveAttribute(

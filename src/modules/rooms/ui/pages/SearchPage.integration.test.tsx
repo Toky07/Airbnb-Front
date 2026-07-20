@@ -6,7 +6,7 @@ import SearchPage from './SearchPage';
 
 describe('SearchPage (integration)', () => {
   it('affiche les résultats via GET /rooms', async () => {
-    renderWithRoute('/search', <SearchPage />, { routerInitialEntries: ['/search'] });
+    await renderWithRoute('/search', <SearchPage />, { routerInitialEntries: ['/search'] });
 
     await waitFor(() => {
       expect(screen.getByText(sampleRoomApi.name)).toBeInTheDocument();
@@ -14,7 +14,7 @@ describe('SearchPage (integration)', () => {
   });
 
   it('filtre les résultats selon le paramètre de recherche', async () => {
-    renderWithRoute('/search', <SearchPage />, {
+    await renderWithRoute('/search', <SearchPage />, {
       routerInitialEntries: ['/search?q=Nice'],
     });
 

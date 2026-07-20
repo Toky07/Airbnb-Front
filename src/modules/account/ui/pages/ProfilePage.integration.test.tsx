@@ -8,7 +8,7 @@ describe('ProfilePage (integration)', () => {
   it('préremplit le formulaire via GET /auth/me', async () => {
     localStorage.setItem('auth_token', 'jwt-token');
 
-    renderWithRoute('/account/profile', <ProfilePage />, {
+    await renderWithRoute('/account/profile', <ProfilePage />, {
       routerInitialEntries: ['/account/profile'],
     });
 
@@ -21,7 +21,7 @@ describe('ProfilePage (integration)', () => {
   it('met à jour le profil via PUT /auth/profile', async () => {
     localStorage.setItem('auth_token', 'jwt-token');
 
-    renderWithRoute('/account/profile', <ProfilePage />, {
+    await renderWithRoute('/account/profile', <ProfilePage />, {
       routerInitialEntries: ['/account/profile'],
     });
 

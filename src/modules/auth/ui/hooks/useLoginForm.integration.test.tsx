@@ -1,13 +1,14 @@
 import { type FormEvent } from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { createAppWrapper } from '../../../../test/render-with-providers';
+import { createAppWrapper, waitForProvidersReady } from '../../../../test/render-with-providers';
 import { useLoginForm } from './useLoginForm';
 
 describe('useLoginForm (integration)', () => {
   it('connecte l’utilisateur via POST /auth/login et GET /auth/me', async () => {
     const wrapper = createAppWrapper({ routerInitialEntries: ['/login'] });
     const { result } = renderHook(() => useLoginForm(), { wrapper });
+    await waitForProvidersReady();
 
     act(() => {
       result.current.setEmail('user@test.com');
@@ -26,6 +27,7 @@ describe('useLoginForm (integration)', () => {
   it('affiche une erreur API lorsque les identifiants sont invalides', async () => {
     const wrapper = createAppWrapper({ routerInitialEntries: ['/login'] });
     const { result } = renderHook(() => useLoginForm(), { wrapper });
+    await waitForProvidersReady();
 
     act(() => {
       result.current.setEmail('user@test.com');

@@ -2,7 +2,7 @@ import { type FormEvent } from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { getCartState } from '../../../../test/msw/state/cart.state';
-import { createAppWrapper } from '../../../../test/render-with-providers';
+import { createAppWrapper, waitForProvidersReady } from '../../../../test/render-with-providers';
 import { useAddToCart } from './useAddToCart';
 
 describe('useAddToCart (integration)', () => {
@@ -17,6 +17,7 @@ describe('useAddToCart (integration)', () => {
         }),
       { wrapper },
     );
+    await waitForProvidersReady();
 
     await waitFor(() => {
       expect(result.current.form.startDate).not.toBe('');

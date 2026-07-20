@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { sampleCartApi } from '../../../../test/fixtures/cart-api.fixtures';
 import { apiUrl } from '../../../../test/msw/api-base-url';
 import { server } from '../../../../test/msw/server';
-import { createAppWrapper } from '../../../../test/render-with-providers';
+import { createAppWrapper, waitForProvidersReady } from '../../../../test/render-with-providers';
 import { useCartCheckout } from './useCartCheckout';
 
 describe('useCartCheckout (integration)', () => {
@@ -15,6 +15,7 @@ describe('useCartCheckout (integration)', () => {
 
     const wrapper = createAppWrapper({ routerInitialEntries: ['/cart'] });
     const { result } = renderHook(() => useCartCheckout(), { wrapper });
+    await waitForProvidersReady();
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);

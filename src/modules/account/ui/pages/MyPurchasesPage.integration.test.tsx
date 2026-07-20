@@ -10,7 +10,7 @@ describe('MyPurchasesPage (integration)', () => {
   it('affiche les réservations via GET /reservations/me', async () => {
     localStorage.setItem('auth_token', 'jwt-token');
 
-    renderWithRoute('/account/purchases', <MyPurchasesPage />, {
+    await renderWithRoute('/account/purchases', <MyPurchasesPage />, {
       routerInitialEntries: ['/account/purchases'],
     });
 
@@ -24,7 +24,7 @@ describe('MyPurchasesPage (integration)', () => {
     localStorage.setItem('auth_token', 'jwt-token');
     server.use(emptyReservationsHandler());
 
-    renderWithRoute('/account/purchases', <MyPurchasesPage />, {
+    await renderWithRoute('/account/purchases', <MyPurchasesPage />, {
       routerInitialEntries: ['/account/purchases'],
     });
 

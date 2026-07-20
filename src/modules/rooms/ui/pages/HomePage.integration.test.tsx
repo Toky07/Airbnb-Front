@@ -5,7 +5,7 @@ import HomePage from './HomePage';
 
 describe('HomePage (integration)', () => {
   it('affiche les logements via la stack HTTP réelle et MSW', async () => {
-    renderWithProviders(<HomePage />);
+    await renderWithProviders(<HomePage />);
 
     await waitFor(() => {
       expect(screen.getByText('Suite vue mer')).toBeInTheDocument();

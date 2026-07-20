@@ -6,7 +6,7 @@ import RoomDetailPage from './RoomDetailPage';
 
 describe('RoomDetailPage (integration)', () => {
   it('charge le logement via GET /rooms/by-slug/:slug', async () => {
-    renderWithRoute('/rooms/:slug', <RoomDetailPage />, {
+    await renderWithRoute('/rooms/:slug', <RoomDetailPage />, {
       routerInitialEntries: [`/rooms/${sampleRoomApi.slug}`],
     });
 
@@ -18,7 +18,7 @@ describe('RoomDetailPage (integration)', () => {
   });
 
   it('affiche une erreur lorsque le slug est inconnu', async () => {
-    renderWithRoute('/rooms/:slug', <RoomDetailPage />, {
+    await renderWithRoute('/rooms/:slug', <RoomDetailPage />, {
       routerInitialEntries: ['/rooms/unknown-slug'],
     });
 

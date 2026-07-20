@@ -6,7 +6,7 @@ import CartPage from './CartPage';
 
 describe('CartPage (integration)', () => {
   it('affiche un panier vide après chargement via GET /cart', async () => {
-    renderWithRoute('/cart', <CartPage />, { routerInitialEntries: ['/cart'] });
+    await renderWithRoute('/cart', <CartPage />, { routerInitialEntries: ['/cart'] });
 
     await waitFor(() => {
       expect(screen.getByText(/votre panier est vide/i)).toBeInTheDocument();
@@ -16,7 +16,7 @@ describe('CartPage (integration)', () => {
   it('affiche les articles du panier lorsque GET /cart retourne des items', async () => {
     loadCartWithItems();
 
-    renderWithRoute('/cart', <CartPage />, { routerInitialEntries: ['/cart'] });
+    await renderWithRoute('/cart', <CartPage />, { routerInitialEntries: ['/cart'] });
 
     await waitFor(() => {
       expect(screen.getByRole('heading', { name: 'Suite' })).toBeInTheDocument();
@@ -27,7 +27,7 @@ describe('CartPage (integration)', () => {
   it('retire un article via DELETE /cart/items/:id', async () => {
     loadCartWithItems();
 
-    renderWithRoute('/cart', <CartPage />, { routerInitialEntries: ['/cart'] });
+    await renderWithRoute('/cart', <CartPage />, { routerInitialEntries: ['/cart'] });
 
     await waitFor(() => {
       expect(screen.getByRole('button', { name: /retirer/i })).toBeInTheDocument();
