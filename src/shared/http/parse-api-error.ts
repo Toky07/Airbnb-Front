@@ -12,6 +12,18 @@ export function parseApiError(data: unknown, fallback: string): string {
   return fallback;
 }
 
+export function extractApiToken(data: unknown): string | null {
+  if (
+    data &&
+    typeof data === 'object' &&
+    typeof (data as Record<string, unknown>).token === 'string'
+  ) {
+    return (data as Record<string, unknown>).token as string;
+  }
+
+  return null;
+}
+
 export function isSafeInternalRedirect(path: string | null | undefined): path is string {
   return Boolean(path && path.startsWith('/') && !path.startsWith('//'));
 }

@@ -4,10 +4,9 @@ import { clearCartSessionId } from '../../../../shared/http/cart-session.storage
 import { canAccess } from '../../../../shared/permissions/permissions';
 import type { PermissionKey } from '../../../../shared/permissions/permissions';
 import {
-  getAuthService,
-  getAuthSessionService,
-} from '../../core/services/auth.service';
-import { mergeMeIntoSession } from '../../core/services/resolve-auth-session';
+  getLoadSessionUseCase,
+  getSessionStore,
+} from '../../application/composition/auth.composition';
 import {
   emptyAuthSession,
   type AuthSession,
@@ -19,47 +18,41 @@ type AuthProviderProps = {
 };
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const sessionService = useMemo(() => getAuthSessionService(), []);
-  const authService = useMemo(() => getAuthService(), []);
-  const [token, setToken] = useState<string | null>(() => sessionService.getToken());
+  const sessionStore = useMemo(() => getSessionStore(), []);
+  const loadSessionUseCase = useMemo(() => getLoadSessionUseCase(), []);
+  const [token, setToken] = useState<string | null>(() => sessionStore.getToken());
   const [session, setSession] = useState<AuthSession>(emptyAuthSession);
   const [isLoading, setIsLoading] = useState(true);
 
   const resolveSession = useCallback(
     async (nextToken: string | null): Promise<AuthSession> => {
-      if (!nextToken || sessionService.isTokenExpired(nextToken)) {
-        setSession(emptyAuthSession);
-        return emptyAuthSession;
-      }
-
-      const me = await authService.fetchMe();
-      const nextSession = mergeMeIntoSession(nextToken, me);
+      const nextSession = await loadSessionUseCase.execute(nextToken);
       setSession(nextSession);
       return nextSession;
     },
-    [authService, sessionService],
+    [loadSessionUseCase],
   );
 
   const refreshSession = useCallback(async () => {
-    const currentToken = sessionService.getToken();
+    const currentToken = sessionStore.getToken();
     setToken(currentToken);
     await resolveSession(currentToken);
-  }, [resolveSession, sessionService]);
+  }, [resolveSession, sessionStore]);
 
   const logout = useCallback(() => {
-    sessionService.clearSession();
+    sessionStore.clearToken();
     clearCartSessionId();
     setToken(null);
     setSession(emptyAuthSession);
-  }, [sessionService]);
+  }, [sessionStore]);
 
   const login = useCallback(
     async (nextToken: string): Promise<AuthSession> => {
-      sessionService.setSession(nextToken);
+      sessionStore.setToken(nextToken);
       setToken(nextToken);
       return resolveSession(nextToken);
     },
-    [resolveSession, sessionService],
+    [resolveSession, sessionStore],
   );
 
   useEffect(() => {
@@ -73,15 +66,12 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   }, [resolveSession, token]);
 
   useEffect(() => {
-    if (token && sessionService.isTokenExpired(token)) {
+    if (token && !sessionStore.isAuthenticated()) {
       logout();
     }
-  }, [token, sessionService, logout]);
+  }, [token, sessionStore, logout]);
 
-  const effectiveToken = token ?? sessionService.getToken();
-  const isAuthenticated = Boolean(
-    effectiveToken && !sessionService.isTokenExpired(effectiveToken),
-  );
+  const isAuthenticated = sessionStore.isAuthenticated();
 
   const value = useMemo(
     () => ({

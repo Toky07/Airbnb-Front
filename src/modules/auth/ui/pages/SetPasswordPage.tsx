@@ -1,72 +1,28 @@
-import { type FormEvent, useEffect, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router';
-import { getAuthService } from '../../core/services/auth.service';
+import { Link, useSearchParams } from 'react-router';
+import { useSetPasswordForm } from '../hooks/useSetPasswordForm';
 import { Button, PageContainer } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
-import { notifyMessages, useNotification } from '../../../../shared/notifications';
 
 const SetPasswordPage = () => {
   usePageTitle('Définir le mot de passe');
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token') ?? '';
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [email, setEmail] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [validating, setValidating] = useState(true);
-  const { success: notifySuccess } = useNotification();
-
-  useEffect(() => {
-    if (!token) {
-      setValidating(false);
-      setError('Lien d’activation invalide.');
-      return;
-    }
-
-    void getAuthService()
-      .validatePasswordSetup(token)
-      .then((result) => {
-        if (!result.valid) {
-          setError('Lien invalide ou expiré.');
-          return;
-        }
-        setEmail(result.email ?? null);
-      })
-      .finally(() => setValidating(false));
-  }, [token]);
-
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-    setError(null);
-
-    if (password.length < 6) {
-      setError('Le mot de passe doit contenir au moins 6 caractères.');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError('Les mots de passe ne correspondent pas.');
-      return;
-    }
-
-    setLoading(true);
-    const result = await getAuthService().setPassword(token, password);
-    setLoading(false);
-
-    if (!result.success) {
-      setError(result.error ?? 'Activation impossible.');
-      return;
-    }
-
-    notifySuccess(notifyMessages.auth.passwordSet());
-    navigate('/login');
-  };
+  const {
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    email,
+    error,
+    loading,
+    validating,
+    submit,
+    canShowForm,
+  } = useSetPasswordForm(token);
 
   return (
     <PageContainer className="flex min-h-[70vh] items-center justify-center py-12">
-      <form onSubmit={handleSubmit} className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
+      <form onSubmit={submit} className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold text-slate-900">Définir votre mot de passe</h1>
           <p className="mt-2 text-sm text-slate-500">
@@ -84,7 +40,7 @@ const SetPasswordPage = () => {
           </div>
         ) : null}
 
-        {!validating && !error?.includes('invalide') && token ? (
+        {canShowForm ? (
           <>
             <div className="space-y-4">
               <label className="block">

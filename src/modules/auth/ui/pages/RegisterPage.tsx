@@ -1,48 +1,11 @@
-import { type FormEvent, useState } from 'react';
-import { Link, useSearchParams } from 'react-router';
-import { getAuthService } from '../../core/services/auth.service';
-import { buildAuthRouteWithRedirect } from '../../core/services/resolve-post-login-redirect';
+import { Link } from 'react-router';
+import { useRegisterForm } from '../hooks/useRegisterForm';
 import { Button, PageContainer } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
-import { notifyMessages, useNotification } from '../../../../shared/notifications';
 
 const RegisterPage = () => {
   usePageTitle('Inscription');
-  const [searchParams] = useSearchParams();
-  const redirect = searchParams.get('redirect');
-  const loginHref = buildAuthRouteWithRedirect('/login', redirect);
-  const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-  });
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { success: notifySuccess } = useNotification();
-
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
-
-    const result = await getAuthService().register(form);
-    setLoading(false);
-
-    if (!result.success) {
-      setError(result.error ?? 'Inscription impossible.');
-      return;
-    }
-
-    setSuccess(true);
-    notifySuccess(notifyMessages.auth.registered(), { duration: 8000 });
-  };
-
-  const update = (field: keyof typeof form, value: string) => {
-    setForm((current) => ({ ...current, [field]: value }));
-  };
+  const { form, update, error, success, loading, submit, loginHref } = useRegisterForm();
 
   if (success) {
     return (
@@ -65,7 +28,7 @@ const RegisterPage = () => {
 
   return (
     <PageContainer className="flex min-h-[70vh] items-center justify-center py-12">
-      <form onSubmit={handleSubmit} className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
+      <form onSubmit={submit} className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold text-slate-900">Devenir hôte</h1>
           <p className="mt-2 text-sm text-slate-500">

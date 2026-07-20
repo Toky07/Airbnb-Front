@@ -1,46 +1,26 @@
-import { type FormEvent, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router';
-import { getAuthService } from '../../core/services/auth.service';
-import { resolvePostLoginRedirect, buildAuthRouteWithRedirect } from '../../core/services/resolve-post-login-redirect';
-import { useAuth } from '../hooks/useAuth';
+import { Link } from 'react-router';
+import { buildAuthRouteWithRedirect } from '../../core/services/resolve-post-login-redirect';
+import { useLoginForm } from '../hooks/useLoginForm';
 import { Button, PageContainer } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
-import { notifyMessages, useNotification } from '../../../../shared/notifications';
 
 const LoginPage = () => {
   usePageTitle('Connexion');
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const redirect = searchParams.get('redirect');
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    error,
+    loading,
+    submit,
+    redirect,
+  } = useLoginForm();
   const registerHref = buildAuthRouteWithRedirect('/register', redirect);
-  const { login } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const { success: notifySuccess } = useNotification();
-
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    const result = await getAuthService().login(email, password);
-    setLoading(false);
-
-    if (!result.success) {
-      setError(result.error);
-      return;
-    }
-
-    const session = await login(result.token);
-    notifySuccess(notifyMessages.auth.login());
-    navigate(resolvePostLoginRedirect(session, redirect));
-  };
 
   return (
     <PageContainer className="flex min-h-[70vh] items-center justify-center py-12">
-      <form onSubmit={handleSubmit} className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
+      <form onSubmit={submit} className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 shadow-lg">
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold text-slate-900">Connexion</h1>
           <p className="mt-2 text-sm text-slate-500">
