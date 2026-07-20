@@ -1,14 +1,16 @@
 import type { Cart } from '../../core/types/cart.types';
 import type {
   AddReservationToCartPayload,
-  CartRepository,
-  CartResult,
-  CheckoutResult,
   UpdateCartItemPayload,
-} from '../ports/cart.repository';
+} from '../../core/types/cart.types';
+import type { CartRepository, CartResult, CheckoutResult } from '../ports/cart.repository';
 
 export class LoadCartUseCase {
-  constructor(private readonly cartRepository: CartRepository) {}
+  private readonly cartRepository: CartRepository;
+
+  constructor(cartRepository: CartRepository) {
+    this.cartRepository = cartRepository;
+  }
 
   execute(): Promise<CartResult> {
     return this.cartRepository.getCart();
@@ -16,7 +18,11 @@ export class LoadCartUseCase {
 }
 
 export class AddReservationToCartUseCase {
-  constructor(private readonly cartRepository: CartRepository) {}
+  private readonly cartRepository: CartRepository;
+
+  constructor(cartRepository: CartRepository) {
+    this.cartRepository = cartRepository;
+  }
 
   execute(payload: AddReservationToCartPayload): Promise<CartResult> {
     return this.cartRepository.addReservation(payload);
@@ -24,7 +30,11 @@ export class AddReservationToCartUseCase {
 }
 
 export class UpdateCartItemUseCase {
-  constructor(private readonly cartRepository: CartRepository) {}
+  private readonly cartRepository: CartRepository;
+
+  constructor(cartRepository: CartRepository) {
+    this.cartRepository = cartRepository;
+  }
 
   execute(itemId: number, payload: UpdateCartItemPayload): Promise<CartResult> {
     return this.cartRepository.updateItem(itemId, payload);
@@ -32,7 +42,11 @@ export class UpdateCartItemUseCase {
 }
 
 export class RemoveCartItemUseCase {
-  constructor(private readonly cartRepository: CartRepository) {}
+  private readonly cartRepository: CartRepository;
+
+  constructor(cartRepository: CartRepository) {
+    this.cartRepository = cartRepository;
+  }
 
   execute(itemId: number): Promise<CartResult> {
     return this.cartRepository.removeItem(itemId);
@@ -40,7 +54,11 @@ export class RemoveCartItemUseCase {
 }
 
 export class MergeCartUseCase {
-  constructor(private readonly cartRepository: CartRepository) {}
+  private readonly cartRepository: CartRepository;
+
+  constructor(cartRepository: CartRepository) {
+    this.cartRepository = cartRepository;
+  }
 
   execute(): Promise<CartResult> {
     return this.cartRepository.merge();
@@ -48,7 +66,11 @@ export class MergeCartUseCase {
 }
 
 export class InitiateCheckoutUseCase {
-  constructor(private readonly cartRepository: CartRepository) {}
+  private readonly cartRepository: CartRepository;
+
+  constructor(cartRepository: CartRepository) {
+    this.cartRepository = cartRepository;
+  }
 
   execute(cart: Cart | null): Promise<CheckoutResult> {
     if (!cart?.items.length) {
@@ -60,7 +82,11 @@ export class InitiateCheckoutUseCase {
 }
 
 export class CompleteCheckoutUseCase {
-  constructor(private readonly cartRepository: CartRepository) {}
+  private readonly cartRepository: CartRepository;
+
+  constructor(cartRepository: CartRepository) {
+    this.cartRepository = cartRepository;
+  }
 
   execute(paymentId: number): Promise<CartResult> {
     return this.cartRepository.completeCheckout(paymentId);

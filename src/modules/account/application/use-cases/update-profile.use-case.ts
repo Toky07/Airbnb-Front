@@ -4,7 +4,11 @@ import type {
 } from '../ports/profile.repository';
 
 export class UpdateProfileUseCase {
-  constructor(private readonly profileRepository: ProfileRepository) {}
+  private readonly profileRepository: ProfileRepository;
+
+  constructor(profileRepository: ProfileRepository) {
+    this.profileRepository = profileRepository;
+  }
 
   execute(payload: ProfileFormPayload) {
     return this.profileRepository.updateProfile(payload);

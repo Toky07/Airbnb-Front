@@ -1,8 +1,12 @@
-import type { ListQueryParams } from '../../../../shared/pagination/types';
+import type { ListQueryParams } from '../../../../../shared/pagination/types';
 import type { HostReservationRepository } from '../ports/host-reservation.repository';
 
 export class ListHostBookingsUseCase {
-  constructor(private readonly hostReservationRepository: HostReservationRepository) {}
+  private readonly hostReservationRepository: HostReservationRepository;
+
+  constructor(hostReservationRepository: HostReservationRepository) {
+    this.hostReservationRepository = hostReservationRepository;
+  }
 
   execute(params: ListQueryParams = {}) {
     return this.hostReservationRepository.listBookings(params);
@@ -10,7 +14,11 @@ export class ListHostBookingsUseCase {
 }
 
 export class GetHostReservationStatsOverviewUseCase {
-  constructor(private readonly hostReservationRepository: HostReservationRepository) {}
+  private readonly hostReservationRepository: HostReservationRepository;
+
+  constructor(hostReservationRepository: HostReservationRepository) {
+    this.hostReservationRepository = hostReservationRepository;
+  }
 
   execute() {
     return this.hostReservationRepository.getStatsOverview();

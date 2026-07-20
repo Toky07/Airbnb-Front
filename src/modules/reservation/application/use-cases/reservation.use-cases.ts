@@ -1,10 +1,12 @@
-import type {
-  CreateReservationPayload,
-  ReservationRepository,
-} from '../ports/reservation.repository';
+import type { CreateReservationPayload } from '../../core/types/reservation.types';
+import type { ReservationRepository } from '../ports/reservation.repository';
 
 export class CreateReservationUseCase {
-  constructor(private readonly reservationRepository: ReservationRepository) {}
+  private readonly reservationRepository: ReservationRepository;
+
+  constructor(reservationRepository: ReservationRepository) {
+    this.reservationRepository = reservationRepository;
+  }
 
   execute(payload: CreateReservationPayload) {
     return this.reservationRepository.create(payload);
@@ -12,7 +14,11 @@ export class CreateReservationUseCase {
 }
 
 export class ListMyReservationsUseCase {
-  constructor(private readonly reservationRepository: ReservationRepository) {}
+  private readonly reservationRepository: ReservationRepository;
+
+  constructor(reservationRepository: ReservationRepository) {
+    this.reservationRepository = reservationRepository;
+  }
 
   execute(page = 1, limit = 20) {
     return this.reservationRepository.listMine(page, limit);

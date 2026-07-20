@@ -1,4 +1,4 @@
-import type { ProfileFormPayload } from '../../application/ports/profile.repository';
+import type { ProfileFormPayload } from '../application/ports/profile.repository';
 
 export function buildProfileFormData(payload: ProfileFormPayload): FormData {
   const form = new FormData();

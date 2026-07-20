@@ -2,7 +2,11 @@ import type { ListQueryParams } from '../../../../shared/pagination/types';
 import type { RoomRepository } from '../ports/room.repository';
 
 export class ListRoomsUseCase {
-  constructor(private readonly roomRepository: RoomRepository) {}
+  private readonly roomRepository: RoomRepository;
+
+  constructor(roomRepository: RoomRepository) {
+    this.roomRepository = roomRepository;
+  }
 
   execute(params: ListQueryParams = {}) {
     return this.roomRepository.list(params);
@@ -10,7 +14,11 @@ export class ListRoomsUseCase {
 }
 
 export class GetRoomByIdUseCase {
-  constructor(private readonly roomRepository: RoomRepository) {}
+  private readonly roomRepository: RoomRepository;
+
+  constructor(roomRepository: RoomRepository) {
+    this.roomRepository = roomRepository;
+  }
 
   execute(id: number) {
     return this.roomRepository.getById(id);
@@ -18,7 +26,11 @@ export class GetRoomByIdUseCase {
 }
 
 export class GetRoomBySlugUseCase {
-  constructor(private readonly roomRepository: RoomRepository) {}
+  private readonly roomRepository: RoomRepository;
+
+  constructor(roomRepository: RoomRepository) {
+    this.roomRepository = roomRepository;
+  }
 
   execute(slug: string) {
     const normalizedSlug = slug.trim();

@@ -3,7 +3,11 @@ import { isTokenExpired } from '../core/utils/jwt-payload.util';
 import type { SessionStore } from '../application/ports/session.store';
 
 export class TokenSessionStore implements SessionStore {
-  constructor(private readonly storage: TokenStorage) {}
+  private readonly storage: TokenStorage;
+
+  constructor(storage: TokenStorage) {
+    this.storage = storage;
+  }
 
   getToken(): string | null {
     return this.storage.getToken();

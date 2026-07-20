@@ -1,33 +1,49 @@
 import { describe, expect, it, vi } from 'vitest';
+import type { HttpClient } from '../../../shared/http/ports/http-client';
 import { HttpAuthRepository } from './http-auth.repository';
+
+function createHttpClient(overrides: Partial<HttpClient> = {}): HttpClient {
+  return {
+    get: vi.fn(),
+    post: vi.fn(),
+    put: vi.fn(),
+    patch: vi.fn(),
+    delete: vi.fn(),
+    postFormData: vi.fn(),
+    putFormData: vi.fn(),
+    ...overrides,
+  };
+}
 
 describe('HttpAuthRepository', () => {
   it('retourne un token lors du login', async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
-      new Response(JSON.stringify({ token: 'jwt-token' }), { status: 200 }),
-    );
-
-    const repository = new HttpAuthRepository();
+    const httpClient = createHttpClient({
+      post: vi.fn().mockResolvedValue(
+        new Response(JSON.stringify({ token: 'jwt-token' }), { status: 200 }),
+      ),
+    });
+    const repository = new HttpAuthRepository(httpClient);
     const result = await repository.login({
       email: 'user@test.com',
       password: 'secret',
     });
 
     expect(result).toEqual({ success: true, token: 'jwt-token' });
-    expect(fetch).toHaveBeenCalledWith(
-      expect.stringContaining('/auth/login'),
-      expect.objectContaining({ method: 'POST' }),
-    );
+    expect(httpClient.post).toHaveBeenCalledWith('/auth/login', {
+      email: 'user@test.com',
+      password: 'secret',
+    });
   });
 
   it('retourne une erreur API lors du login', async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
-      new Response(JSON.stringify({ message: 'Identifiants invalides.' }), {
-        status: 401,
-      }),
-    );
-
-    const repository = new HttpAuthRepository();
+    const httpClient = createHttpClient({
+      post: vi.fn().mockResolvedValue(
+        new Response(JSON.stringify({ message: 'Identifiants invalides.' }), {
+          status: 401,
+        }),
+      ),
+    });
+    const repository = new HttpAuthRepository(httpClient);
     const result = await repository.login({
       email: 'user@test.com',
       password: 'wrong',
@@ -40,28 +56,26 @@ describe('HttpAuthRepository', () => {
   });
 
   it('récupère le profil courant via /auth/me', async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
-      new Response(
-        JSON.stringify({
-          id: 1,
-          email: 'user@test.com',
-          roles: [],
-          permissions: [],
-          isSuperAdmin: false,
-          profile: null,
-          hostAccess: null,
-        }),
-        { status: 200 },
+    const httpClient = createHttpClient({
+      get: vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            id: 1,
+            email: 'user@test.com',
+            roles: [],
+            permissions: [],
+            isSuperAdmin: false,
+            profile: null,
+            hostAccess: null,
+          }),
+          { status: 200 },
+        ),
       ),
-    );
-
-    const repository = new HttpAuthRepository();
+    });
+    const repository = new HttpAuthRepository(httpClient);
     const me = await repository.fetchMe();
 
     expect(me?.email).toBe('user@test.com');
-    expect(fetch).toHaveBeenCalledWith(
-      expect.stringContaining('/auth/me'),
-      expect.objectContaining({ method: 'GET' }),
-    );
+    expect(httpClient.get).toHaveBeenCalledWith('/auth/me');
   });
 });

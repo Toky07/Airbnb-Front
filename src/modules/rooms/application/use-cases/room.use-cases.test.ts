@@ -42,16 +42,16 @@ describe('ListRoomsUseCase', () => {
     const roomRepository = createRoomRepository({
       list: vi.fn().mockResolvedValue({
         data: [sampleRoom],
-        meta: { page: 1, limit: 12, total: 1, totalPages: 1 },
+        meta: { page: 1, limit: 20, total: 1, totalPages: 1 },
       }),
     });
     const useCase = new ListRoomsUseCase(roomRepository);
 
-    const result = await useCase.execute({ page: 1, limit: 12, search: 'Nice' });
+    const result = await useCase.execute({ page: 1, limit: 20, search: 'Nice' });
 
     expect(roomRepository.list).toHaveBeenCalledWith({
       page: 1,
-      limit: 12,
+      limit: 20,
       search: 'Nice',
     });
     expect(result.data).toHaveLength(1);

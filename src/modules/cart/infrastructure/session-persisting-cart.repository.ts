@@ -6,10 +6,13 @@ import type {
 } from '../core/types/cart.types';
 
 export class SessionPersistingCartRepository implements CartRepository {
-  constructor(
-    private readonly inner: CartRepository,
-    private readonly sessionStore: CartSessionStore,
-  ) {}
+  private readonly inner: CartRepository;
+  private readonly sessionStore: CartSessionStore;
+
+  constructor(inner: CartRepository, sessionStore: CartSessionStore) {
+    this.inner = inner;
+    this.sessionStore = sessionStore;
+  }
 
   private persistOnSuccess<T extends CartResult | CheckoutResult>(result: T): T {
     if ('cart' in result && result.success) {

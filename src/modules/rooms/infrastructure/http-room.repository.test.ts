@@ -37,19 +37,19 @@ describe('HttpRoomRepository', () => {
       new Response(
         JSON.stringify({
           data: [sampleRoomApi],
-          meta: { page: 1, limit: 12, total: 1, totalPages: 1 },
+          meta: { page: 1, limit: 20, total: 1, totalPages: 1 },
         }),
         { status: 200 },
       ),
     );
 
     const repository = new HttpRoomRepository();
-    const result = await repository.list({ page: 1, limit: 12 });
+    const result = await repository.list({ page: 1, limit: 20 });
 
     expect(result.data).toHaveLength(1);
     expect(result.data[0]?.name).toBe('Suite vue mer');
     expect(fetch).toHaveBeenCalledWith(
-      expect.stringContaining('/rooms?page=1&limit=12'),
+      expect.stringContaining('/rooms?page=1&limit=20'),
       expect.objectContaining({ method: 'GET' }),
     );
   });

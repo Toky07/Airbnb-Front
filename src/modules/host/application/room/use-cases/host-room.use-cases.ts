@@ -1,9 +1,13 @@
-import type { ListQueryParams } from '../../../../shared/pagination/types';
+import type { ListQueryParams } from '../../../../../shared/pagination/types';
 import type { RoomFormPayload } from '../../../core/types/host.types';
 import type { HostRoomRepository } from '../ports/host-room.repository';
 
 export class ListHostRoomsUseCase {
-  constructor(private readonly hostRoomRepository: HostRoomRepository) {}
+  private readonly hostRoomRepository: HostRoomRepository;
+
+  constructor(hostRoomRepository: HostRoomRepository) {
+    this.hostRoomRepository = hostRoomRepository;
+  }
 
   execute(propertyId: number, params: ListQueryParams = {}) {
     return this.hostRoomRepository.listRooms(propertyId, params);
@@ -11,7 +15,11 @@ export class ListHostRoomsUseCase {
 }
 
 export class CreateHostRoomUseCase {
-  constructor(private readonly hostRoomRepository: HostRoomRepository) {}
+  private readonly hostRoomRepository: HostRoomRepository;
+
+  constructor(hostRoomRepository: HostRoomRepository) {
+    this.hostRoomRepository = hostRoomRepository;
+  }
 
   execute(propertyId: number, payload: RoomFormPayload) {
     return this.hostRoomRepository.createRoom(propertyId, payload);
@@ -19,7 +27,11 @@ export class CreateHostRoomUseCase {
 }
 
 export class UpdateHostRoomUseCase {
-  constructor(private readonly hostRoomRepository: HostRoomRepository) {}
+  private readonly hostRoomRepository: HostRoomRepository;
+
+  constructor(hostRoomRepository: HostRoomRepository) {
+    this.hostRoomRepository = hostRoomRepository;
+  }
 
   execute(propertyId: number, roomId: number, payload: RoomFormPayload) {
     return this.hostRoomRepository.updateRoom(propertyId, roomId, payload);
@@ -27,7 +39,11 @@ export class UpdateHostRoomUseCase {
 }
 
 export class DeleteHostRoomUseCase {
-  constructor(private readonly hostRoomRepository: HostRoomRepository) {}
+  private readonly hostRoomRepository: HostRoomRepository;
+
+  constructor(hostRoomRepository: HostRoomRepository) {
+    this.hostRoomRepository = hostRoomRepository;
+  }
 
   execute(propertyId: number, roomId: number) {
     return this.hostRoomRepository.deleteRoom(propertyId, roomId);
@@ -35,7 +51,11 @@ export class DeleteHostRoomUseCase {
 }
 
 export class ListHostPropertyTypeOptionsUseCase {
-  constructor(private readonly hostRoomRepository: HostRoomRepository) {}
+  private readonly hostRoomRepository: HostRoomRepository;
+
+  constructor(hostRoomRepository: HostRoomRepository) {
+    this.hostRoomRepository = hostRoomRepository;
+  }
 
   execute() {
     return this.hostRoomRepository.listPropertyTypeOptions();
@@ -43,7 +63,11 @@ export class ListHostPropertyTypeOptionsUseCase {
 }
 
 export class ListHostRoomTypeOptionsUseCase {
-  constructor(private readonly hostRoomRepository: HostRoomRepository) {}
+  private readonly hostRoomRepository: HostRoomRepository;
+
+  constructor(hostRoomRepository: HostRoomRepository) {
+    this.hostRoomRepository = hostRoomRepository;
+  }
 
   execute() {
     return this.hostRoomRepository.listRoomTypeOptions();

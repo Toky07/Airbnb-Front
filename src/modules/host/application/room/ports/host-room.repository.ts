@@ -1,5 +1,5 @@
-import type { ListQueryParams, PaginatedResponse } from '../../../../shared/pagination/types';
-import type { CategorySummary, RoomListItem } from '../../../rooms/core/types/room.types';
+import type { ListQueryParams, PaginatedResponse } from '../../../../../shared/pagination/types';
+import type { CategorySummary, RoomListItem } from '../../../../rooms/core/types/room.types';
 import type { RoomFormPayload } from '../../../core/types/host.types';
 
 export type RoomMutationResult =

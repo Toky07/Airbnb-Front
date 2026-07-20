@@ -5,7 +5,11 @@ import type {
 } from '../ports/auth.repository';
 
 export class RegisterUseCase {
-  constructor(private readonly authRepository: AuthRepository) {}
+  private readonly authRepository: AuthRepository;
+
+  constructor(authRepository: AuthRepository) {
+    this.authRepository = authRepository;
+  }
 
   execute(payload: RegisterPayload): Promise<MutationResult> {
     return this.authRepository.register(payload);

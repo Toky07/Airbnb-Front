@@ -5,10 +5,13 @@ import type { AuthRepository } from '../ports/auth.repository';
 import type { SessionStore } from '../ports/session.store';
 
 export class LoadSessionUseCase {
-  constructor(
-    private readonly sessionStore: SessionStore,
-    private readonly authRepository: AuthRepository,
-  ) {}
+  private readonly sessionStore: SessionStore;
+  private readonly authRepository: AuthRepository;
+
+  constructor(sessionStore: SessionStore, authRepository: AuthRepository) {
+    this.sessionStore = sessionStore;
+    this.authRepository = authRepository;
+  }
 
   async execute(token?: string | null): Promise<AuthSession> {
     const effectiveToken = token ?? this.sessionStore.getToken();

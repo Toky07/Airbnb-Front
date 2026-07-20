@@ -1,4 +1,4 @@
-import type { ListQueryParams, PaginatedResponse } from '../../../../shared/pagination/types';
+import type { ListQueryParams, PaginatedResponse } from '../../../../../shared/pagination/types';
 import type {
   HostBookingOrder,
   HostReservationStatsOverview,
