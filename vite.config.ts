@@ -19,10 +19,6 @@ export default defineConfig({
             return 'stripe';
           }
 
-          if (id.includes('@fortawesome')) {
-            return 'fontawesome';
-          }
-
           if (
             id.includes('/react/') ||
             id.includes('/react-dom/') ||

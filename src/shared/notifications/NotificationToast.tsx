@@ -1,4 +1,3 @@
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { notificationTypeStyles } from './notification-styles';
@@ -69,7 +68,7 @@ export default function NotificationToast({ item, onDismiss, accent }: Notificat
           aria-label="Fermer la notification"
           className="shrink-0 rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
         >
-          <FontAwesomeIcon icon={faXmark} className="h-3.5 w-3.5" />
+          <FontAwesomeIcon icon="xmark" className="h-3.5 w-3.5" />
         </button>
       </div>
 

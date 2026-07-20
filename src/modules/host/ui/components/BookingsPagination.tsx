@@ -1,4 +1,3 @@
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { PaginationMeta } from '../../../../shared/pagination/types';
 
@@ -28,7 +27,7 @@ const BookingsPagination = ({ meta, onPageChange }: BookingsPaginationProps) => 
           disabled={meta.page <= 1}
           className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-40"
         >
-          <FontAwesomeIcon icon={faChevronLeft} className="h-3.5 w-3.5" />
+          <FontAwesomeIcon icon="chevron-left" className="h-3.5 w-3.5" />
         </button>
         {Array.from({ length: Math.min(meta.totalPages, 5) }, (_, index) => {
           const pageNum = startPage + index;
@@ -53,7 +52,7 @@ const BookingsPagination = ({ meta, onPageChange }: BookingsPaginationProps) => 
           disabled={meta.page >= meta.totalPages}
           className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-40"
         >
-          <FontAwesomeIcon icon={faChevronRight} className="h-3.5 w-3.5" />
+          <FontAwesomeIcon icon="chevron-right" className="h-3.5 w-3.5" />
         </button>
       </div>
     </div>

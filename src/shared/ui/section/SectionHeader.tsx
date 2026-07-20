@@ -1,4 +1,3 @@
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { ReactNode } from 'react';
 
@@ -43,7 +42,7 @@ const SectionHeader = ({
         className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-brand)] transition hover:gap-3"
       >
         {action.label}
-        <FontAwesomeIcon icon={faArrowRight} className="h-3.5 w-3.5" />
+        <FontAwesomeIcon icon="arrow-right" className="h-3.5 w-3.5" />
       </a>
     )}
   </div>

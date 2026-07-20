@@ -1,4 +1,3 @@
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, type ReactNode } from 'react';
 
@@ -82,7 +81,7 @@ export default function Modal({
             className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
             aria-label="Fermer la fenêtre"
           >
-            <FontAwesomeIcon icon={faXmark} className="h-4 w-4" />
+            <FontAwesomeIcon icon="xmark" className="h-4 w-4" />
           </button>
         </div>
 

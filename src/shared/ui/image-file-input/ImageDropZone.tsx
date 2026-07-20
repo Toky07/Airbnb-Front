@@ -1,4 +1,3 @@
-import { faCamera, faImage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useId } from 'react';
 
@@ -91,12 +90,12 @@ const ImageDropZone = ({
       />
 
       <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-rose-500 shadow-sm">
-        <FontAwesomeIcon icon={faImage} className="h-5 w-5" />
+        <FontAwesomeIcon icon="image" className="h-5 w-5" />
       </div>
       <p className="text-sm font-semibold text-slate-800">{dropLabel}</p>
       <p className="mt-1 text-xs text-slate-500">{hint}</p>
       <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs font-medium text-rose-600 shadow-sm">
-        <FontAwesomeIcon icon={faCamera} className="h-3 w-3" />
+        <FontAwesomeIcon icon="camera" className="h-3 w-3" />
         Parcourir
       </p>
     </div>

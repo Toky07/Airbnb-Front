@@ -1,15 +1,10 @@
-import {
-  faCheck,
-  faCircleInfo,
-  faTriangleExclamation,
-  faXmark,
-} from '@fortawesome/free-solid-svg-icons';
+import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 import type { NotificationType } from './notification.types';
 
 export const notificationTypeStyles: Record<
   NotificationType,
   {
-    icon: typeof faCheck;
+    icon: IconProp;
     ring: string;
     iconBg: string;
     iconColor: string;
@@ -17,28 +12,28 @@ export const notificationTypeStyles: Record<
   }
 > = {
   success: {
-    icon: faCheck,
+    icon: 'check',
     ring: 'ring-emerald-100',
     iconBg: 'bg-emerald-500',
     iconColor: 'text-white',
     progress: 'bg-emerald-500',
   },
   error: {
-    icon: faXmark,
+    icon: 'xmark',
     ring: 'ring-red-100',
     iconBg: 'bg-red-500',
     iconColor: 'text-white',
     progress: 'bg-red-500',
   },
   info: {
-    icon: faCircleInfo,
+    icon: 'circle-info',
     ring: 'ring-sky-100',
     iconBg: 'bg-sky-500',
     iconColor: 'text-white',
     progress: 'bg-sky-500',
   },
   warning: {
-    icon: faTriangleExclamation,
+    icon: 'triangle-exclamation',
     ring: 'ring-amber-100',
     iconBg: 'bg-amber-500',
     iconColor: 'text-white',

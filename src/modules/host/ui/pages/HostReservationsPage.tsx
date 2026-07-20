@@ -1,10 +1,3 @@
-import {
-  faCalendarCheck,
-  faClock,
-  faCoins,
-  faLayerGroup,
-  faMagnifyingGlass,
-} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import BookingsPagination from '../components/BookingsPagination';
@@ -29,25 +22,25 @@ const HostReservationsPage = () => {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <HostDashboardStatCard
-          icon={faLayerGroup}
+          icon="layer-group"
           label="Total"
           value={stats?.totalCount ?? 0}
           accent="bg-slate-100 text-slate-700"
         />
         <HostDashboardStatCard
-          icon={faCalendarCheck}
+          icon="calendar-check"
           label="Confirmées"
           value={stats?.activeCount ?? 0}
           accent="bg-emerald-50 text-emerald-600"
         />
         <HostDashboardStatCard
-          icon={faClock}
+          icon="clock"
           label="En attente"
           value={stats?.pendingCount ?? 0}
           accent="bg-amber-50 text-amber-600"
         />
         <HostDashboardStatCard
-          icon={faCoins}
+          icon="coins"
           label="Revenu (mois)"
           value={formatHostCurrency(stats?.monthlyRevenue ?? 0)}
           accent="bg-rose-50 text-brand"
@@ -78,7 +71,7 @@ const HostReservationsPage = () => {
             <form onSubmit={handleSearch} className="flex flex-1 items-center gap-2">
             <div className="relative flex-1">
               <FontAwesomeIcon
-                icon={faMagnifyingGlass}
+                icon="magnifying-glass"
                 className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
               />
               <input

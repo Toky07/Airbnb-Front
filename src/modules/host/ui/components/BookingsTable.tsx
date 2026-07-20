@@ -1,4 +1,3 @@
-import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { HostBookingOrder } from '../../core/types/host-booking.types';
 import { formatHostCurrency, formatHostDate } from '../utils/host-formatters';
@@ -24,7 +23,7 @@ const BookingsTable = ({ bookings, loading }: BookingsTableProps) => {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
         <div className="flex h-20 w-20 items-center justify-center rounded-full bg-slate-50">
-          <FontAwesomeIcon icon={faCalendarCheck} className="h-8 w-8 text-slate-300" />
+          <FontAwesomeIcon icon="calendar-check" className="h-8 w-8 text-slate-300" />
         </div>
         <p className="mt-6 text-xl font-bold text-slate-900">Aucune réservation</p>
         <p className="mt-2 text-slate-500">Les réservations de vos clients apparaîtront ici.</p>

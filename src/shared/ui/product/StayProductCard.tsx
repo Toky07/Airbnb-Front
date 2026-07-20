@@ -1,4 +1,3 @@
-import { faCalendarDays, faLocationDot, faMoon, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router';
@@ -77,7 +76,7 @@ export function StayProductCard({
               <h3 className="mt-2 font-serif text-2xl font-medium text-slate-900">{details.roomName}</h3>
               {details.propertyCity ? (
                 <p className="mt-2 flex items-center gap-2 text-sm text-slate-500">
-                  <FontAwesomeIcon icon={faLocationDot} className="h-3.5 w-3.5 text-brand/60" />
+                  <FontAwesomeIcon icon="location-dot" className="h-3.5 w-3.5 text-brand/60" />
                   {details.propertyCity}
                 </p>
               ) : null}
@@ -98,18 +97,18 @@ export function StayProductCard({
           {details.startDate && details.endDate ? (
             <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-slate-600">
               <span className="inline-flex items-center gap-2.5">
-                <FontAwesomeIcon icon={faCalendarDays} className="h-4 w-4 text-slate-400" />
+                <FontAwesomeIcon icon="calendar-days" className="h-4 w-4 text-slate-400" />
                 {formatBookingDateRange(details.startDate, details.endDate)}
               </span>
               {details.guestCount ? (
                 <span className="inline-flex items-center gap-2.5">
-                  <FontAwesomeIcon icon={faUsers} className="h-4 w-4 text-slate-400" />
+                  <FontAwesomeIcon icon="users" className="h-4 w-4 text-slate-400" />
                   {details.guestCount} voyageur{details.guestCount > 1 ? 's' : ''}
                 </span>
               ) : null}
               {details.nights ? (
                 <span className="inline-flex items-center gap-2.5">
-                  <FontAwesomeIcon icon={faMoon} className="h-4 w-4 text-slate-400" />
+                  <FontAwesomeIcon icon="moon" className="h-4 w-4 text-slate-400" />
                   {details.nights} nuit{details.nights > 1 ? 's' : ''}
                 </span>
               ) : null}

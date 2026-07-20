@@ -1,4 +1,3 @@
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { type FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -44,7 +43,7 @@ const RoomSearchBar = ({ initialSearch = '', compact = false }: RoomSearchBarPro
         className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand)] text-white transition hover:bg-[var(--color-brand-dark)]"
         aria-label="Rechercher"
       >
-        <FontAwesomeIcon icon={faMagnifyingGlass} className="h-4 w-4" />
+        <FontAwesomeIcon icon="magnifying-glass" className="h-4 w-4" />
       </button>
     </form>
   );

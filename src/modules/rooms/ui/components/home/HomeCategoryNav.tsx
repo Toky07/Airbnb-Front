@@ -1,11 +1,10 @@
-import { faBed, faHouse, faLocationDot, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const categories = [
-  { icon: faHouse, label: 'Maisons' },
-  { icon: faLocationDot, label: 'Proche de vous' },
-  { icon: faBed, label: 'Chambres' },
-  { icon: faUsers, label: 'Famille' },
+  { icon: 'house' as const, label: 'Maisons' },
+  { icon: 'location-dot' as const, label: 'Proche de vous' },
+  { icon: 'bed' as const, label: 'Chambres' },
+  { icon: 'users' as const, label: 'Famille' },
 ];
 
 const HomeCategoryNav = () => (

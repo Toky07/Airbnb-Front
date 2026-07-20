@@ -1,4 +1,4 @@
-import { faCalendarCheck, faHotel, faTableColumns } from '@fortawesome/free-solid-svg-icons';
+import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, NavLink, Outlet } from 'react-router';
 import { BrandLogo, UserMenu } from '../../shared/ui';
@@ -6,10 +6,10 @@ import { useAuth } from '../../modules/auth/ui/hooks/useAuth';
 import HostPropertyProvider from '../../modules/host/ui/providers/HostPropertyProvider';
 import { notifyMessages, useNotification } from '../../shared/notifications';
 
-const navItems = [
-  { to: '/host', label: 'Tableau de bord', icon: faTableColumns, end: true },
-  { to: '/host/reservations', label: 'Réservations', icon: faCalendarCheck },
-  { to: '/host/property', label: 'Mes établissements', icon: faHotel },
+const navItems: { to: string; label: string; icon: IconProp; end?: boolean }[] = [
+  { to: '/host', label: 'Tableau de bord', icon: 'table-columns', end: true },
+  { to: '/host/reservations', label: 'Réservations', icon: 'calendar-check' },
+  { to: '/host/property', label: 'Mes établissements', icon: 'hotel' },
 ];
 
 const HostLayout = () => {

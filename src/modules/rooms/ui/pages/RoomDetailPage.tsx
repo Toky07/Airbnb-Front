@@ -1,4 +1,3 @@
-import { faArrowLeft, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useLocation, useParams } from 'react-router';
 import PublicPageLayout from '../../../site/ui/components/PublicPageLayout';
@@ -24,7 +23,7 @@ const RoomDetailPage = () => {
           to="/search"
           className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900"
         >
-          <FontAwesomeIcon icon={faArrowLeft} className="h-3.5 w-3.5" />
+          <FontAwesomeIcon icon="arrow-left" className="h-3.5 w-3.5" />
           Retour aux logements
         </Link>
 
@@ -55,7 +54,7 @@ const RoomDetailPage = () => {
                   <div>
                     <h1 className="font-serif text-4xl font-medium text-slate-900 md:text-5xl">{room.name}</h1>
                     <p className="mt-4 flex items-center gap-2 text-lg text-slate-600">
-                      <FontAwesomeIcon icon={faLocationDot} className="h-5 w-5 text-brand/80" />
+                      <FontAwesomeIcon icon="location-dot" className="h-5 w-5 text-brand/80" />
                       {getRoomLocation(room)}
                     </p>
                     {room.property?.address ? (

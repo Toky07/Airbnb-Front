@@ -1,11 +1,4 @@
-import {
-  faBath,
-  faBed,
-  faClock,
-  faDoorOpen,
-  faRulerCombined,
-  faUsers,
-} from '@fortawesome/free-solid-svg-icons';
+import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AmenityList from '../../../amenity/ui/components/AmenityList';
 import type { RoomListItem } from '../../core/types/room.types';
@@ -14,12 +7,12 @@ type RoomAmenitiesProps = {
   room: RoomListItem;
 };
 
-const featureItems = (room: RoomListItem) => [
-  { icon: faUsers, label: `${room.maxGuests} voyageurs max.` },
-  { icon: faBed, label: `${room.bedrooms} chambre${room.bedrooms > 1 ? 's' : ''}` },
-  { icon: faBath, label: `${room.bathrooms} salle${room.bathrooms > 1 ? 's' : ''} de bain` },
-  { icon: faDoorOpen, label: `${room.beds} lit${room.beds > 1 ? 's' : ''}` },
-  { icon: faRulerCombined, label: `${room.size} m²` },
+const featureItems = (room: RoomListItem): { icon: IconProp; label: string }[] => [
+  { icon: 'users', label: `${room.maxGuests} voyageurs max.` },
+  { icon: 'bed', label: `${room.bedrooms} chambre${room.bedrooms > 1 ? 's' : ''}` },
+  { icon: 'bath', label: `${room.bathrooms} salle${room.bathrooms > 1 ? 's' : ''} de bain` },
+  { icon: 'door-open', label: `${room.beds} lit${room.beds > 1 ? 's' : ''}` },
+  { icon: 'ruler-combined', label: `${room.size} m²` },
 ];
 
 const RoomAmenities = ({ room }: RoomAmenitiesProps) => (
@@ -38,15 +31,9 @@ const RoomAmenities = ({ room }: RoomAmenitiesProps) => (
       </ul>
     </div>
 
-    <AmenityList
-      title="Équipements de la chambre"
-      amenities={room.amenities ?? []}
-    />
+    <AmenityList title="Équipements de la chambre" amenities={room.amenities ?? []} />
 
-    <AmenityList
-      title="Équipements de l’établissement"
-      amenities={room.propertyAmenities ?? []}
-    />
+    <AmenityList title="Équipements de l’établissement" amenities={room.propertyAmenities ?? []} />
 
     {room.property?.checkInTime || room.property?.checkOutTime ? (
       <div className="rounded-2xl border border-slate-200 p-4">
@@ -54,13 +41,13 @@ const RoomAmenities = ({ room }: RoomAmenitiesProps) => (
         <div className="flex flex-wrap gap-4 text-sm text-slate-600">
           {room.property.checkInTime ? (
             <span className="inline-flex items-center gap-2">
-              <FontAwesomeIcon icon={faClock} className="h-3.5 w-3.5" />
+              <FontAwesomeIcon icon="clock" className="h-3.5 w-3.5" />
               Arrivée : {room.property.checkInTime}
             </span>
           ) : null}
           {room.property.checkOutTime ? (
             <span className="inline-flex items-center gap-2">
-              <FontAwesomeIcon icon={faClock} className="h-3.5 w-3.5" />
+              <FontAwesomeIcon icon="clock" className="h-3.5 w-3.5" />
               Départ : {room.property.checkOutTime}
             </span>
           ) : null}

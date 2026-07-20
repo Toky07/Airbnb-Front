@@ -1,8 +1,8 @@
-import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type HostDashboardStatCardProps = {
-  icon: IconDefinition;
+  icon: IconProp;
   label: string;
   value: string | number;
   accent: string;

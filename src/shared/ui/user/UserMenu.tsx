@@ -1,6 +1,3 @@
-import {
-  faChevronDown,
-} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useId, useRef, useState } from 'react';
 import { Link } from 'react-router';
@@ -80,7 +77,7 @@ const UserMenu = ({
           {displayName}
         </span>
         <FontAwesomeIcon
-          icon={faChevronDown}
+          icon="chevron-down"
           className={[
             'h-3 w-3 text-slate-400 transition-transform duration-200',
             isOpen ? 'rotate-180' : '',

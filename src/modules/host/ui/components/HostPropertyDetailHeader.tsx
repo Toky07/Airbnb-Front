@@ -1,4 +1,3 @@
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router';
 import { SegmentedControl } from '../../../../shared/ui';
@@ -21,7 +20,7 @@ const HostPropertyDetailHeader = ({
       to="/host/property"
       className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900"
     >
-      <FontAwesomeIcon icon={faArrowLeft} className="h-3.5 w-3.5" />
+        <FontAwesomeIcon icon="arrow-left" className="h-3.5 w-3.5" />
       Retour à mes établissements
     </Link>
 

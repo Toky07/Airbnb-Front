@@ -1,5 +1,4 @@
 import type { FormEvent } from 'react';
-import { faBed, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { PropertyFormPayload } from '../../core/types/host.types';
 import type { CategorySummary, RoomListItem } from '../../../rooms/core/types/room.types';
@@ -66,7 +65,7 @@ export function HostPropertyRoomsTab({
           </p>
         </div>
         <Button onClick={onOpenCreate} className="px-5 py-2.5">
-          <FontAwesomeIcon icon={faPlus} className="mr-2 h-4 w-4" />
+          <FontAwesomeIcon icon="plus" className="mr-2 h-4 w-4" />
           Nouvelle chambre
         </Button>
       </div>
@@ -96,7 +95,7 @@ export function HostPropertyRoomsTab({
       ) : rooms.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-200 bg-white px-8 py-14 text-center">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-500">
-            <FontAwesomeIcon icon={faBed} className="h-6 w-6" />
+            <FontAwesomeIcon icon="bed" className="h-6 w-6" />
           </div>
           <h3 className="mt-5 text-lg font-semibold text-slate-900">Aucune chambre</h3>
           <p className="mt-2 text-sm text-slate-500">
