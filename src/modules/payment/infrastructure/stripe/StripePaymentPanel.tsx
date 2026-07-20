@@ -1,14 +1,9 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe, type Stripe } from '@stripe/stripe-js';
 import { useMemo } from 'react';
+import type { PaymentPanelProps } from '../../application/ports/payment-panel.registry';
+import { isStripePaymentSession } from '../../core/types/payment.types';
 import StripeCheckoutForm from './StripeCheckoutForm';
-
-type StripePaymentPanelProps = {
-  clientSecret: string;
-  publishableKey: string;
-  onSuccess: () => void;
-  onCancel: () => void;
-};
 
 const stripeCache = new Map<string, Promise<Stripe | null>>();
 
@@ -20,18 +15,22 @@ function getStripePromise(publishableKey: string): Promise<Stripe | null> {
   return stripeCache.get(publishableKey)!;
 }
 
-const StripePaymentPanel = ({
-  clientSecret,
-  publishableKey,
-  onSuccess,
-  onCancel,
-}: StripePaymentPanelProps) => {
+const StripePaymentPanel = ({ session, onSuccess, onCancel }: PaymentPanelProps) => {
+  const stripeSession = isStripePaymentSession(session) ? session : null;
   const stripePromise = useMemo(
-    () => getStripePromise(publishableKey),
-    [publishableKey],
+    () => (stripeSession ? getStripePromise(stripeSession.publishableKey) : null),
+    [stripeSession?.publishableKey],
   );
 
-  if (!publishableKey) {
+  if (!stripeSession) {
+    return (
+      <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        Session de paiement Stripe invalide.
+      </p>
+    );
+  }
+
+  if (!stripeSession.publishableKey) {
     return (
       <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
         Le paiement en ligne n&apos;est pas configuré pour le moment.
@@ -40,7 +39,7 @@ const StripePaymentPanel = ({
   }
 
   return (
-    <Elements stripe={stripePromise} options={{ clientSecret }}>
+    <Elements stripe={stripePromise} options={{ clientSecret: stripeSession.clientSecret }}>
       <StripeCheckoutForm onSuccess={onSuccess} onCancel={onCancel} />
     </Elements>
   );

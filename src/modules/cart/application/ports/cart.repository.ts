@@ -1,4 +1,4 @@
-import type { PaymentIntentResult } from '../../../payment/core/types/payment.types';
+import type { PaymentSession } from '../../../payment/core/types/payment.types';
 import type {
   AddReservationToCartPayload,
   Cart,
@@ -10,7 +10,7 @@ export type CartResult =
   | { success: false; error: string };
 
 export type CheckoutResult =
-  | { success: true; intent: PaymentIntentResult }
+  | { success: true; session: PaymentSession }
   | { success: false; error: string };
 
 export interface CartRepository {

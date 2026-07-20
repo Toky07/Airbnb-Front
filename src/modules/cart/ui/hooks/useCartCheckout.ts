@@ -1,7 +1,7 @@
 import { type FormEvent, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../../auth/ui/hooks/useAuth';
-import type { PaymentIntentResult } from '../../../payment/core/types/payment.types';
+import type { PaymentSession } from '../../../payment/core/types/payment.types';
 import {
   getCompleteCheckoutUseCase,
   getInitiateCheckoutUseCase,
@@ -23,7 +23,7 @@ export function useCartCheckout() {
   const [removingId, setRemovingId] = useState<number | null>(null);
   const [updatingId, setUpdatingId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [paymentIntent, setPaymentIntent] = useState<PaymentIntentResult | null>(null);
+  const [paymentSession, setPaymentSession] = useState<PaymentSession | null>(null);
 
   const totalLabel = useMemo(
     () => formatCartPrice(cart?.totalPrice ?? 0),
@@ -69,16 +69,16 @@ export function useCartCheckout() {
       return;
     }
 
-    setPaymentIntent(result.intent);
+    setPaymentSession(result.session);
     setStep('payment');
   };
 
   const handlePaymentSuccess = async () => {
-    if (!paymentIntent) {
+    if (!paymentSession) {
       return;
     }
 
-    const result = await completeCheckoutUseCase.execute(paymentIntent.paymentId);
+    const result = await completeCheckoutUseCase.execute(paymentSession.paymentId);
 
     if (result.success) {
       syncCart(result.cart);
@@ -95,7 +95,7 @@ export function useCartCheckout() {
     removingId,
     updatingId,
     error,
-    paymentIntent,
+    paymentSession,
     totalLabel,
     itemCount,
     isAuthenticated,

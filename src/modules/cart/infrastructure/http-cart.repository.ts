@@ -1,7 +1,7 @@
 import type { HttpClient } from '../../../shared/http/ports/http-client';
 import { getHttpClient } from '../../../shared/http/composition/http.composition';
 import { parseApiError } from '../../../shared/http/parse-api-error';
-import { mapPaymentIntent } from '../../payment/core/types/payment.types';
+import { mapPaymentSession } from '../../payment/core/mappers/map-payment-session';
 import {
   mapCart,
   type AddReservationToCartPayload,
@@ -81,12 +81,12 @@ export class HttpCartRepository implements CartRepository {
       };
     }
 
-    const intent = mapPaymentIntent(data);
-    if (!intent) {
+    const session = mapPaymentSession(data);
+    if (!session) {
       return { success: false, error: 'Réponse de paiement invalide.' };
     }
 
-    return { success: true, intent };
+    return { success: true, session };
   }
 
   completeCheckout(paymentId: number): Promise<CartResult> {

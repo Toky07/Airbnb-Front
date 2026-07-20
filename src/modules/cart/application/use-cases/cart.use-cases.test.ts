@@ -84,12 +84,13 @@ describe('InitiateCheckoutUseCase', () => {
     const cartRepository = createCartRepository({
       checkout: vi.fn().mockResolvedValue({
         success: true,
-        intent: {
+        session: {
           paymentId: 42,
           clientSecret: 'secret',
           publishableKey: 'pk_test',
           amount: 24000,
           currency: 'eur',
+          provider: 'stripe',
         },
       }),
     });
