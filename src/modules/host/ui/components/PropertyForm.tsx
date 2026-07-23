@@ -141,6 +141,22 @@ const PropertyForm = ({
           </p>
         </HostFormField>
 
+        <HostFormField label="Taxe de séjour (€ / personne / nuit)" fullWidth>
+          <input
+            type="number"
+            min={0}
+            step={0.01}
+            value={form.touristTaxPerGuestNight}
+            onChange={(event) =>
+              onUpdate('touristTaxPerGuestNight', Number.parseFloat(event.target.value) || 0)
+            }
+            className={hostFieldClassName}
+          />
+          <p className="mt-2 text-sm text-slate-500">
+            Montant par voyageur et par nuit, ajouté au total lors du paiement.
+          </p>
+        </HostFormField>
+
         <div className="md:col-span-2">
           <ImageFileInput
             label="Photo principale"

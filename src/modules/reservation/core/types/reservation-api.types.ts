@@ -24,6 +24,7 @@ export type ReservationOutputApi = {
   id: number;
   userId: number;
   status: ReservationStatus;
+  paymentId?: number | null;
   items: ReservationItemApi[];
   createdAt: string;
   updatedAt: string;

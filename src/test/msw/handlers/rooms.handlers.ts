@@ -33,6 +33,16 @@ export const roomsHandlers = [
     return new HttpResponse(null, { status: 404 });
   }),
 
+  http.get(apiUrl('/rooms/by-slug/:slug/pricing-preview'), () =>
+    HttpResponse.json({
+      subtotalCents: 24000,
+      vatCents: 2400,
+      touristTaxCents: 0,
+      serviceFeeCents: 0,
+      totalCents: 26400,
+    }),
+  ),
+
   http.get(apiUrl('/rooms/:id'), ({ params }) => {
     if (String(params.id) === String(sampleRoomApi.id)) {
       return HttpResponse.json(sampleRoomApi);

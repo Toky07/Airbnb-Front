@@ -70,6 +70,7 @@ describe('HttpHostPropertyRepository', () => {
       checkOutTime: '11:00',
       propertyTypeId: 1,
       cancellationPolicy: 'moderate',
+      touristTaxPerGuestNight: 0,
     });
 
     expect(result.success).toBe(true);
@@ -96,6 +97,7 @@ describe('HttpHostPropertyRepository', () => {
       checkOutTime: '11:00',
       propertyTypeId: null,
       cancellationPolicy: 'moderate',
+      touristTaxPerGuestNight: 0,
     });
 
     expect(result).toEqual({ success: false, error: 'Nom déjà utilisé' });

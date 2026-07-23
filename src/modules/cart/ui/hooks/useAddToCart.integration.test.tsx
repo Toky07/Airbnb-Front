@@ -12,6 +12,7 @@ describe('useAddToCart (integration)', () => {
       () =>
         useAddToCart({
           roomId: 1,
+          roomSlug: 'suite-vue-mer',
           pricePerNight: 120,
           maxGuests: 2,
         }),

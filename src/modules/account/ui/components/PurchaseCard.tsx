@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button } from '../../../../shared/ui';
+import type { Invoice } from '../../core/types/invoice.types';
 import {
   getReservationStatusLabel,
   type Reservation,
@@ -32,10 +33,19 @@ function formatRefundAmount(amount: number, currency: string): string {
 
 type PurchaseCardProps = {
   reservation: Reservation;
+  invoice?: Invoice | null;
+  downloadingInvoice?: boolean;
+  onDownloadInvoice?: (invoiceId: number) => void;
   onCancelled?: () => void;
 };
 
-export default function PurchaseCard({ reservation, onCancelled }: PurchaseCardProps) {
+export default function PurchaseCard({
+  reservation,
+  invoice,
+  downloadingInvoice = false,
+  onDownloadInvoice,
+  onCancelled,
+}: PurchaseCardProps) {
   const { preview, loading, error, loadPreview, cancel, reset } = useCancelReservation();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const fallback = parseProductLabel(`Chambre #${reservation.roomId}`);
@@ -87,6 +97,17 @@ export default function PurchaseCard({ reservation, onCancelled }: PurchaseCardP
       {canCancel ? (
         <Button type="button" variant="secondary" onClick={handleOpenCancel} disabled={loading}>
           Annuler la réservation
+        </Button>
+      ) : null}
+
+      {reservation.status === 'confirmed' && invoice && onDownloadInvoice ? (
+        <Button
+          type="button"
+          variant="secondary"
+          disabled={downloadingInvoice}
+          onClick={() => onDownloadInvoice(invoice.id)}
+        >
+          {downloadingInvoice ? 'Téléchargement…' : 'Télécharger la facture'}
         </Button>
       ) : null}
 

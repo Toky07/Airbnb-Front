@@ -2,6 +2,7 @@ import { type FormEvent, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../../auth/ui/hooks/useAuth';
 import type { PaymentSession } from '../../../payment/core/types/payment.types';
+import { formatCentsPrice } from '../../../../shared/pricing/pricing-breakdown.types';
 import {
   getCompleteCheckoutUseCase,
   getInitiateCheckoutUseCase,
@@ -25,10 +26,13 @@ export function useCartCheckout() {
   const [error, setError] = useState<string | null>(null);
   const [paymentSession, setPaymentSession] = useState<PaymentSession | null>(null);
 
-  const totalLabel = useMemo(
-    () => formatCartPrice(cart?.totalPrice ?? 0),
-    [cart?.totalPrice],
-  );
+  const totalLabel = useMemo(() => {
+    if (cart?.pricingBreakdown) {
+      return formatCentsPrice(cart.pricingBreakdown.totalCents);
+    }
+
+    return formatCartPrice(cart?.totalPrice ?? 0);
+  }, [cart?.pricingBreakdown, cart?.totalPrice]);
 
   const itemCount = cart?.itemCount ?? 0;
 

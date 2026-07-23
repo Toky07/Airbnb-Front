@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import { Button } from '../../../../shared/ui';
+import PricingBreakdownSummary from '../../../../shared/ui/pricing/PricingBreakdownSummary';
 import DatePickerCalendar from '../../../../shared/ui/calendar/DatePickerCalendar';
 import { formatPricePerNight } from '../../../rooms/core/types/room.types';
 import type { RoomListItem } from '../../../rooms/core/types/room.types';
@@ -16,6 +17,8 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
   const {
     form,
     preview,
+    pricingBreakdown,
+    pricingLoading,
     loading,
     error,
     added,
@@ -25,6 +28,7 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
     resetAdded,
   } = useAddToCart({
     roomId: room.id,
+    roomSlug: room.slug,
     pricePerNight: room.pricePerNight,
     maxGuests: room.maxGuests,
     unavailableDates: room.unavailableDates,
@@ -118,15 +122,25 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
         </label>
 
         {preview && rangeAvailable ? (
-          <div className="rounded-sm bg-slate-50 px-5 py-4 text-slate-700 border border-slate-100">
-            <div className="flex items-center justify-between">
-              <span>
-                {preview.nights} nuit{preview.nights > 1 ? 's' : ''}
-              </span>
-              <span className="text-lg font-medium text-slate-900">
-                {formatPricePerNight(preview.totalPrice)}
-              </span>
-            </div>
+          <div className="rounded-sm bg-slate-50 px-5 py-4 text-slate-700 border border-slate-100 space-y-3">
+            <p className="text-sm text-slate-600">
+              {preview.nights} nuit{preview.nights > 1 ? 's' : ''}
+            </p>
+            {pricingLoading ? (
+              <p className="text-sm text-slate-500">Calcul des taxes et frais…</p>
+            ) : pricingBreakdown ? (
+              <PricingBreakdownSummary
+                breakdown={pricingBreakdown}
+                totalClassName="text-lg font-medium text-slate-900"
+              />
+            ) : (
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Total estimé</span>
+                <span className="text-lg font-medium text-slate-900">
+                  {formatPricePerNight(preview.totalPrice)}
+                </span>
+              </div>
+            )}
           </div>
         ) : null}
 

@@ -16,6 +16,8 @@ function mapReservationItemApi(
     itemId: item.id,
     roomId: item.roomId,
     userId: reservation.userId,
+    paymentId:
+      typeof reservation.paymentId === 'number' ? reservation.paymentId : null,
     startDate: item.startDate,
     endDate: item.endDate,
     guestCount: item.guestCount,

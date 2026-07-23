@@ -11,6 +11,7 @@ const sampleReservation: Reservation = {
   itemId: 7,
   roomId: 3,
   userId: 5,
+  paymentId: null,
   startDate: '2026-08-01',
   endDate: '2026-08-03',
   guestCount: 2,

@@ -4,6 +4,13 @@ export const sampleCartApi = {
   userId: null,
   totalPrice: 240,
   itemCount: 1,
+  pricingBreakdown: {
+    subtotalCents: 24000,
+    vatCents: 2400,
+    touristTaxCents: 0,
+    serviceFeeCents: 0,
+    totalCents: 26400,
+  },
   items: [
     {
       id: 10,

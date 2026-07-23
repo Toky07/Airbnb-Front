@@ -7,7 +7,8 @@ import { useMyPurchases } from '../hooks/useMyPurchases';
 
 const MyPurchasesPage = () => {
   usePageTitle('Mes achats');
-  const { reservations, loading, error, refresh } = useMyPurchases();
+  const { reservations, loading, error, refresh, invoiceByPaymentId, downloadingId, downloadInvoice } =
+    useMyPurchases();
 
   return (
     <div className="bg-gradient-to-b from-slate-50 via-white to-white">
@@ -60,6 +61,17 @@ const MyPurchasesPage = () => {
                 <PurchaseCard
                   key={reservation.id}
                   reservation={reservation}
+                  invoice={
+                    reservation.paymentId
+                      ? invoiceByPaymentId.get(reservation.paymentId) ?? null
+                      : null
+                  }
+                  downloadingInvoice={
+                    reservation.paymentId
+                      ? downloadingId === invoiceByPaymentId.get(reservation.paymentId)?.id
+                      : false
+                  }
+                  onDownloadInvoice={(invoiceId) => void downloadInvoice(invoiceId)}
                   onCancelled={() => void refresh()}
                 />
               ))}

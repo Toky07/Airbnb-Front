@@ -98,6 +98,7 @@ const CartPage = () => {
                   items={cart.items}
                   itemCount={itemCount}
                   totalLabel={totalLabel}
+                  pricingBreakdown={cart.pricingBreakdown}
                   error={error}
                   loading={loading}
                   isAuthenticated={isAuthenticated}

@@ -1,5 +1,7 @@
 import { type FormEvent } from 'react';
 import { Link } from 'react-router';
+import type { PricingBreakdown } from '../../../../shared/pricing/pricing-breakdown.types';
+import PricingBreakdownSummary from '../../../../shared/ui/pricing/PricingBreakdownSummary';
 import type { CartItem } from '../../core/types/cart.types';
 import { formatCartPrice } from '../../core/types/cart.types';
 import { Button } from '../../../../shared/ui';
@@ -9,6 +11,7 @@ type CartOrderSummaryProps = {
   items: CartItem[];
   itemCount: number;
   totalLabel: string;
+  pricingBreakdown: PricingBreakdown | null;
   error: string | null;
   loading: boolean;
   isAuthenticated: boolean;
@@ -19,6 +22,7 @@ const CartOrderSummary = ({
   items,
   itemCount,
   totalLabel,
+  pricingBreakdown,
   error,
   loading,
   isAuthenticated,
@@ -48,11 +52,14 @@ const CartOrderSummary = ({
         })}
 
         <div className="border-t border-slate-100 pt-4">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-slate-600">Total</span>
-            <span className="text-2xl font-bold text-slate-900">{totalLabel}</span>
-          </div>
-          <p className="mt-1 text-xs text-slate-500">Taxes et frais inclus</p>
+          {pricingBreakdown ? (
+            <PricingBreakdownSummary breakdown={pricingBreakdown} />
+          ) : (
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-slate-600">Total</span>
+              <span className="text-2xl font-bold text-slate-900">{totalLabel}</span>
+            </div>
+          )}
         </div>
 
         {error ? (

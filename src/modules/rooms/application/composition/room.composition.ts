@@ -3,6 +3,7 @@ import type { RoomRepository } from '../ports/room.repository';
 import {
   GetRoomByIdUseCase,
   GetRoomBySlugUseCase,
+  GetRoomPricingPreviewUseCase,
   ListRoomsUseCase,
 } from '../use-cases/room.use-cases';
 import { HttpRoomRepository } from '../../infrastructure/http-room.repository';
@@ -11,6 +12,7 @@ let roomRepository: RoomRepository | null = null;
 let listRoomsUseCase: ListRoomsUseCase | null = null;
 let getRoomByIdUseCase: GetRoomByIdUseCase | null = null;
 let getRoomBySlugUseCase: GetRoomBySlugUseCase | null = null;
+let getRoomPricingPreviewUseCase: GetRoomPricingPreviewUseCase | null = null;
 
 export function getRoomRepository(): RoomRepository {
   if (!roomRepository) {
@@ -38,4 +40,11 @@ export function getGetRoomBySlugUseCase(): GetRoomBySlugUseCase {
     getRoomBySlugUseCase = new GetRoomBySlugUseCase(getRoomRepository());
   }
   return getRoomBySlugUseCase;
+}
+
+export function getGetRoomPricingPreviewUseCase(): GetRoomPricingPreviewUseCase {
+  if (!getRoomPricingPreviewUseCase) {
+    getRoomPricingPreviewUseCase = new GetRoomPricingPreviewUseCase(getRoomRepository());
+  }
+  return getRoomPricingPreviewUseCase;
 }
