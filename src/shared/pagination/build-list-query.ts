@@ -14,5 +14,12 @@ export function buildListQuery(params: ListQueryParams = {}): string {
     search.set('propertyId', String(params.propertyId));
   }
 
+  const checkIn = params.checkIn?.trim();
+  const checkOut = params.checkOut?.trim();
+  if (checkIn && checkOut) {
+    search.set('checkIn', checkIn);
+    search.set('checkOut', checkOut);
+  }
+
   return `?${search.toString()}`;
 }

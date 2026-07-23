@@ -17,17 +17,19 @@ export function useProfileForm() {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
+  const profile = session.profile;
+
   useEffect(() => {
-    if (!session.profile) {
+    if (!profile) {
       return;
     }
 
     setForm({
-      firstName: session.profile.firstName,
-      lastName: session.profile.lastName,
-      phoneNumber: session.profile.phoneNumber,
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      phoneNumber: profile.phoneNumber,
     });
-  }, [session.profile]);
+  }, [profile?.firstName, profile?.lastName, profile?.phoneNumber]);
 
   const update = (field: keyof typeof form, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));

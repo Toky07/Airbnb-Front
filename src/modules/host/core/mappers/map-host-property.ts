@@ -22,6 +22,7 @@ export function mapHostProperty(data: unknown): HostProperty | null {
     longitude: Number(record.longitude ?? 0),
     checkInTime: String(record.checkInTime ?? ''),
     checkOutTime: String(record.checkOutTime ?? ''),
+    cancellationPolicy: String(record.cancellationPolicy ?? 'moderate'),
     ownerId: Number(record.ownerId ?? 0),
     propertyTypeId:
       typeof record.propertyTypeId === 'number' ? record.propertyTypeId : null,

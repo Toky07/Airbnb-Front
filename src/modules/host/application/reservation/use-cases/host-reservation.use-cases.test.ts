@@ -11,6 +11,8 @@ function createHostReservationRepository(
   return {
     listBookings: vi.fn(),
     getStatsOverview: vi.fn(),
+    cancelReservation: vi.fn(),
+    markNoShow: vi.fn(),
     ...overrides,
   };
 }

@@ -5,11 +5,12 @@ import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import HostPropertyDetailHeader from '../components/HostPropertyDetailHeader';
 import HostPropertyNotFound from '../components/HostPropertyNotFound';
 import { HostPropertyInfoTab, HostPropertyRoomsTab } from '../components/HostPropertyDetailTabs';
+import HostPropertyAvailabilityTab from '../components/HostPropertyAvailabilityTab';
 import { useHostPropertyForm } from '../hooks/useHostPropertyForm';
 import { useHostRooms } from '../hooks/useHostRooms';
 import { useRoomForm } from '../hooks/useRoomForm';
 
-type DetailTab = 'rooms' | 'info';
+type DetailTab = 'rooms' | 'info' | 'availability';
 
 const HostPropertyDetailPage = () => {
   const { id } = useParams();
@@ -92,7 +93,17 @@ const HostPropertyDetailPage = () => {
           onEditRoom={roomFormState.openEdit}
           onDeleteRoom={handleDeleteRoom}
         />
-      ) : (
+      ) : null}
+
+      {activeTab === 'availability' ? (
+        <HostPropertyAvailabilityTab
+          propertyId={validPropertyId}
+          rooms={roomsState.rooms}
+          roomsLoading={roomsState.loading}
+        />
+      ) : null}
+
+      {activeTab === 'info' ? (
         <HostPropertyInfoTab
           form={propertyForm.form}
           types={propertyForm.types}
@@ -106,7 +117,7 @@ const HostPropertyDetailPage = () => {
           onUpdate={propertyForm.update}
           onAmenityIdsChange={propertyForm.setAmenityIds}
         />
-      )}
+      ) : null}
     </div>
   );
 };

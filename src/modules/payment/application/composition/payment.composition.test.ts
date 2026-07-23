@@ -12,6 +12,7 @@ describe('payment.composition', () => {
       provider: PAYMENT_PROVIDER.STRIPE,
       clientSecret: 'secret',
       publishableKey: 'pk_test',
+      holdUntil: null,
     });
 
     expect(panel).not.toBeNull();

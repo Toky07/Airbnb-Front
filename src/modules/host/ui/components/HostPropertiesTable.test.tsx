@@ -20,6 +20,7 @@ const properties: HostProperty[] = [
     propertyType: { id: 1, name: 'Hôtel', slug: 'hotel' },
     image: null,
     roomCount: 4,
+    cancellationPolicy: 'moderate',
   },
 ];
 

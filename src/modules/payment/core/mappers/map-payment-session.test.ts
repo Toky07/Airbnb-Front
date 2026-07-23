@@ -20,7 +20,21 @@ describe('mapPaymentSession', () => {
       amount: 24000,
       currency: 'eur',
       provider: PAYMENT_PROVIDER.STRIPE,
+      holdUntil: null,
     });
+  });
+
+  it('mappe holdUntil lorsqu’il est fourni', () => {
+    const session = mapPaymentSession({
+      paymentId: 42,
+      clientSecret: 'secret',
+      publishableKey: 'pk_test',
+      amount: 24000,
+      currency: 'eur',
+      holdUntil: '2026-07-01T10:20:00.000Z',
+    });
+
+    expect(session?.holdUntil).toBe('2026-07-01T10:20:00.000Z');
   });
 
   it('déduit Stripe lorsque le provider est absent (rétrocompatibilité API)', () => {

@@ -22,4 +22,15 @@ describe('SearchPage (integration)', () => {
       expect(screen.getByText(sampleRoomApi.name)).toBeInTheDocument();
     });
   });
+
+  it('propage les dates de séjour dans la barre de recherche', async () => {
+    await renderWithRoute('/search', <SearchPage />, {
+      routerInitialEntries: ['/search?checkIn=2026-08-01&checkOut=2026-08-05'],
+    });
+
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('2026-08-01')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('2026-08-05')).toBeInTheDocument();
+    });
+  });
 });

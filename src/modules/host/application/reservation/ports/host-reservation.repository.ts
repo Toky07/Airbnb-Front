@@ -7,4 +7,6 @@ import type {
 export interface HostReservationRepository {
   listBookings(params?: ListQueryParams): Promise<PaginatedResponse<HostBookingOrder>>;
   getStatsOverview(): Promise<HostReservationStatsOverview>;
+  cancelReservation(reservationId: number): Promise<{ success: boolean; error?: string }>;
+  markNoShow(reservationId: number): Promise<{ success: boolean; error?: string }>;
 }

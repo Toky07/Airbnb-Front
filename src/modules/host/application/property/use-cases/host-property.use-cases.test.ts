@@ -22,6 +22,7 @@ const sampleProperty: HostProperty = {
   propertyType: { id: 1, name: 'Hôtel', slug: 'hotel' },
   image: null,
   roomCount: 4,
+  cancellationPolicy: 'moderate',
 };
 
 function createHostPropertyRepository(
@@ -64,6 +65,7 @@ describe('CreateHostPropertyUseCase', () => {
       checkInTime: '15:00',
       checkOutTime: '11:00',
       propertyTypeId: 1,
+      cancellationPolicy: 'moderate',
     };
     const repository = createHostPropertyRepository({
       createProperty: vi.fn().mockResolvedValue({ success: true, property: sampleProperty }),

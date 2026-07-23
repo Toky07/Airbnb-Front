@@ -8,7 +8,7 @@ import { formatHostCurrency } from '../utils/host-formatters';
 
 const HostReservationsPage = () => {
   usePageTitle('Réservations');
-  const { bookings, properties, stats, meta, search, propertyId, loading, setSearch, setPropertyId, handleSearch, goToPage } =
+  const { bookings, properties, stats, meta, search, propertyId, loading, setSearch, setPropertyId, handleSearch, goToPage, refresh } =
     useHostReservations();
 
   return (
@@ -86,7 +86,7 @@ const HostReservationsPage = () => {
           </div>
         </div>
 
-        <BookingsTable bookings={bookings} loading={loading} />
+        <BookingsTable bookings={bookings} loading={loading} onUpdated={refresh} />
         <BookingsPagination meta={meta} onPageChange={goToPage} />
       </div>
     </div>

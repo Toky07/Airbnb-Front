@@ -39,12 +39,17 @@ const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q')?.trim() ?? '';
   const roomType = searchParams.get('type')?.trim() ?? '';
+  const checkIn = searchParams.get('checkIn')?.trim() ?? '';
+  const checkOut = searchParams.get('checkOut')?.trim() ?? '';
+  const hasDateRange = Boolean(checkIn && checkOut && checkOut > checkIn);
   const page = Math.max(1, Number.parseInt(searchParams.get('page') ?? '1', 10) || 1);
 
   const { result, loading, error } = useRoomsList({
     page,
     limit: DEFAULT_PAGE_SIZE,
     search: query || undefined,
+    checkIn: hasDateRange ? checkIn : undefined,
+    checkOut: hasDateRange ? checkOut : undefined,
   });
 
   const { roomTypes, filteredRooms } = useSearchFilters(result.data, roomType);
@@ -54,14 +59,22 @@ const SearchPage = () => {
     if (query) {
       params.set('q', query);
     }
+    if (hasDateRange) {
+      params.set('checkIn', checkIn);
+      params.set('checkOut', checkOut);
+    }
     const queryString = params.toString();
     return queryString ? `/search?${queryString}` : '/search';
-  }, [query]);
+  }, [query, checkIn, checkOut, hasDateRange]);
 
   const buildTypeHref = (slug: string) => {
     const params = new URLSearchParams(searchParams);
     if (query) {
       params.set('q', query);
+    }
+    if (hasDateRange) {
+      params.set('checkIn', checkIn);
+      params.set('checkOut', checkOut);
     }
     params.set('type', slug);
     params.delete('page');
@@ -72,7 +85,12 @@ const SearchPage = () => {
     <PublicPageLayout>
       <PageContainer className="py-8 md:py-12">
         <div className="mx-auto max-w-3xl">
-          <RoomSearchBar initialSearch={query} compact />
+          <RoomSearchBar
+            initialSearch={query}
+            initialCheckIn={hasDateRange ? checkIn : ''}
+            initialCheckOut={hasDateRange ? checkOut : ''}
+            compact
+          />
         </div>
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
@@ -96,7 +114,7 @@ const SearchPage = () => {
           <EmptyState
             className="mt-10"
             title="Aucun résultat"
-            description="Essayez un autre mot-clé ou parcourez tous les logements."
+            description="Essayez un autre mot-clé, d’autres dates, ou parcourez tous les logements."
           />
         ) : null}
 

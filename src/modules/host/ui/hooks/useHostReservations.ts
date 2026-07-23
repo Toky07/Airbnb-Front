@@ -79,6 +79,10 @@ export function useHostReservations() {
     [loadData, propertyId, search],
   );
 
+  const refresh = useCallback(() => {
+    void loadData(meta.page, search, propertyId);
+  }, [loadData, meta.page, propertyId, search]);
+
   return {
     bookings,
     properties,
@@ -91,5 +95,6 @@ export function useHostReservations() {
     setPropertyId,
     handleSearch,
     goToPage,
+    refresh,
   };
 }

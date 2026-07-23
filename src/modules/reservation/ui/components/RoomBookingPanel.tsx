@@ -4,6 +4,7 @@ import DatePickerCalendar from '../../../../shared/ui/calendar/DatePickerCalenda
 import { formatPricePerNight } from '../../../rooms/core/types/room.types';
 import type { RoomListItem } from '../../../rooms/core/types/room.types';
 import { useAddToCart } from '../../../cart/ui/hooks/useAddToCart';
+import { getCancellationPolicyLabel } from '../../core/constants/cancellation-policy.constants';
 import { useDateRangeAvailability } from '../hooks/useDateRangeAvailability';
 
 type RoomBookingPanelProps = {
@@ -67,6 +68,11 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
         {formatPricePerNight(room.pricePerNight)}
         <span className="text-lg font-normal text-slate-500"> / nuit</span>
       </p>
+      {getCancellationPolicyLabel(room.property?.cancellationPolicy) ? (
+        <p className="mt-3 inline-flex rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700">
+          {getCancellationPolicyLabel(room.property?.cancellationPolicy)}
+        </p>
+      ) : null}
 
       <form onSubmit={submit} className="mt-8 space-y-5">
         <div>

@@ -17,6 +17,7 @@ describe('InMemoryPaymentPanelRegistry', () => {
       provider: PAYMENT_PROVIDER.STRIPE,
       clientSecret: 'secret',
       publishableKey: 'pk_test',
+      holdUntil: null,
     };
 
     expect(registry.resolve(session)).toBe(MockPanel);
@@ -33,6 +34,7 @@ describe('InMemoryPaymentPanelRegistry', () => {
         provider: PAYMENT_PROVIDER.STRIPE,
         clientSecret: 'secret',
         publishableKey: 'pk_test',
+        holdUntil: null,
       }),
     ).toBeNull();
   });

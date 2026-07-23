@@ -36,6 +36,8 @@ export function mapRoomListItem(data: unknown): RoomListItem | null {
       description: String(raw.description ?? ''),
       checkInTime: String(raw.checkInTime ?? ''),
       checkOutTime: String(raw.checkOutTime ?? ''),
+      cancellationPolicy:
+        typeof raw.cancellationPolicy === 'string' ? raw.cancellationPolicy : 'moderate',
       propertyType:
         raw.propertyType &&
         typeof raw.propertyType === 'object' &&

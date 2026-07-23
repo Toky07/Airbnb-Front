@@ -91,6 +91,7 @@ describe('InitiateCheckoutUseCase', () => {
           amount: 24000,
           currency: 'eur',
           provider: 'stripe',
+          holdUntil: null,
         },
       }),
     });

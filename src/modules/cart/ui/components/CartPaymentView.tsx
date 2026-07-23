@@ -1,7 +1,12 @@
+import { useEffect, useState } from 'react';
+import {
+  formatHoldUntilLabel,
+  isPaymentHoldExpired,
+  type PaymentSession,
+} from '../../../payment/core/types/payment.types';
 import { formatPaymentAmount } from '../../../payment/core/utils/format-payment-amount';
-import type { PaymentSession } from '../../../payment/core/types/payment.types';
 import PaymentPanel from '../../../payment/ui/components/PaymentPanel';
-import { PageContainer } from '../../../../shared/ui';
+import { InlineErrorPanel, PageContainer } from '../../../../shared/ui';
 import PublicPageLayout from '../../../site/ui/components/PublicPageLayout';
 
 type CartPaymentViewProps = {
@@ -10,22 +15,61 @@ type CartPaymentViewProps = {
   onCancel: () => void;
 };
 
-const CartPaymentView = ({ paymentSession, onSuccess, onCancel }: CartPaymentViewProps) => (
-  <PublicPageLayout>
-    <PageContainer className="py-16">
-      <div className="mx-auto max-w-xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">
-        <div className="border-b border-slate-100 bg-slate-50 px-8 py-6">
-          <h1 className="text-2xl font-bold text-slate-900">Paiement sécurisé</h1>
-          <p className="mt-2 text-sm text-slate-500">
-            Montant total : {formatPaymentAmount(paymentSession.amount, paymentSession.currency)}
-          </p>
+const CartPaymentView = ({ paymentSession, onSuccess, onCancel }: CartPaymentViewProps) => {
+  const [holdExpired, setHoldExpired] = useState(
+    isPaymentHoldExpired(paymentSession.holdUntil),
+  );
+  const holdLabel = formatHoldUntilLabel(paymentSession.holdUntil);
+
+  useEffect(() => {
+    if (!paymentSession.holdUntil) {
+      return;
+    }
+
+    const tick = () => {
+      setHoldExpired(isPaymentHoldExpired(paymentSession.holdUntil));
+    };
+
+    tick();
+    const timer = window.setInterval(tick, 1000);
+    return () => window.clearInterval(timer);
+  }, [paymentSession.holdUntil]);
+
+  return (
+    <PublicPageLayout>
+      <PageContainer className="py-16">
+        <div className="mx-auto max-w-xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">
+          <div className="border-b border-slate-100 bg-slate-50 px-8 py-6">
+            <h1 className="text-2xl font-bold text-slate-900">Paiement sécurisé</h1>
+            <p className="mt-2 text-sm text-slate-500">
+              Montant total : {formatPaymentAmount(paymentSession.amount, paymentSession.currency)}
+            </p>
+            {holdLabel && !holdExpired ? (
+              <p className="mt-2 text-sm font-medium text-slate-700">
+                Réservation garantie jusqu’à {holdLabel}
+              </p>
+            ) : null}
+          </div>
+          <div className="p-8">
+            {holdExpired ? (
+              <div className="space-y-4">
+                <InlineErrorPanel message="Le délai de réservation a expiré. Relancez le paiement depuis le panier." />
+                <button
+                  type="button"
+                  onClick={onCancel}
+                  className="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
+                >
+                  Retour au panier
+                </button>
+              </div>
+            ) : (
+              <PaymentPanel session={paymentSession} onSuccess={onSuccess} onCancel={onCancel} />
+            )}
+          </div>
         </div>
-        <div className="p-8">
-          <PaymentPanel session={paymentSession} onSuccess={onSuccess} onCancel={onCancel} />
-        </div>
-      </div>
-    </PageContainer>
-  </PublicPageLayout>
-);
+      </PageContainer>
+    </PublicPageLayout>
+  );
+};
 
 export default CartPaymentView;

@@ -16,6 +16,7 @@ export type PropertySummary = {
   description: string;
   checkInTime: string;
   checkOutTime: string;
+  cancellationPolicy?: string | null;
   propertyType: CategorySummary | null;
 };
 
