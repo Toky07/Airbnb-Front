@@ -50,4 +50,40 @@ export class HttpHostReservationRepository implements HostReservationRepository 
     const data: unknown = await response.json();
     return mapReservationStatsOverview(data);
   }
+
+  async cancelReservation(reservationId: number) {
+    const response = await this.httpClient.post(
+      `/host/reservations/${reservationId}/cancel`,
+      {},
+    );
+
+    if (!response.ok) {
+      const data: unknown = await response.json().catch(() => null);
+      const message =
+        data && typeof data === 'object' && 'message' in data
+          ? String((data as { message: unknown }).message)
+          : 'Impossible d’annuler la réservation.';
+      return { success: false as const, error: message };
+    }
+
+    return { success: true as const };
+  }
+
+  async markNoShow(reservationId: number) {
+    const response = await this.httpClient.post(
+      `/host/reservations/${reservationId}/no-show`,
+      {},
+    );
+
+    if (!response.ok) {
+      const data: unknown = await response.json().catch(() => null);
+      const message =
+        data && typeof data === 'object' && 'message' in data
+          ? String((data as { message: unknown }).message)
+          : 'Impossible de marquer le no-show.';
+      return { success: false as const, error: message };
+    }
+
+    return { success: true as const };
+  }
 }

@@ -1,7 +1,16 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import BookingsTable from './BookingsTable';
 import type { HostBookingOrder } from '../../core/types/host-booking.types';
+
+vi.mock('../../application/reservation/composition/host-reservation.composition', () => ({
+  getCancelHostReservationUseCase: () => ({
+    execute: vi.fn().mockResolvedValue({ success: true }),
+  }),
+  getMarkHostReservationNoShowUseCase: () => ({
+    execute: vi.fn().mockResolvedValue({ success: true }),
+  }),
+}));
 
 const booking: HostBookingOrder = {
   paymentId: 9,
@@ -18,6 +27,9 @@ const booking: HostBookingOrder = {
   endDate: '2026-08-03',
   propertyId: 1,
   propertyName: 'Hotel Test',
+  reservationId: 12,
+  reservationStatus: 'confirmed',
+  checkIn: '2099-01-01',
 };
 
 describe('BookingsTable', () => {

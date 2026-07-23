@@ -7,7 +7,7 @@ import { useMyPurchases } from '../hooks/useMyPurchases';
 
 const MyPurchasesPage = () => {
   usePageTitle('Mes achats');
-  const { reservations, loading, error } = useMyPurchases();
+  const { reservations, loading, error, refresh } = useMyPurchases();
 
   return (
     <div className="bg-gradient-to-b from-slate-50 via-white to-white">
@@ -57,7 +57,11 @@ const MyPurchasesPage = () => {
           {!loading && !error && reservations.length > 0 ? (
             <div className="mt-10 space-y-5">
               {reservations.map((reservation) => (
-                <PurchaseCard key={reservation.id} reservation={reservation} />
+                <PurchaseCard
+                  key={reservation.id}
+                  reservation={reservation}
+                  onCancelled={() => void refresh()}
+                />
               ))}
             </div>
           ) : null}

@@ -1,4 +1,4 @@
-export type ReservationStatus = 'pending' | 'confirmed' | 'cancelled';
+export type ReservationStatus = 'pending' | 'confirmed' | 'cancelled' | 'no_show';
 
 export type Reservation = {
   id: number;
@@ -38,6 +38,7 @@ export function getReservationStatusLabel(status: ReservationStatus): string {
     pending: 'En attente de paiement',
     confirmed: 'Confirmée',
     cancelled: 'Annulée',
+    no_show: 'No-show',
   };
   return labels[status] ?? status;
 }

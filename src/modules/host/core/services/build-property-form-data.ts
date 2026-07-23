@@ -11,6 +11,7 @@ export function buildPropertyFormData(payload: PropertyFormPayload): FormData {
   form.append('longitude', String(payload.longitude));
   form.append('checkInTime', payload.checkInTime);
   form.append('checkOutTime', payload.checkOutTime);
+  form.append('cancellationPolicy', payload.cancellationPolicy);
 
   if (payload.propertyTypeId) {
     form.append('propertyTypeId', String(payload.propertyTypeId));

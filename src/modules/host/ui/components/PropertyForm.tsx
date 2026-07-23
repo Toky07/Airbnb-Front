@@ -6,6 +6,7 @@ import { Button, ImageFileInput } from '../../../../shared/ui';
 import { hostFieldClassName } from '../constants/host-form-classes';
 import HostFormError from './HostFormError';
 import HostFormField from './HostFormField';
+import { CANCELLATION_POLICY_OPTIONS } from '../../../reservation/core/constants/cancellation-policy.constants';
 
 type PropertyFormProps = {
   propertyExists: boolean;
@@ -121,6 +122,23 @@ const PropertyForm = ({
             onChange={(event) => onUpdate('checkOutTime', event.target.value)}
             className={hostFieldClassName}
           />
+        </HostFormField>
+
+        <HostFormField label="Politique d'annulation" fullWidth>
+          <select
+            value={form.cancellationPolicy}
+            onChange={(event) => onUpdate('cancellationPolicy', event.target.value)}
+            className={hostFieldClassName}
+          >
+            {CANCELLATION_POLICY_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <p className="mt-2 text-sm text-slate-500">
+            Détermine le montant remboursé lors d&apos;une annulation par le voyageur.
+          </p>
         </HostFormField>
 
         <div className="md:col-span-2">

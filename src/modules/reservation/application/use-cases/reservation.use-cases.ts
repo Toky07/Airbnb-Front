@@ -24,3 +24,27 @@ export class ListMyReservationsUseCase {
     return this.reservationRepository.listMine(page, limit);
   }
 }
+
+export class GetCancellationPreviewUseCase {
+  private readonly reservationRepository: ReservationRepository;
+
+  constructor(reservationRepository: ReservationRepository) {
+    this.reservationRepository = reservationRepository;
+  }
+
+  execute(reservationId: number) {
+    return this.reservationRepository.getCancellationPreview(reservationId);
+  }
+}
+
+export class CancelMyReservationUseCase {
+  private readonly reservationRepository: ReservationRepository;
+
+  constructor(reservationRepository: ReservationRepository) {
+    this.reservationRepository = reservationRepository;
+  }
+
+  execute(reservationId: number) {
+    return this.reservationRepository.cancelMine(reservationId);
+  }
+}

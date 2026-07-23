@@ -21,6 +21,7 @@ export type HostProperty = {
   longitude: number;
   checkInTime: string;
   checkOutTime: string;
+  cancellationPolicy: string;
   ownerId: number;
   propertyTypeId: number | null;
   propertyType: CategorySummary | null;
@@ -43,6 +44,7 @@ export type PropertyFormPayload = {
   longitude: number;
   checkInTime: string;
   checkOutTime: string;
+  cancellationPolicy: string;
   propertyTypeId: number | null;
   imageFile?: File | null;
 };

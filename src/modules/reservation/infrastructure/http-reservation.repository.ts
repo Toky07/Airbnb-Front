@@ -61,4 +61,69 @@ export class HttpReservationRepository implements ReservationRepository {
       total: parsed.meta.total,
     };
   }
+
+  async getCancellationPreview(reservationId: number) {
+    const response = await this.httpClient.get(
+      `/reservations/${reservationId}/cancellation-preview`,
+    );
+    const data: unknown = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false as const,
+        error: parseApiError(data, 'Impossible de prévisualiser l’annulation.'),
+      };
+    }
+
+    const record = data as Record<string, unknown>;
+    if (typeof record.refundAmount !== 'number') {
+      return { success: false as const, error: 'Réponse invalide.' };
+    }
+
+    return {
+      success: true as const,
+      preview: {
+        reservationId: Number(record.reservationId ?? reservationId),
+        refundAmount: record.refundAmount,
+        refundPercent: Number(record.refundPercent ?? 0),
+        policyLabel: String(record.policyLabel ?? ''),
+        cancellationPolicy: String(record.cancellationPolicy ?? ''),
+        paymentAmount: Number(record.paymentAmount ?? 0),
+        currency: String(record.currency ?? 'eur'),
+      },
+    };
+  }
+
+  async cancelMine(reservationId: number) {
+    const response = await this.httpClient.post(
+      `/reservations/me/${reservationId}/cancel`,
+      {},
+    );
+    const data: unknown = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false as const,
+        error: parseApiError(data, 'Impossible d’annuler la réservation.'),
+      };
+    }
+
+    const record = data as Record<string, unknown>;
+    const reservationPayload =
+      record.reservation && typeof record.reservation === 'object'
+        ? record.reservation
+        : data;
+    const reservation = mapFirstReservation(reservationPayload);
+    if (!reservation) {
+      return { success: false as const, error: 'Réponse invalide.' };
+    }
+
+    return {
+      success: true as const,
+      reservation,
+      refundAmount: Number(record.refundAmount ?? 0),
+      refundPercent: Number(record.refundPercent ?? 0),
+      policyLabel: String(record.policyLabel ?? ''),
+    };
+  }
 }

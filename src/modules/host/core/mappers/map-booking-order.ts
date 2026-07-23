@@ -25,5 +25,9 @@ export function mapBookingOrderListItem(data: unknown): HostBookingOrder | null 
     endDate: typeof record.endDate === 'string' ? record.endDate : null,
     propertyId: typeof record.propertyId === 'number' ? record.propertyId : null,
     propertyName: typeof record.propertyName === 'string' ? record.propertyName : null,
+    reservationId: typeof record.reservationId === 'number' ? record.reservationId : null,
+    reservationStatus:
+      typeof record.reservationStatus === 'string' ? record.reservationStatus : null,
+    checkIn: typeof record.checkIn === 'string' ? record.checkIn : null,
   };
 }

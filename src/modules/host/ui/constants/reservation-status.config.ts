@@ -4,7 +4,8 @@ export type PaymentStatusKey =
   | 'confirmed'
   | 'succeeded'
   | 'failed'
-  | 'canceled';
+  | 'canceled'
+  | 'no_show';
 
 export const paymentStatusConfig: Record<
   PaymentStatusKey,
@@ -16,4 +17,5 @@ export const paymentStatusConfig: Record<
   succeeded: { label: 'Payée', className: 'bg-emerald-50 text-emerald-700 ring-emerald-600/20' },
   failed: { label: 'Échouée', className: 'bg-red-50 text-red-700 ring-red-600/20' },
   canceled: { label: 'Annulée', className: 'bg-slate-50 text-slate-600 ring-slate-500/20' },
+  no_show: { label: 'No-show', className: 'bg-orange-50 text-orange-700 ring-orange-600/20' },
 };

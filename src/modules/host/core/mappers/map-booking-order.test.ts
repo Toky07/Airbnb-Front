@@ -19,6 +19,9 @@ describe('mapBookingOrderListItem', () => {
       endDate: '2026-08-03',
       propertyId: 1,
       propertyName: 'Hotel Test',
+      reservationId: null,
+      reservationStatus: null,
+      checkIn: null,
     });
   });
 
