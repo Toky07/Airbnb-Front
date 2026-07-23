@@ -2,7 +2,11 @@ import type { HostBlockedDateRepository } from '../ports/host-blocked-date.repos
 import type { CreateRoomBlockedDatePayload } from '../../../core/types/blocked-date.types';
 
 export class ListHostRoomBlockedDatesUseCase {
-  constructor(private readonly repository: HostBlockedDateRepository) {}
+  private readonly repository: HostBlockedDateRepository;
+
+  constructor(repository: HostBlockedDateRepository) {
+    this.repository = repository;
+  }
 
   execute(propertyId: number, roomId: number) {
     return this.repository.listBlockedDates(propertyId, roomId);
@@ -10,7 +14,11 @@ export class ListHostRoomBlockedDatesUseCase {
 }
 
 export class CreateHostRoomBlockedDateUseCase {
-  constructor(private readonly repository: HostBlockedDateRepository) {}
+  private readonly repository: HostBlockedDateRepository;
+
+  constructor(repository: HostBlockedDateRepository) {
+    this.repository = repository;
+  }
 
   execute(propertyId: number, roomId: number, payload: CreateRoomBlockedDatePayload) {
     return this.repository.createBlockedDate(propertyId, roomId, payload);
@@ -18,7 +26,11 @@ export class CreateHostRoomBlockedDateUseCase {
 }
 
 export class DeleteHostRoomBlockedDateUseCase {
-  constructor(private readonly repository: HostBlockedDateRepository) {}
+  private readonly repository: HostBlockedDateRepository;
+
+  constructor(repository: HostBlockedDateRepository) {
+    this.repository = repository;
+  }
 
   execute(propertyId: number, roomId: number, blockedDateId: number) {
     return this.repository.deleteBlockedDate(propertyId, roomId, blockedDateId);

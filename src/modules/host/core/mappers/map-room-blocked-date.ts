@@ -1,4 +1,4 @@
-import type { RoomBlockedDate } from '../../types/blocked-date.types';
+import type { RoomBlockedDate } from '../types/blocked-date.types';
 
 export function mapRoomBlockedDate(raw: unknown): RoomBlockedDate | null {
   if (!raw || typeof raw !== 'object') {

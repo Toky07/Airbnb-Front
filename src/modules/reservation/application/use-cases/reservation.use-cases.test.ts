@@ -32,6 +32,8 @@ function createReservationRepository(
   return {
     create: vi.fn(),
     listMine: vi.fn(),
+    getCancellationPreview: vi.fn(),
+    cancelMine: vi.fn(),
     ...overrides,
   };
 }
