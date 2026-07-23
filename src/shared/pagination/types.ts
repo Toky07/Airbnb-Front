@@ -21,4 +21,6 @@ export type ListQueryParams = {
   limit?: PageSizeOption;
   search?: string;
   propertyId?: number;
+  checkIn?: string;
+  checkOut?: string;
 };

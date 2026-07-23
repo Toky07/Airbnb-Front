@@ -18,6 +18,10 @@ export function mapPaymentSession(data: unknown): PaymentSession | null {
 
   const amount = Number(record.amount ?? 0);
   const currency = String(record.currency ?? 'eur');
+  const holdUntil =
+    typeof record.holdUntil === 'string' && record.holdUntil.trim()
+      ? record.holdUntil
+      : null;
 
   if (provider === PAYMENT_PROVIDER.STRIPE) {
     if (
@@ -34,6 +38,7 @@ export function mapPaymentSession(data: unknown): PaymentSession | null {
       provider: PAYMENT_PROVIDER.STRIPE,
       clientSecret: record.clientSecret,
       publishableKey: record.publishableKey,
+      holdUntil,
     };
   }
 

@@ -9,6 +9,7 @@ export type PaymentSessionBase = {
   amount: number;
   currency: string;
   provider: PaymentProvider;
+  holdUntil: string | null;
 };
 
 export type StripePaymentSession = PaymentSessionBase & {
@@ -26,4 +27,32 @@ export function isStripePaymentSession(
   session: PaymentSession,
 ): session is StripePaymentSession {
   return session.provider === PAYMENT_PROVIDER.STRIPE;
+}
+
+export function isPaymentHoldExpired(
+  holdUntil: string | null,
+  now: Date = new Date(),
+): boolean {
+  if (!holdUntil) {
+    return false;
+  }
+  const expiry = new Date(holdUntil);
+  if (Number.isNaN(expiry.getTime())) {
+    return false;
+  }
+  return expiry.getTime() <= now.getTime();
+}
+
+export function formatHoldUntilLabel(holdUntil: string | null): string | null {
+  if (!holdUntil) {
+    return null;
+  }
+  const expiry = new Date(holdUntil);
+  if (Number.isNaN(expiry.getTime())) {
+    return null;
+  }
+  return expiry.toLocaleTimeString('fr-FR', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 }

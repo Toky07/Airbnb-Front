@@ -1,0 +1,52 @@
+import { getHttpClient } from '../../../../shared/http/composition/http.composition';
+import type { HttpClient } from '../../../../shared/http/ports/http-client';
+import { buildListQuery } from '../../../../shared/pagination/build-list-query';
+import { parsePaginatedResponse } from '../../../../shared/pagination/parse-paginated-response';
+import type { ListQueryParams, PaginatedResponse } from '../../../../shared/pagination/types';
+import { mapBookingOrderListItem } from '../mappers/map-booking-order';
+import { mapReservationStatsOverview } from '../mappers/map-reservation-stats';
+import type {
+  HostBookingOrder,
+  HostReservationStatsOverview,
+} from '../types/host-booking.types';
+
+const EMPTY_BOOKINGS: PaginatedResponse<HostBookingOrder> = {
+  data: [],
+  meta: { page: 1, limit: 10, total: 0, totalPages: 0 },
+};
+
+const EMPTY_STATS_OVERVIEW: HostReservationStatsOverview = {
+  stats: null,
+  recentActivity: [],
+};
+
+export class HostReservationService {
+  private readonly httpClient: HttpClient;
+
+  constructor(httpClient: HttpClient = getHttpClient()) {
+    this.httpClient = httpClient;
+  }
+
+  async listBookings(params: ListQueryParams = {}) {
+    const response = await this.httpClient.get(
+      `/reservations/bookings/host${buildListQuery(params)}`,
+    );
+
+    if (!response.ok) {
+      return EMPTY_BOOKINGS;
+    }
+
+    const data: unknown = await response.json();
+    return parsePaginatedResponse(data, mapBookingOrderListItem);
+  }
+
+  async getStatsOverview() {
+    const response = await this.httpClient.get('/reservations/stats');
+    if (!response.ok) {
+      return EMPTY_STATS_OVERVIEW;
+    }
+
+    const data: unknown = await response.json();
+    return mapReservationStatsOverview(data);
+  }
+}

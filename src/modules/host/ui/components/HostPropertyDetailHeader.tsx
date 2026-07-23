@@ -5,8 +5,8 @@ import { SegmentedControl } from '../../../../shared/ui';
 type HostPropertyDetailHeaderProps = {
   name: string;
   subtitle: string;
-  activeTab: 'rooms' | 'info';
-  onTabChange: (tab: 'rooms' | 'info') => void;
+  activeTab: 'rooms' | 'info' | 'availability';
+  onTabChange: (tab: 'rooms' | 'info' | 'availability') => void;
 };
 
 const HostPropertyDetailHeader = ({
@@ -35,6 +35,7 @@ const HostPropertyDetailHeader = ({
         onChange={onTabChange}
         options={[
           { value: 'rooms', label: 'Chambres' },
+          { value: 'availability', label: 'Disponibilité' },
           { value: 'info', label: 'Informations' },
         ]}
       />

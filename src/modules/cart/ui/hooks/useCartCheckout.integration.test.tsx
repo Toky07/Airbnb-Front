@@ -29,6 +29,9 @@ describe('useCartCheckout (integration)', () => {
     await waitFor(() => {
       expect(result.current.step).toBe('payment');
       expect(result.current.paymentSession?.paymentId).toBe(42);
+      expect(result.current.paymentSession?.holdUntil).toBe(
+        '2099-01-01T12:00:00.000Z',
+      );
     });
   });
 });

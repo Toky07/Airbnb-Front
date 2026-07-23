@@ -79,6 +79,7 @@ export const cartHandlers = [
       amount: 24000,
       currency: 'eur',
       provider: 'stripe',
+      holdUntil: '2099-01-01T12:00:00.000Z',
     }),
   ),
 
