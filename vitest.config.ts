@@ -6,6 +6,7 @@ import react from '@vitejs/plugin-react';
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
 const stripeJsMock = path.resolve(rootDir, './src/test/mocks/stripe-js.mock.ts');
 const stripeReactMock = path.resolve(rootDir, './src/test/mocks/stripe-react.mock.ts');
+const reactLeafletMock = path.resolve(rootDir, './src/test/mocks/react-leaflet.mock.tsx');
 
 const sharedTestOptions = {
   globals: true,
@@ -27,6 +28,7 @@ export default defineConfig({
     alias: {
       '@stripe/stripe-js': stripeJsMock,
       '@stripe/react-stripe-js': stripeReactMock,
+      'react-leaflet': reactLeafletMock,
     },
   },
   test: {

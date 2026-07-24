@@ -24,4 +24,26 @@ describe('buildListQuery', () => {
     expect(query).not.toContain('checkIn');
     expect(query).not.toContain('checkOut');
   });
+
+  it('inclut les filtres avancés', () => {
+    const query = buildListQuery({
+      page: 1,
+      limit: 10,
+      minPrice: 50,
+      maxPrice: 200,
+      minGuests: 2,
+      roomTypeId: 3,
+      city: 'Paris',
+      amenityIds: [1, 2],
+      status: 'available',
+    });
+
+    expect(query).toContain('minPrice=50');
+    expect(query).toContain('maxPrice=200');
+    expect(query).toContain('minGuests=2');
+    expect(query).toContain('roomTypeId=3');
+    expect(query).toContain('city=Paris');
+    expect(query).toContain('amenityIds=1%2C2');
+    expect(query).toContain('status=available');
+  });
 });

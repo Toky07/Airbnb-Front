@@ -34,6 +34,8 @@ export function mapRoomListItem(data: unknown): RoomListItem | null {
       country: String(raw.country ?? ''),
       address: String(raw.address ?? ''),
       description: String(raw.description ?? ''),
+      latitude: typeof raw.latitude === 'number' ? raw.latitude : undefined,
+      longitude: typeof raw.longitude === 'number' ? raw.longitude : undefined,
       checkInTime: String(raw.checkInTime ?? ''),
       checkOutTime: String(raw.checkOutTime ?? ''),
       cancellationPolicy:

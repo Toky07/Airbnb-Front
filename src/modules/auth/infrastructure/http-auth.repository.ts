@@ -92,6 +92,52 @@ export class HttpAuthRepository implements AuthRepository {
     return { success: true };
   }
 
+  async requestPasswordReset(email: string): Promise<MutationResult> {
+    const response = await this.httpClient.post('/auth/forgot-password', { email });
+    if (!response.ok) {
+      const data: unknown = await response.json();
+      return {
+        success: false,
+        error: parseApiError(data, 'Demande impossible.'),
+      };
+    }
+
+    return { success: true };
+  }
+
+  async validatePasswordReset(token: string): Promise<PasswordResetValidation> {
+    const response = await this.httpClient.get(
+      `/auth/reset-password/validate?token=${encodeURIComponent(token)}`,
+    );
+
+    if (!response.ok) {
+      return { valid: false };
+    }
+
+    const data = (await response.json()) as { email?: string };
+    return {
+      valid: true,
+      email: data.email,
+    };
+  }
+
+  async resetPassword(token: string, password: string): Promise<MutationResult> {
+    const response = await this.httpClient.post('/auth/reset-password', {
+      token,
+      password,
+    });
+    const data: unknown = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: parseApiError(data, 'Réinitialisation impossible.'),
+      };
+    }
+
+    return { success: true };
+  }
+
   async fetchMe() {
     const response = await this.httpClient.get('/auth/me');
     if (!response.ok) {

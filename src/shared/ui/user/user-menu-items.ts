@@ -38,6 +38,18 @@ export function buildUserMenuItems({
       label: 'Mes achats',
       icon: 'receipt',
     },
+    {
+      type: 'link',
+      to: '/account/favorites',
+      label: 'Mes favoris',
+      icon: 'heart',
+    },
+    {
+      type: 'link',
+      to: '/account/messages',
+      label: 'Mes messages',
+      icon: 'envelope',
+    },
   ];
 
   if (canAccessHostDashboard || hasProperty) {

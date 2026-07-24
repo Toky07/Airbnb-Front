@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Link } from 'react-router';
+import FavoriteButton from '../../../favorite/ui/components/FavoriteButton';
 import {
   formatPricePerNight,
   getRoomLocation,
@@ -20,6 +21,9 @@ const RoomCard = memo(function RoomCard({ room }: RoomCardProps) {
   return (
     <Link to={`/rooms/${room.slug}`} className="group block">
       <div className="relative aspect-square overflow-hidden rounded-xl bg-slate-200">
+        <div className="absolute right-3 top-3 z-10">
+          <FavoriteButton roomId={room.id} size="sm" />
+        </div>
         {imageUrl ? (
           <img
             src={imageUrl}

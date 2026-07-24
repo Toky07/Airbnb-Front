@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { Button } from '../../../../shared/ui';
 import type { Invoice } from '../../core/types/invoice.types';
 import {
@@ -9,6 +10,10 @@ import { formatPricePerNight } from '../../../rooms/core/types/room.types';
 import { StayProductCard } from '../../../../shared/ui/product/StayProductCard';
 import { parseProductLabel } from '../../../../shared/ui/product/parse-product-label';
 import { useCancelReservation } from '../hooks/useCancelReservation';
+import { useContactHost } from '../../../messaging/ui/components/ConversationList';
+import ReviewForm from '../../../review/ui/components/ReviewForm';
+import { useCreateReview } from '../../../review/ui/hooks/useCreateReview';
+import { canLeaveReview } from '../../../review/core/utils/review-eligibility';
 
 function getStatusTone(
   status: Reservation['status'],
@@ -37,6 +42,8 @@ type PurchaseCardProps = {
   downloadingInvoice?: boolean;
   onDownloadInvoice?: (invoiceId: number) => void;
   onCancelled?: () => void;
+  hasReview?: boolean;
+  onReviewSubmitted?: () => void;
 };
 
 export default function PurchaseCard({
@@ -45,12 +52,24 @@ export default function PurchaseCard({
   downloadingInvoice = false,
   onDownloadInvoice,
   onCancelled,
+  hasReview = false,
+  onReviewSubmitted,
 }: PurchaseCardProps) {
+  const navigate = useNavigate();
   const { preview, loading, error, loadPreview, cancel, reset } = useCancelReservation();
+  const { contactHost, loading: contactingHost, error: contactError } = useContactHost(
+    reservation.id,
+  );
+  const { createReview } = useCreateReview();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const fallback = parseProductLabel(`Chambre #${reservation.roomId}`);
   const canCancel =
     reservation.status === 'confirmed' && reservation.startDate > new Date().toISOString().slice(0, 10);
+  const showReviewForm = canLeaveReview(
+    reservation.status,
+    reservation.endDate,
+    hasReview,
+  );
 
   const handleOpenCancel = async () => {
     const result = await loadPreview(reservation.id);
@@ -65,6 +84,13 @@ export default function PurchaseCard({
       setConfirmOpen(false);
       reset();
       onCancelled?.();
+    }
+  };
+
+  const handleContactHost = async () => {
+    const conversationId = await contactHost();
+    if (conversationId) {
+      navigate(`/account/messages/${conversationId}`);
     }
   };
 
@@ -111,7 +137,27 @@ export default function PurchaseCard({
         </Button>
       ) : null}
 
+      {reservation.status === 'confirmed' ? (
+        <Button
+          type="button"
+          variant="secondary"
+          disabled={contactingHost}
+          onClick={() => void handleContactHost()}
+        >
+          {contactingHost ? 'Ouverture…' : 'Contacter l’hôte'}
+        </Button>
+      ) : null}
+
+      {showReviewForm ? (
+        <ReviewForm
+          reservationId={reservation.id}
+          onSubmit={createReview}
+          onSuccess={onReviewSubmitted}
+        />
+      ) : null}
+
       {error ? <p className="text-sm text-red-600">{error}</p> : null}
+      {contactError ? <p className="text-sm text-red-600">{contactError}</p> : null}
 
       {confirmOpen && preview ? (
         <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">

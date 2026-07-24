@@ -1,8 +1,10 @@
 import { Link } from 'react-router';
+import { useNavigate } from 'react-router';
 import PublicPageLayout from '../../../site/ui/components/PublicPageLayout';
 import { EmptyState, InlineErrorPanel, PageContainer, RoomGridSkeleton } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import { useRoomsList } from '../hooks/useRoomsList';
+import { useRoomTypeOptions } from '../hooks/useRoomTypeOptions';
 import RoomGrid from '../components/RoomGrid';
 import RoomSearchBar from '../components/RoomSearchBar';
 import HomeCategoryNav from '../components/home/HomeCategoryNav';
@@ -10,8 +12,31 @@ import HomeDestinationLinks from '../components/home/HomeDestinationLinks';
 
 const HomePage = () => {
   usePageTitle('Accueil');
-  const { result, loading, error } = useRoomsList({ page: 1, limit: 10 });
-  const featuredRooms = result.data.filter((room) => room.status === 'available').slice(0, 8);
+  const navigate = useNavigate();
+  const { roomTypes } = useRoomTypeOptions();
+  const { result, loading, error } = useRoomsList({ page: 1, limit: 10, status: 'available' });
+  const featuredRooms = result.data.slice(0, 8);
+
+  const handleNearMeClick = () => {
+    if (!navigator.geolocation) {
+      navigate('/search');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const params = new URLSearchParams({
+          lat: String(position.coords.latitude),
+          lng: String(position.coords.longitude),
+          radiusKm: '25',
+        });
+        navigate(`/search?${params.toString()}`);
+      },
+      () => {
+        navigate('/search');
+      },
+    );
+  };
 
   return (
     <PublicPageLayout>
@@ -20,7 +45,7 @@ const HomePage = () => {
           <div className="mx-auto max-w-4xl">
             <RoomSearchBar />
           </div>
-          <HomeCategoryNav />
+          <HomeCategoryNav roomTypes={roomTypes} onNearMeClick={handleNearMeClick} />
         </PageContainer>
       </section>
 

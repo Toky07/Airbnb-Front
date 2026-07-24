@@ -9,6 +9,7 @@ import { notifyMessages, useNotification } from '../../shared/notifications';
 const navItems: { to: string; label: string; icon: IconProp; end?: boolean }[] = [
   { to: '/host', label: 'Tableau de bord', icon: 'table-columns', end: true },
   { to: '/host/reservations', label: 'Réservations', icon: 'calendar-check' },
+  { to: '/host/messages', label: 'Messages', icon: 'envelope' },
   { to: '/host/property', label: 'Mes établissements', icon: 'hotel' },
 ];
 

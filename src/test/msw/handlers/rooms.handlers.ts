@@ -50,4 +50,8 @@ export const roomsHandlers = [
 
     return new HttpResponse(null, { status: 404 });
   }),
+
+  http.get(apiUrl('/room-types/options'), () => HttpResponse.json([])),
+
+  http.get(apiUrl('/amenities/catalog'), () => HttpResponse.json([])),
 ];

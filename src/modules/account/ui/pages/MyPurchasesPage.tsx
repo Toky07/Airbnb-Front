@@ -4,11 +4,14 @@ import { PageContainer } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import PurchaseCard from '../components/PurchaseCard';
 import { useMyPurchases } from '../hooks/useMyPurchases';
+import { useMyReviewReservationIds } from '../../../review/ui/hooks/useMyReviewReservationIds';
 
 const MyPurchasesPage = () => {
   usePageTitle('Mes achats');
   const { reservations, loading, error, refresh, invoiceByPaymentId, downloadingId, downloadInvoice } =
     useMyPurchases();
+  const { reservationIds: reviewedReservationIds, markReviewed } =
+    useMyReviewReservationIds();
 
   return (
     <div className="bg-gradient-to-b from-slate-50 via-white to-white">
@@ -73,6 +76,8 @@ const MyPurchasesPage = () => {
                   }
                   onDownloadInvoice={(invoiceId) => void downloadInvoice(invoiceId)}
                   onCancelled={() => void refresh()}
+                  hasReview={reviewedReservationIds.has(reservation.id)}
+                  onReviewSubmitted={() => markReviewed(reservation.id)}
                 />
               ))}
             </div>

@@ -66,6 +66,8 @@ describe('UserMenu', () => {
     expect(items.map((item) => item.label)).toEqual([
       'Mon profil',
       'Mes achats',
+      'Mes favoris',
+      'Mes messages',
       'Gérer mon hôtel',
       'Déconnexion',
     ]);

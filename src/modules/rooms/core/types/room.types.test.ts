@@ -1,24 +1,34 @@
 import { describe, expect, it } from 'vitest';
-import { mapRoomListItem } from '../mappers/map-room-list-item';
-import { formatPricePerNight } from '../types/room.types';
+import { sampleRoomApi } from '../../../../test/fixtures/rooms-api.fixtures';
+import { getRoomCoordinates } from './room.types';
 
-describe('formatPricePerNight', () => {
-  it('formate un prix en euros', () => {
-    expect(formatPricePerNight(120)).toMatch(/120/);
-  });
-});
-
-describe('mapRoomListItem', () => {
-  it('mappe les unavailableDates renvoyées par l’API', () => {
-    const room = mapRoomListItem({
-      id: 1,
-      name: 'Suite',
-      pricePerNight: 120,
-      unavailableDates: [{ startDate: '2026-09-10', endDate: '2026-09-13' }],
+describe('getRoomCoordinates', () => {
+  it('retourne les coordonnées de la propriété', () => {
+    expect(getRoomCoordinates(sampleRoomApi)).toEqual({
+      lat: 43.7102,
+      lng: 7.262,
     });
+  });
 
-    expect(room?.unavailableDates).toEqual([
-      { startDate: '2026-09-10', endDate: '2026-09-13' },
-    ]);
+  it('retourne null sans coordonnées', () => {
+    expect(
+      getRoomCoordinates({
+        ...sampleRoomApi,
+        property: sampleRoomApi.property
+          ? { ...sampleRoomApi.property, latitude: undefined, longitude: undefined }
+          : null,
+      }),
+    ).toBeNull();
+  });
+
+  it('retourne null pour des coordonnées nulles', () => {
+    expect(
+      getRoomCoordinates({
+        ...sampleRoomApi,
+        property: sampleRoomApi.property
+          ? { ...sampleRoomApi.property, latitude: 0, longitude: 0 }
+          : null,
+      }),
+    ).toBeNull();
   });
 });

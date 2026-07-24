@@ -1,20 +1,16 @@
 import { PillLink } from '../../../../../shared/ui';
-
-type RoomTypeFilter = {
-  slug: string;
-  name: string;
-};
+import type { RoomTypeOption } from '../../hooks/useRoomTypeOptions';
 
 type RoomTypeFilterBarProps = {
-  roomTypes: RoomTypeFilter[];
-  activeType: string;
+  roomTypes: RoomTypeOption[];
+  activeRoomTypeId?: number;
   allTypesHref: string;
-  buildTypeHref: (slug: string) => string;
+  buildTypeHref: (roomTypeId: number) => string;
 };
 
 const RoomTypeFilterBar = ({
   roomTypes,
-  activeType,
+  activeRoomTypeId,
   allTypesHref,
   buildTypeHref,
 }: RoomTypeFilterBarProps) => {
@@ -24,11 +20,15 @@ const RoomTypeFilterBar = ({
 
   return (
     <div className="mt-6 flex flex-wrap gap-2">
-      <PillLink to={allTypesHref} active={!activeType}>
+      <PillLink to={allTypesHref} active={!activeRoomTypeId}>
         Tous
       </PillLink>
       {roomTypes.map((type) => (
-        <PillLink key={type.slug} to={buildTypeHref(type.slug)} active={activeType === type.slug}>
+        <PillLink
+          key={type.id}
+          to={buildTypeHref(type.id)}
+          active={activeRoomTypeId === type.id}
+        >
           {type.name}
         </PillLink>
       ))}

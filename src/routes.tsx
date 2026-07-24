@@ -15,8 +15,15 @@ const CartPage = lazyRoute(() => import('./modules/cart/ui/pages/CartPage'));
 const LoginPage = lazyRoute(() => import('./modules/auth/ui/pages/LoginPage'));
 const RegisterPage = lazyRoute(() => import('./modules/auth/ui/pages/RegisterPage'));
 const SetPasswordPage = lazyRoute(() => import('./modules/auth/ui/pages/SetPasswordPage'));
+const ForgotPasswordPage = lazyRoute(() => import('./modules/auth/ui/pages/ForgotPasswordPage'));
+const ResetPasswordPage = lazyRoute(() => import('./modules/auth/ui/pages/ResetPasswordPage'));
 const ProfilePage = lazyRoute(() => import('./modules/account/ui/pages/ProfilePage'));
 const MyPurchasesPage = lazyRoute(() => import('./modules/account/ui/pages/MyPurchasesPage'));
+const MessagesPage = lazyRoute(() => import('./modules/messaging/ui/pages/MessagesPage'));
+const HostMessagesPage = lazyRoute(
+  () => import('./modules/messaging/ui/pages/HostMessagesPage'),
+);
+const FavoritesPage = lazyRoute(() => import('./modules/favorite/ui/pages/FavoritesPage'));
 const HostDashboardPage = lazyRoute(() => import('./modules/host/ui/pages/HostDashboardPage'));
 const HostPropertiesListPage = lazyRoute(
   () => import('./modules/host/ui/pages/HostPropertiesListPage'),
@@ -41,8 +48,12 @@ const withPublicLayout = (Page: ReturnType<typeof lazyRoute>) => () => (
 const LoginRoute = withPublicLayout(LoginPage);
 const RegisterRoute = withPublicLayout(RegisterPage);
 const SetPasswordRoute = withPublicLayout(SetPasswordPage);
+const ForgotPasswordRoute = withPublicLayout(ForgotPasswordPage);
+const ResetPasswordRoute = withPublicLayout(ResetPasswordPage);
 const ProfileRoute = withPublicLayout(ProfilePage);
 const MyPurchasesRoute = withPublicLayout(MyPurchasesPage);
+const MessagesRoute = withPublicLayout(MessagesPage);
+const FavoritesRoute = withPublicLayout(FavoritesPage);
 
 const AuthShell = () => (
   <AuthProvider>
@@ -66,6 +77,8 @@ const router = createBrowserRouter([
           { path: '/login', Component: LoginRoute },
           { path: '/register', Component: RegisterRoute },
           { path: '/set-password', Component: SetPasswordRoute },
+          { path: '/forgot-password', Component: ForgotPasswordRoute },
+          { path: '/reset-password', Component: ResetPasswordRoute },
         ],
       },
       {
@@ -73,6 +86,9 @@ const router = createBrowserRouter([
         children: [
           { path: '/account/profile', Component: ProfileRoute },
           { path: '/account/purchases', Component: MyPurchasesRoute },
+          { path: '/account/messages', Component: MessagesRoute },
+          { path: '/account/messages/:conversationId', Component: MessagesRoute },
+          { path: '/account/favorites', Component: FavoritesRoute },
         ],
       },
       {
@@ -84,6 +100,8 @@ const router = createBrowserRouter([
             children: [
               { index: true, Component: HostDashboardPage },
               { path: 'reservations', Component: HostReservationsPage },
+              { path: 'messages', Component: HostMessagesPage },
+              { path: 'messages/:conversationId', Component: HostMessagesPage },
               { path: 'property', Component: HostPropertiesListPage },
               { path: 'property/new', Component: HostPropertyCreatePage },
               { path: 'property/:id', Component: HostPropertyDetailPage },

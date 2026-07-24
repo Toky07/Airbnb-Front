@@ -8,12 +8,16 @@ import { useRoomDetail } from '../hooks/useRoomDetail';
 import RoomAmenities from '../components/RoomAmenities';
 import RoomDetailGallery from '../components/RoomDetailGallery';
 import RoomBookingPanel from '../../../reservation/ui/components/RoomBookingPanel';
+import FavoriteButton from '../../../favorite/ui/components/FavoriteButton';
+import RoomReviewsSection from '../../../review/ui/components/RoomReviewsSection';
+import { useRoomReviews } from '../../../review/ui/hooks/useRoomReviews';
 import { isRoomBookable } from '../../core/types/room.types';
 
 const RoomDetailPage = () => {
   const { slug } = useParams();
   const location = useLocation();
   const { room, loading, error } = useRoomDetail(slug ?? null);
+  const { reviews, summary, loading: reviewsLoading } = useRoomReviews(slug ?? null);
   usePageTitle(room?.name ?? 'Détail du logement');
 
   return (
@@ -51,7 +55,11 @@ const RoomDetailPage = () => {
 
               <div className="border-b border-slate-200 pb-10">
                 <div className="flex flex-wrap items-start justify-between gap-6">
-                  <div>
+                  <div className="flex-1">
+                    <div className="mb-4 flex items-center gap-3">
+                      <FavoriteButton roomId={room.id} size="sm" />
+                      <span className="text-sm font-medium text-slate-600">Enregistrer ce logement</span>
+                    </div>
                     <h1 className="font-serif text-4xl font-medium text-slate-900 md:text-5xl">{room.name}</h1>
                     <p className="mt-4 flex items-center gap-2 text-lg text-slate-600">
                       <FontAwesomeIcon icon="location-dot" className="h-5 w-5 text-brand/80" />
@@ -85,6 +93,12 @@ const RoomDetailPage = () => {
               <div className="border-b border-slate-200 pb-10">
                 <RoomAmenities room={room} />
               </div>
+
+              <RoomReviewsSection
+                summary={summary}
+                reviews={reviews}
+                loading={reviewsLoading}
+              />
 
               {room.property?.description ? (
                 <div className="pb-10">

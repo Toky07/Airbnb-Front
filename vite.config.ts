@@ -19,6 +19,10 @@ export default defineConfig({
             return 'stripe';
           }
 
+          if (id.includes('leaflet') || id.includes('react-leaflet')) {
+            return 'leaflet';
+          }
+
           if (
             id.includes('/react/') ||
             id.includes('/react-dom/') ||

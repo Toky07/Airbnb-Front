@@ -42,6 +42,11 @@ const LoginPage = () => {
           onChange={(event) => setPassword(event.target.value)}
           required
         />
+        <p className="text-right text-sm">
+          <Link to="/forgot-password" className="font-medium text-brand hover:text-brand-dark">
+            Mot de passe oublié ?
+          </Link>
+        </p>
         <Button type="submit" className="w-full" disabled={loading}>
           {loading ? 'Connexion…' : 'Se connecter'}
         </Button>
