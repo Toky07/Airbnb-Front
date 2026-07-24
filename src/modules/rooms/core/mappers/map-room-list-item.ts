@@ -65,6 +65,10 @@ export function mapRoomListItem(data: unknown): RoomListItem | null {
     slug: String(record.slug ?? ''),
     description: String(record.description ?? ''),
     pricePerNight: record.pricePerNight,
+    weekendPricePerNight:
+      typeof record.weekendPricePerNight === 'number'
+        ? record.weekendPricePerNight
+        : null,
     maxGuests: Number(record.maxGuests ?? 0),
     bedrooms: Number(record.bedrooms ?? 0),
     bathrooms: Number(record.bathrooms ?? 0),

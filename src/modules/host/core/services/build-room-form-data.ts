@@ -5,6 +5,9 @@ export function buildRoomFormData(payload: RoomFormPayload): FormData {
   form.append('name', payload.name);
   form.append('description', payload.description);
   form.append('pricePerNight', String(payload.pricePerNight));
+  if (payload.weekendPricePerNight != null && payload.weekendPricePerNight > 0) {
+    form.append('weekendPricePerNight', String(payload.weekendPricePerNight));
+  }
   form.append('maxGuests', String(payload.maxGuests));
   form.append('bedrooms', String(payload.bedrooms));
   form.append('bathrooms', String(payload.bathrooms));

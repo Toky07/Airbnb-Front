@@ -91,6 +91,22 @@ const RoomForm = ({
           />
         </HostFormField>
 
+        <HostFormField label="Prix week-end (€) — ven. / sam. / dim.">
+          <input
+            type="number"
+            min={1}
+            value={form.weekendPricePerNight ?? ''}
+            onChange={(event) =>
+              onUpdate(
+                'weekendPricePerNight',
+                event.target.value ? Number(event.target.value) : null,
+              )
+            }
+            className={hostFieldClassName}
+            placeholder="Optionnel"
+          />
+        </HostFormField>
+
         <HostFormField label="Statut">
           <select
             value={form.status}
