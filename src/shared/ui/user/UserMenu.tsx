@@ -14,6 +14,7 @@ type UserMenuProps = {
   email: string | null;
   canAccessHostDashboard: boolean;
   hasProperty?: boolean;
+  onBecomeHost?: () => void;
   onLogout: () => void;
 };
 
@@ -22,6 +23,7 @@ const UserMenu = ({
   email,
   canAccessHostDashboard,
   hasProperty = false,
+  onBecomeHost,
   onLogout,
 }: UserMenuProps) => {
   const menuId = useId();
@@ -29,7 +31,12 @@ const UserMenu = ({
   const [isOpen, setIsOpen] = useState(false);
   const displayName = getUserDisplayName(session);
   const initials = getUserInitials(session);
-  const items = buildUserMenuItems({ canAccessHostDashboard, hasProperty, onLogout });
+  const items = buildUserMenuItems({
+    canAccessHostDashboard,
+    hasProperty,
+    onBecomeHost,
+    onLogout,
+  });
 
   useEffect(() => {
     if (!isOpen) {
@@ -118,7 +125,12 @@ const UserMenu = ({
                     setIsOpen(false);
                     item.onSelect();
                   }}
-                  className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-medium text-ink/80 transition duration-200 hover:bg-red-50 hover:text-red-600"
+                  className={[
+                    'flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-medium transition duration-200',
+                    item.danger
+                      ? 'text-ink/80 hover:bg-red-50 hover:text-red-600'
+                      : 'text-ink/80 hover:bg-mist hover:text-ink',
+                  ].join(' ')}
                 >
                   <FontAwesomeIcon icon={item.icon} className="h-4 w-4" />
                   {item.label}

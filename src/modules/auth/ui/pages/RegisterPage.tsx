@@ -34,8 +34,8 @@ const RegisterPage = () => {
   return (
     <AuthFormShell onSubmit={submit} maxWidth="lg">
       <AuthFormHeader
-        title="Devenir hôte"
-        description="Créez votre compte — vous recevrez un email pour définir votre mot de passe"
+        title="Créer un compte"
+        description="Inscrivez-vous comme voyageur — vous pourrez devenir hôte plus tard si vous le souhaitez"
       />
 
       {error ? <FormErrorAlert message={error} className="mb-6" /> : null}

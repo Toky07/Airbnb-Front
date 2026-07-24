@@ -26,6 +26,7 @@ function createAuthRepository(
   return {
     login: vi.fn(),
     register: vi.fn(),
+    becomeHost: vi.fn(),
     validatePasswordSetup: vi.fn(),
     setPassword: vi.fn(),
     requestPasswordReset: vi.fn(),

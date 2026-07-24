@@ -35,6 +35,7 @@ export type PasswordResetValidation = {
 export interface AuthRepository {
   login(credentials: LoginCredentials): Promise<LoginResult>;
   register(payload: RegisterPayload): Promise<MutationResult>;
+  becomeHost(): Promise<LoginResult>;
   validatePasswordSetup(token: string): Promise<PasswordSetupValidation>;
   setPassword(token: string, password: string): Promise<MutationResult>;
   requestPasswordReset(email: string): Promise<MutationResult>;
