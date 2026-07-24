@@ -35,6 +35,13 @@ vi.mock('../../../auth/ui/hooks/useAuth', () => ({
   }),
 }));
 
+vi.mock('../../../auth/ui/hooks/useBecomeHost', () => ({
+  useBecomeHost: () => ({
+    becomeHost: vi.fn(),
+    isBecomingHost: false,
+  }),
+}));
+
 vi.mock('../../../../shared/notifications', () => ({
   useNotification: () => ({ success: vi.fn() }),
 }));

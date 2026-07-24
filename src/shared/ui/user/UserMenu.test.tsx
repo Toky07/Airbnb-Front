@@ -72,4 +72,22 @@ describe('UserMenu', () => {
       'Déconnexion',
     ]);
   });
+
+  it('propose devenir hôte pour un voyageur', () => {
+    const onBecomeHost = vi.fn();
+    const items = buildUserMenuItems({
+      canAccessHostDashboard: false,
+      onBecomeHost,
+      onLogout: vi.fn(),
+    });
+
+    expect(items.map((item) => item.label)).toEqual([
+      'Mon profil',
+      'Mes achats',
+      'Mes favoris',
+      'Mes messages',
+      'Devenir hôte',
+      'Déconnexion',
+    ]);
+  });
 });

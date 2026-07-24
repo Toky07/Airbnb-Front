@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import { useAuth } from '../../../auth/ui/hooks/useAuth';
+import { useBecomeHost } from '../../../auth/ui/hooks/useBecomeHost';
 import { Button, FormErrorAlert, ImageFileInput, PageContainer, PhoneInput, TextField } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import { getUserDisplayName, getUserInitials } from '../../../../shared/utils/user-display';
@@ -8,6 +9,7 @@ import { useProfileForm } from '../hooks/useProfileForm';
 const ProfilePage = () => {
   usePageTitle('Mon profil');
   const { email } = useAuth();
+  const { becomeHost, isBecomingHost } = useBecomeHost();
   const {
     session,
     form,
@@ -86,7 +88,18 @@ const ProfilePage = () => {
               >
                 Accéder à mon établissement
               </Link>
-            ) : null}
+            ) : (
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={isBecomingHost}
+                onClick={() => {
+                  void becomeHost();
+                }}
+              >
+                {isBecomingHost ? 'Activation…' : 'Devenir hôte'}
+              </Button>
+            )}
           </div>
         </form>
       </div>

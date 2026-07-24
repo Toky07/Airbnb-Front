@@ -12,17 +12,20 @@ export type UserMenuItem =
       label: string;
       icon: IconProp;
       onSelect: () => void;
+      danger?: boolean;
     };
 
 type BuildUserMenuItemsParams = {
   canAccessHostDashboard: boolean;
   hasProperty?: boolean;
+  onBecomeHost?: () => void;
   onLogout: () => void;
 };
 
 export function buildUserMenuItems({
   canAccessHostDashboard,
   hasProperty,
+  onBecomeHost,
   onLogout,
 }: BuildUserMenuItemsParams): UserMenuItem[] {
   const items: UserMenuItem[] = [
@@ -59,6 +62,13 @@ export function buildUserMenuItems({
       label: 'Gérer mon hôtel',
       icon: 'hotel',
     });
+  } else if (onBecomeHost) {
+    items.push({
+      type: 'action',
+      label: 'Devenir hôte',
+      icon: 'hotel',
+      onSelect: onBecomeHost,
+    });
   }
 
   items.push({
@@ -66,6 +76,7 @@ export function buildUserMenuItems({
     label: 'Déconnexion',
     icon: 'right-from-bracket',
     onSelect: onLogout,
+    danger: true,
   });
 
   return items;
