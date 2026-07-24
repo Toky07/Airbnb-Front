@@ -8,6 +8,7 @@ export { default as OverlayMediaCard } from './card/OverlayMediaCard';
 export { default as AuthFormShell } from './form/AuthFormShell';
 export { default as FormErrorAlert } from './form/FormErrorAlert';
 export { AuthFormHeader, default as TextField } from './form/TextField';
+export { default as PhoneInput } from './phone/PhoneInput';
 export { default as EmptyState } from './feedback/EmptyState';
 export { default as InlineErrorPanel } from './feedback/InlineErrorPanel';
 export { default as ImageFileInput } from './image-file-input';

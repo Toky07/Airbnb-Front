@@ -5,6 +5,7 @@ import {
   AuthFormShell,
   Button,
   FormErrorAlert,
+  PhoneInput,
   TextField,
 } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
@@ -60,12 +61,13 @@ const RegisterPage = () => {
           required
           fullWidth
         />
-        <TextField
+        <PhoneInput
           label="Téléphone"
           value={form.phoneNumber}
-          onChange={(event) => update('phoneNumber', event.target.value)}
+          onChange={(value) => update('phoneNumber', value)}
           required
           fullWidth
+          hint="Format international avec indicatif pays."
         />
       </div>
 

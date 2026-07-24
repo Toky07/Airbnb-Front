@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { useAuth } from '../../../auth/ui/hooks/useAuth';
-import { Button, FormErrorAlert, ImageFileInput, PageContainer, TextField } from '../../../../shared/ui';
+import { Button, FormErrorAlert, ImageFileInput, PageContainer, PhoneInput, TextField } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import { getUserDisplayName, getUserInitials } from '../../../../shared/utils/user-display';
 import { useProfileForm } from '../hooks/useProfileForm';
@@ -66,10 +66,10 @@ const ProfilePage = () => {
               required
             />
             <TextField label="Email" value={email ?? ''} disabled fullWidth />
-            <TextField
+            <PhoneInput
               label="Téléphone"
               value={form.phoneNumber}
-              onChange={(event) => update('phoneNumber', event.target.value)}
+              onChange={(value) => update('phoneNumber', value)}
               required
               fullWidth
             />
