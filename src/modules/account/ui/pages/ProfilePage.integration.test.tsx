@@ -39,7 +39,7 @@ describe('ProfilePage (integration)', () => {
 
     await waitFor(() => {
       expect(screen.getByDisplayValue('Martin')).toBeInTheDocument();
-      expect(screen.getByDisplayValue('0612345678')).toBeInTheDocument();
+      expect(screen.getByLabelText(/téléphone/i)).toHaveValue('06 12 34 56 78');
     });
   });
 });
