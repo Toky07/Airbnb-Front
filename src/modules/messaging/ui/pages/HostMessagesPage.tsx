@@ -41,16 +41,16 @@ const HostMessagesPage = () => {
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">
           Hôte
         </p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
+        <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink">
           Messages
         </h1>
-        <p className="mt-3 text-base text-slate-600">
+        <p className="mt-3 text-base text-ink/60">
           Répondez aux voyageurs à propos de leurs réservations.
         </p>
       </div>
 
       {loading ? (
-        <div className="mt-10 h-64 animate-pulse rounded-3xl bg-slate-100" />
+        <div className="mt-10 h-64 animate-pulse rounded-2xl bg-mist" />
       ) : null}
 
       {error ? (
@@ -70,7 +70,7 @@ const HostMessagesPage = () => {
 
           {selectedId ? (
             messagesLoading ? (
-              <div className="h-[32rem] animate-pulse rounded-3xl bg-slate-100" />
+              <div className="h-[32rem] animate-pulse rounded-2xl bg-mist" />
             ) : messagesError ? (
               <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                 {messagesError}
@@ -84,7 +84,7 @@ const HostMessagesPage = () => {
               />
             )
           ) : (
-            <div className="flex h-[32rem] items-center justify-center rounded-3xl border border-dashed border-slate-200 bg-white text-sm text-slate-500">
+            <div className="flex h-[32rem] items-center justify-center rounded-2xl border border-dashed border-line bg-surface text-sm text-ink/50">
               Sélectionnez une conversation.
             </div>
           )}

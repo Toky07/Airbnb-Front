@@ -19,21 +19,21 @@ export default function ReviewList({
   emptyMessage = 'Aucun avis publié pour le moment.',
 }: ReviewListProps) {
   if (reviews.length === 0) {
-    return <p className="text-slate-500">{emptyMessage}</p>;
+    return <p className="text-ink/50">{emptyMessage}</p>;
   }
 
   return (
     <ul className="space-y-6">
       {reviews.map((review) => (
-        <li key={review.id} className="border-b border-slate-100 pb-6 last:border-0">
+        <li key={review.id} className="border-b border-line pb-6 last:border-0">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="font-medium text-slate-900">
+            <p className="font-medium text-ink">
               {review.authorName ?? 'Voyageur'}
             </p>
             <StarRating value={review.rating} size="sm" />
           </div>
-          <p className="mt-1 text-sm text-slate-500">{formatReviewDate(review.createdAt)}</p>
-          <p className="mt-3 text-slate-700">{review.comment}</p>
+          <p className="mt-1 text-sm text-ink/50">{formatReviewDate(review.createdAt)}</p>
+          <p className="mt-3 text-ink/70">{review.comment}</p>
         </li>
       ))}
     </ul>

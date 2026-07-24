@@ -49,8 +49,8 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
 
   if (added) {
     return (
-      <div className="rounded-sm border border-emerald-200 bg-emerald-50 p-8 shadow-xl shadow-emerald-100/40">
-        <h2 className="font-serif text-2xl font-medium text-emerald-900">Ajouté au panier</h2>
+      <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-8 soft-shadow">
+        <h2 className="font-display text-2xl font-bold text-emerald-900">Ajouté au panier</h2>
         <p className="mt-3 text-emerald-800">
           Votre séjour a été ajouté. Vous pouvez continuer vos recherches ou procéder au paiement.
         </p>
@@ -67,20 +67,20 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
   }
 
   return (
-    <div className="rounded-sm border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/50">
-      <p className="text-3xl font-medium text-slate-900">
+    <div className="surface rounded-2xl p-8 soft-shadow">
+      <p className="font-display text-3xl font-bold text-ink">
         {formatPricePerNight(room.pricePerNight)}
-        <span className="text-lg font-normal text-slate-500"> / nuit</span>
+        <span className="text-lg font-normal text-ink/50"> / nuit</span>
       </p>
       {getCancellationPolicyLabel(room.property?.cancellationPolicy) ? (
-        <p className="mt-3 inline-flex rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700">
+        <p className="mt-3 inline-flex rounded-xl bg-mist px-3 py-1 text-sm font-medium text-ink/70">
           {getCancellationPolicyLabel(room.property?.cancellationPolicy)}
         </p>
       ) : null}
 
       <form onSubmit={submit} className="mt-8 space-y-5">
         <div>
-          <span className="mb-3 block text-sm font-medium text-slate-700">
+          <span className="mb-3 block text-sm font-medium text-ink/70">
             Sélectionnez vos dates
           </span>
           <DatePickerCalendar
@@ -93,21 +93,21 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
         </div>
 
         {form.startDate && form.endDate ? (
-          <div className="flex items-center gap-3 rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-600 border border-slate-100">
-            <span>Du <strong className="text-slate-900">{formatDisplayDate(form.startDate)}</strong></span>
-            <span className="text-slate-300">→</span>
-            <span>Au <strong className="text-slate-900">{formatDisplayDate(form.endDate)}</strong></span>
+          <div className="flex items-center gap-3 rounded-xl border border-line bg-mist/60 px-4 py-3 text-sm text-ink/60">
+            <span>Du <strong className="text-ink">{formatDisplayDate(form.startDate)}</strong></span>
+            <span className="text-ink/30">→</span>
+            <span>Au <strong className="text-ink">{formatDisplayDate(form.endDate)}</strong></span>
           </div>
         ) : null}
 
         {form.startDate && form.endDate && !rangeAvailable ? (
-          <p className="rounded-sm border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
+          <p className="rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
             Cette chambre n'est pas disponible pour les dates sélectionnées.
           </p>
         ) : null}
 
         <label className="block">
-          <span className="mb-2 block text-sm font-medium text-slate-700">Voyageurs</span>
+          <span className="mb-2 block text-sm font-medium text-ink/70">Voyageurs</span>
           <input
             type="number"
             min={1}
@@ -116,27 +116,27 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
             onChange={(event) =>
               updateField('guestCount', Number.parseInt(event.target.value, 10) || 1)
             }
-            className="w-full rounded-sm border border-slate-200 px-4 py-3 text-sm outline-none transition-colors focus:border-brand focus:ring-1 focus:ring-brand"
+            className="w-full rounded-xl border border-line bg-white px-4 py-3 text-sm outline-none transition duration-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
             required
           />
         </label>
 
         {preview && rangeAvailable ? (
-          <div className="rounded-sm bg-slate-50 px-5 py-4 text-slate-700 border border-slate-100 space-y-3">
-            <p className="text-sm text-slate-600">
+          <div className="space-y-3 rounded-xl border border-line bg-mist/60 px-5 py-4 text-ink/70">
+            <p className="text-sm text-ink/60">
               {preview.nights} nuit{preview.nights > 1 ? 's' : ''}
             </p>
             {pricingLoading ? (
-              <p className="text-sm text-slate-500">Calcul des taxes et frais…</p>
+              <p className="text-sm text-ink/50">Calcul des taxes et frais…</p>
             ) : pricingBreakdown ? (
               <PricingBreakdownSummary
                 breakdown={pricingBreakdown}
-                totalClassName="text-lg font-medium text-slate-900"
+                totalClassName="text-lg font-medium text-ink"
               />
             ) : (
               <div className="flex items-center justify-between">
                 <span className="text-sm">Total estimé</span>
-                <span className="text-lg font-medium text-slate-900">
+                <span className="text-lg font-medium text-ink">
                   {formatPricePerNight(preview.totalPrice)}
                 </span>
               </div>
@@ -145,17 +145,17 @@ const RoomBookingPanel = ({ room }: RoomBookingPanelProps) => {
         ) : null}
 
         {error ? (
-          <p className="rounded-sm border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
+          <p className="rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
             {error}
           </p>
         ) : null}
 
-        <Button type="submit" className="w-full mt-2" disabled={!canSubmit}>
+        <Button type="submit" className="mt-2 w-full" disabled={!canSubmit}>
           {loading ? 'Ajout…' : 'Ajouter au panier'}
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-slate-500">
+      <p className="mt-6 text-center text-sm text-ink/50">
         Pas besoin de compte pour ajouter au panier.<br/>
         <Link to="/cart" className="mt-1 inline-block font-medium tracking-wide text-brand hover:text-brand-dark">
           Voir le panier

@@ -72,29 +72,29 @@ const AmenityFormModal = ({
       <Modal isOpen={isOpen} onClose={onClose} title={title}>
         <form onSubmit={(event) => void handleSubmit(event)} className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Nom</label>
+            <label className="mb-1 block text-sm font-medium text-ink/70">Nom</label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-line bg-surface px-3 py-2 text-sm text-ink outline-none transition duration-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
               placeholder="Ex. WiFi"
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">Icône</label>
+            <label className="mb-2 block text-sm font-medium text-ink/70">Icône</label>
             <button
               type="button"
               onClick={() => setIsIconPickerOpen(true)}
-              className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm transition hover:border-brand/30 hover:bg-brand/5"
+              className="flex w-full items-center justify-between rounded-xl border border-line bg-mist/60 px-4 py-3 text-sm transition duration-200 hover:border-brand/30 hover:bg-brand/5"
             >
-              <span className="flex items-center gap-3 text-slate-700">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white text-brand shadow-sm">
+              <span className="flex items-center gap-3 text-ink/80">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-surface text-brand soft-shadow">
                   {icon ? (
                     <FontAwesomeIcon icon={resolveAmenityIcon(icon)} className="h-4 w-4" />
                   ) : (
-                    <FontAwesomeIcon icon="image" className="h-4 w-4 text-slate-400" />
+                    <FontAwesomeIcon icon="image" className="h-4 w-4 text-ink/40" />
                   )}
                 </span>
                 {icon ? 'Modifier l’icône' : 'Choisir une icône'}
@@ -103,12 +103,12 @@ const AmenityFormModal = ({
             </button>
           </div>
 
-          <label className="flex items-center gap-2 text-sm text-slate-700">
+          <label className="flex items-center gap-2 text-sm text-ink/70">
             <input
               type="checkbox"
               checked={isActive}
               onChange={(e) => setIsActive(e.target.checked)}
-              className="h-4 w-4 rounded border-slate-300 text-brand"
+              className="h-4 w-4 rounded border-line text-brand"
             />
             Actif
           </label>
@@ -119,14 +119,14 @@ const AmenityFormModal = ({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700"
+              className="rounded-xl border border-line px-4 py-2 text-sm font-medium text-ink/70 transition duration-200 hover:bg-mist"
             >
               Annuler
             </button>
             <button
               type="submit"
               disabled={isSaving}
-              className="rounded-xl bg-brand px-4 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-50"
+              className="rounded-xl bg-brand px-4 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-brand-dark disabled:opacity-50"
             >
               {isSaving ? 'Enregistrement…' : submitLabel}
             </button>

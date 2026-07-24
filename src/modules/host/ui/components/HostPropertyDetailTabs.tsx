@@ -58,8 +58,8 @@ export function HostPropertyRoomsTab({
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-slate-900">Chambres</h2>
-          <p className="mt-1 text-sm text-slate-500">
+          <h2 className="font-display text-xl font-semibold text-ink">Chambres</h2>
+          <p className="mt-1 text-sm text-ink/50">
             {rooms.length} chambre{rooms.length > 1 ? 's' : ''} publiée
             {rooms.length > 1 ? 's' : ''}
           </p>
@@ -93,12 +93,12 @@ export function HostPropertyRoomsTab({
       {roomsLoading ? (
         <PageSkeleton className="h-48 rounded-2xl p-0" />
       ) : rooms.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-200 bg-white px-8 py-14 text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-500">
+        <div className="rounded-2xl border border-dashed border-line bg-surface px-8 py-14 text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-mist text-ink/50">
             <FontAwesomeIcon icon="bed" className="h-6 w-6" />
           </div>
-          <h3 className="mt-5 text-lg font-semibold text-slate-900">Aucune chambre</h3>
-          <p className="mt-2 text-sm text-slate-500">
+          <h3 className="mt-5 font-display text-lg font-semibold text-ink">Aucune chambre</h3>
+          <p className="mt-2 text-sm text-ink/50">
             Ajoutez votre première chambre pour la rendre visible aux voyageurs.
           </p>
           <Button onClick={onOpenCreate} className="mt-6 px-6 py-3">
@@ -142,8 +142,8 @@ export function HostPropertyInfoTab({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-slate-900">Informations de l’établissement</h2>
-        <p className="mt-1 text-sm text-slate-500">
+        <h2 className="font-display text-xl font-semibold text-ink">Informations de l’établissement</h2>
+        <p className="mt-1 text-sm text-ink/50">
           Modifiez les détails visibles par les voyageurs et les équipements proposés.
         </p>
       </div>

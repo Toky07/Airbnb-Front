@@ -13,7 +13,7 @@ const maxWidthClass = {
 } as const;
 
 const AuthFormShell = ({ children, onSubmit, maxWidth = 'md' }: AuthFormShellProps) => {
-  const shellClass = `w-full ${maxWidthClass[maxWidth]} rounded-3xl border border-slate-200 bg-white p-8 shadow-lg`;
+  const shellClass = `surface soft-shadow page-mist w-full ${maxWidthClass[maxWidth]} rounded-2xl p-8`;
 
   return (
     <PageContainer className="flex min-h-[70vh] items-center justify-center py-12">

@@ -2,6 +2,7 @@ import { type FormEvent, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { EmptyState, InlineErrorPanel, PageSkeleton } from '../../../../shared/ui';
 import type { RoomListItem } from '../../../rooms/core/types/room.types';
+import { hostFieldClassName } from '../constants/host-form-classes';
 import { useHostRoomBlockedDates } from '../hooks/useHostRoomBlockedDates';
 
 type HostPropertyAvailabilityTabProps = {
@@ -60,11 +61,11 @@ const HostPropertyAvailabilityTab = ({
   return (
     <div className="space-y-8">
       <div>
-        <label className="mb-2 block text-sm font-medium text-slate-700">Chambre</label>
+        <label className="mb-2 block text-sm font-medium text-ink/70">Chambre</label>
         <select
           value={activeRoomId ?? ''}
           onChange={(event) => setSelectedRoomId(Number(event.target.value))}
-          className="w-full max-w-md rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-slate-400"
+          className={`max-w-md ${hostFieldClassName}`}
         >
           {rooms.map((room) => (
             <option key={room.id} value={room.id}>
@@ -78,44 +79,44 @@ const HostPropertyAvailabilityTab = ({
 
       <form
         onSubmit={handleSubmit}
-        className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-6 md:grid-cols-[1fr_1fr_1.2fr_auto]"
+        className="grid gap-4 rounded-2xl border border-ink/8 bg-surface p-6 soft-shadow md:grid-cols-[1fr_1fr_1.2fr_auto]"
       >
         <label className="space-y-1.5 text-sm">
-          <span className="font-medium text-slate-700">Début</span>
+          <span className="font-medium text-ink/70">Début</span>
           <input
             type="date"
             value={startDate}
             onChange={(event) => setStartDate(event.target.value)}
             required
-            className="w-full rounded-xl border border-slate-200 px-3 py-2 outline-none focus:border-slate-400"
+            className={hostFieldClassName}
           />
         </label>
         <label className="space-y-1.5 text-sm">
-          <span className="font-medium text-slate-700">Fin</span>
+          <span className="font-medium text-ink/70">Fin</span>
           <input
             type="date"
             value={endDate}
             min={startDate || undefined}
             onChange={(event) => setEndDate(event.target.value)}
             required
-            className="w-full rounded-xl border border-slate-200 px-3 py-2 outline-none focus:border-slate-400"
+            className={hostFieldClassName}
           />
         </label>
         <label className="space-y-1.5 text-sm">
-          <span className="font-medium text-slate-700">Motif (optionnel)</span>
+          <span className="font-medium text-ink/70">Motif (optionnel)</span>
           <input
             type="text"
             value={reason}
             onChange={(event) => setReason(event.target.value)}
             placeholder="Maintenance, fermeture…"
-            className="w-full rounded-xl border border-slate-200 px-3 py-2 outline-none focus:border-slate-400"
+            className={hostFieldClassName}
           />
         </label>
         <div className="flex items-end">
           <button
             type="submit"
             disabled={blockedDates.saving}
-            className="w-full rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 disabled:opacity-60"
+            className="w-full rounded-xl bg-brand px-4 py-2.5 text-sm font-medium text-white transition hover:bg-brand-dark disabled:opacity-60"
           >
             Bloquer
           </button>
@@ -132,25 +133,25 @@ const HostPropertyAvailabilityTab = ({
       ) : null}
 
       {!blockedDates.loading && blockedDates.items.length > 0 ? (
-        <ul className="divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <ul className="divide-y divide-ink/8 overflow-hidden rounded-2xl border border-ink/8 bg-surface">
           {blockedDates.items.map((item) => (
             <li
               key={item.id}
               className="flex flex-wrap items-center justify-between gap-4 px-5 py-4"
             >
               <div>
-                <p className="font-medium text-slate-900">
+                <p className="font-medium text-ink">
                   {item.startDate} → {item.endDate}
                 </p>
                 {item.reason ? (
-                  <p className="mt-1 text-sm text-slate-500">{item.reason}</p>
+                  <p className="mt-1 text-sm text-ink/50">{item.reason}</p>
                 ) : null}
               </div>
               <button
                 type="button"
                 disabled={blockedDates.saving}
                 onClick={() => void blockedDates.remove(item.id)}
-                className="inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:opacity-60"
+                className="inline-flex items-center gap-2 rounded-xl px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-500/10 disabled:opacity-60"
               >
                 <FontAwesomeIcon icon="trash" className="h-3.5 w-3.5" />
                 Supprimer

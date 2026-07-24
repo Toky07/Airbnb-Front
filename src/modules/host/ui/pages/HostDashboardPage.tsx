@@ -27,25 +27,25 @@ const HostDashboardPage = () => {
   return (
     <div className="space-y-10">
       <div>
-        <h1 className="font-serif text-4xl font-bold text-slate-900">
+        <h1 className="font-display text-4xl font-bold text-ink">
           Bonjour, {profile?.user.firstName ?? 'Hôte'}
         </h1>
-        <p className="mt-3 text-lg text-slate-500">Voici un aperçu de votre activité aujourd'hui.</p>
+        <p className="mt-3 text-lg text-ink/50">Voici un aperçu de votre activité aujourd'hui.</p>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-        <div className="group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-8 shadow-sm transition-all hover:shadow-md">
+        <div className="group relative overflow-hidden rounded-2xl border border-ink/8 bg-surface p-8 soft-shadow">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-slate-400">Établissements</p>
-              <p className="mt-3 font-serif text-2xl font-bold text-slate-900">{propertyLabel}</p>
+              <p className="text-sm font-semibold uppercase tracking-wider text-ink/40">Établissements</p>
+              <p className="mt-3 font-display text-2xl font-bold text-ink">{propertyLabel}</p>
               {properties.length === 1 ? (
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-1 text-sm text-ink/50">
                   {properties[0].city}, {properties[0].country}
                 </p>
               ) : null}
             </div>
-            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-brand">
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand">
               <FontAwesomeIcon icon="hotel" className="h-5 w-5" />
             </span>
           </div>
@@ -56,15 +56,15 @@ const HostDashboardPage = () => {
           </Link>
         </div>
 
-        <div className="group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-8 shadow-sm transition-all hover:shadow-md">
+        <div className="group relative overflow-hidden rounded-2xl border border-ink/8 bg-surface p-8 soft-shadow">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-slate-400">
+              <p className="text-sm font-semibold uppercase tracking-wider text-ink/40">
                 Chambres publiées
               </p>
-              <p className="mt-3 font-serif text-3xl font-bold text-slate-900">{roomsCount}</p>
+              <p className="mt-3 font-display text-3xl font-bold text-ink">{roomsCount}</p>
             </div>
-            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-700">
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-mist text-ink/70">
               <FontAwesomeIcon icon="bed" className="h-5 w-5" />
             </span>
           </div>
@@ -76,13 +76,13 @@ const HostDashboardPage = () => {
           </Link>
         </div>
 
-        <div className="group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-8 shadow-sm transition-all hover:shadow-md">
+        <div className="group relative overflow-hidden rounded-2xl border border-ink/8 bg-surface p-8 soft-shadow">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wider text-slate-400">
+              <p className="text-sm font-semibold uppercase tracking-wider text-ink/40">
                 Réservations
               </p>
-              <p className="mt-3 font-serif text-3xl font-bold text-slate-900">
+              <p className="mt-3 font-display text-3xl font-bold text-ink">
                 {reservationStats?.totalCount ?? 0}
               </p>
               {reservationStats && reservationStats.pendingCount > 0 ? (
@@ -90,14 +90,14 @@ const HostDashboardPage = () => {
                   {reservationStats.pendingCount} en attente
                 </p>
               ) : (
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-1 text-sm text-ink/50">
                   {reservationStats?.activeCount ?? 0} séjour
                   {(reservationStats?.activeCount ?? 0) > 1 ? 's' : ''} actif
                   {(reservationStats?.activeCount ?? 0) > 1 ? 's' : ''}
                 </p>
               )}
             </div>
-            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-700">
               <FontAwesomeIcon icon="calendar-check" className="h-5 w-5" />
             </span>
           </div>
@@ -112,16 +112,16 @@ const HostDashboardPage = () => {
           icon="chart-line"
           label="Taux d'occupation"
           value={`${Math.round(reservationStats?.occupancyRate ?? 0)} %`}
-          accent="bg-sky-50 text-sky-600"
+          accent="bg-brand/10 text-brand"
         />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
-        <section className="rounded-3xl border border-slate-100 bg-white p-8 shadow-sm">
+        <section className="rounded-2xl border border-ink/8 bg-surface p-8 soft-shadow">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <h2 className="font-serif text-2xl font-bold text-slate-900">Activité récente</h2>
-              <p className="mt-1 text-sm text-slate-500">Vos dernières réservations confirmées.</p>
+              <h2 className="font-display text-2xl font-bold text-ink">Activité récente</h2>
+              <p className="mt-1 text-sm text-ink/50">Vos dernières réservations confirmées.</p>
             </div>
             <Link to="/host/reservations">
               <Button variant="secondary" size="sm">
@@ -138,14 +138,14 @@ const HostDashboardPage = () => {
           icon="euro-sign"
           label="Revenus du mois"
           value={formatHostCurrency(reservationStats?.monthlyRevenue ?? 0)}
-          accent="bg-amber-50 text-amber-600"
+          accent="bg-brand/10 text-brand"
         />
       </div>
 
       {!hasProperties ? (
-        <div className="rounded-3xl border border-dashed border-brand/30 bg-rose-50/50 p-8">
-          <h2 className="font-serif text-xl font-bold text-slate-900">Commencez ici</h2>
-          <p className="mt-2 text-slate-600">
+        <div className="rounded-2xl border border-dashed border-brand/30 bg-brand/5 p-8">
+          <h2 className="font-display text-xl font-bold text-ink">Commencez ici</h2>
+          <p className="mt-2 text-ink/70">
             Créez d&apos;abord votre établissement, puis ajoutez vos chambres pour les rendre visibles
             sur le site public.
           </p>

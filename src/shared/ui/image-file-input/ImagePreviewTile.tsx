@@ -26,7 +26,7 @@ const ImagePreviewTile = ({
     <img
       src={previewUrl}
       alt={alt}
-      className={`${sizeClasses[size]} object-cover ring-4 ring-white shadow-lg`}
+      className={`${sizeClasses[size]} object-cover ring-2 ring-surface soft-shadow`}
     />
     {onRemove && (
       <ImagePreviewRemoveButton onClick={onRemove} label={removeLabel} />
@@ -35,7 +35,7 @@ const ImagePreviewTile = ({
       <div
         className={`absolute inset-0 flex items-center justify-center bg-white/70 ${sizeClasses[size]}`}
       >
-        <span className="text-xs font-medium text-slate-600">Chargement...</span>
+        <span className="text-xs font-medium text-ink/60">Chargement...</span>
       </div>
     )}
   </div>

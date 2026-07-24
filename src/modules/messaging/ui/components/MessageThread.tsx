@@ -40,10 +40,10 @@ export default function MessageThread({
   };
 
   return (
-    <div className="flex h-[32rem] flex-col rounded-3xl border border-slate-200 bg-white shadow-sm">
+    <div className="flex h-[32rem] flex-col rounded-2xl border border-line bg-surface soft-shadow">
       <div className="flex-1 space-y-3 overflow-y-auto p-6">
         {messages.length === 0 ? (
-          <p className="text-sm text-slate-500">Commencez la conversation.</p>
+          <p className="text-sm text-ink/50">Commencez la conversation.</p>
         ) : null}
 
         {messages.map((message) => {
@@ -56,15 +56,15 @@ export default function MessageThread({
             >
               <div
                 className={[
-                  'max-w-[80%] rounded-2xl px-4 py-3 text-sm',
-                  isMine ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-800',
+                  'max-w-[80%] rounded-xl px-4 py-3 text-sm',
+                  isMine ? 'bg-brand text-white' : 'bg-mist text-ink/80',
                 ].join(' ')}
               >
                 <p>{message.body}</p>
                 <p
                   className={[
                     'mt-2 text-xs',
-                    isMine ? 'text-slate-300' : 'text-slate-500',
+                    isMine ? 'text-white/70' : 'text-ink/50',
                   ].join(' ')}
                 >
                   {formatMessageTime(message.createdAt)}
@@ -78,7 +78,7 @@ export default function MessageThread({
 
       <form
         onSubmit={(event) => void handleSubmit(event)}
-        className="border-t border-slate-100 p-4"
+        className="border-t border-line p-4"
       >
         <div className="flex gap-3">
           <textarea
@@ -86,7 +86,7 @@ export default function MessageThread({
             onChange={(event) => setDraft(event.target.value)}
             rows={2}
             placeholder="Écrivez votre message…"
-            className="min-h-[3rem] flex-1 resize-none rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-slate-400"
+            className="min-h-[3rem] flex-1 resize-none rounded-xl border border-line bg-white px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
           />
           <Button type="submit" disabled={loading || draft.trim().length === 0}>
             Envoyer

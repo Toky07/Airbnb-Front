@@ -12,10 +12,10 @@ type PillProps = {
 
 const Pill = ({ children, icon, active = false, onClick, className = '' }: PillProps) => {
   const base =
-    'flex shrink-0 items-center gap-2.5 rounded-full border px-5 py-2.5 text-sm font-medium transition';
+    'flex shrink-0 items-center gap-2.5 rounded-xl border px-5 py-2.5 text-sm font-medium transition duration-200';
   const state = active
-    ? 'border-slate-900 bg-slate-900 text-white shadow-md'
-    : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50';
+    ? 'border-brand bg-brand text-white'
+    : 'border-line bg-surface text-ink/70 hover:border-brand/30 hover:bg-mist';
 
   if (onClick) {
     return (
@@ -23,7 +23,7 @@ const Pill = ({ children, icon, active = false, onClick, className = '' }: PillP
         {icon && (
           <FontAwesomeIcon
             icon={icon}
-            className={active ? 'h-4 w-4 text-rose-300' : 'h-4 w-4 text-slate-400'}
+            className={active ? 'h-4 w-4 text-white/80' : 'h-4 w-4 text-ink/40'}
           />
         )}
         {children}
@@ -33,7 +33,7 @@ const Pill = ({ children, icon, active = false, onClick, className = '' }: PillP
 
   return (
     <span className={[base, state, className].join(' ')}>
-      {icon && <FontAwesomeIcon icon={icon} className="h-4 w-4 text-slate-400" />}
+      {icon && <FontAwesomeIcon icon={icon} className="h-4 w-4 text-ink/40" />}
       {children}
     </span>
   );

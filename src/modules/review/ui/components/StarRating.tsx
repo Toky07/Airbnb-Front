@@ -23,7 +23,7 @@ export default function StarRating({
       {Array.from({ length: max }, (_, index) => {
         const starValue = index + 1;
         const filled = starValue <= value;
-        const className = `${sizeClasses[size]} ${filled ? 'text-amber-400' : 'text-slate-300'}`;
+        const className = `${sizeClasses[size]} ${filled ? 'text-brand' : 'text-line'}`;
 
         if (interactive && onChange) {
           return (

@@ -40,16 +40,16 @@ const RoomForm = ({
   amenityIds,
   onAmenityIdsChange,
 }: RoomFormProps) => (
-  <form onSubmit={onSubmit} className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm">
-    <div className="border-b border-slate-100 bg-slate-50/50 px-8 py-6 sm:px-10">
+  <form onSubmit={onSubmit} className="overflow-hidden rounded-2xl border border-ink/8 bg-surface soft-shadow">
+    <div className="border-b border-ink/8 bg-mist/40 px-8 py-6 sm:px-10">
       <div className="flex items-center justify-between">
-        <h2 className="font-serif text-2xl font-bold text-slate-900">
+        <h2 className="font-display text-2xl font-bold text-ink">
           {editingRoom ? 'Modifier la chambre' : 'Nouvelle chambre'}
         </h2>
         <button
           type="button"
           onClick={onClose}
-          className="rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm ring-1 ring-inset ring-slate-200 hover:bg-slate-50"
+          className="rounded-xl border border-line bg-surface px-4 py-2 text-sm font-medium text-ink/70 transition hover:bg-mist"
         >
           Fermer
         </button>
@@ -181,7 +181,7 @@ const RoomForm = ({
         <div className="space-y-6 md:col-span-2">
           {editingRoom ? (
             <div>
-              <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-500">
+              <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink/50">
                 Photos actuelles
               </p>
               {existingImages.length > 0 ? (
@@ -191,7 +191,7 @@ const RoomForm = ({
                   onRemove={onRemoveExistingImage}
                 />
               ) : (
-                <p className="text-sm text-slate-500">Aucune photo enregistrée.</p>
+                <p className="text-sm text-ink/50">Aucune photo enregistrée.</p>
               )}
             </div>
           ) : null}
@@ -216,7 +216,7 @@ const RoomForm = ({
       </div>
     </div>
 
-    <div className="flex items-center justify-end gap-4 border-t border-slate-100 bg-slate-50 px-8 py-6 sm:px-10">
+    <div className="flex items-center justify-end gap-4 border-t border-ink/8 bg-mist/40 px-8 py-6 sm:px-10">
       <Button type="button" variant="secondary" onClick={onClose} className="px-6 py-3">
         Annuler
       </Button>

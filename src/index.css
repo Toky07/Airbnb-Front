@@ -1,13 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@500;600;700;800&display=swap');
 @import 'leaflet/dist/leaflet.css';
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-serif: 'Playfair Display', serif;
-  --color-brand: #9f1239;
-  --color-brand-dark: #881337;
-  --color-ink: #0f172a;
+  --font-sans: 'Manrope', ui-sans-serif, sans-serif;
+  --font-display: 'Syne', ui-sans-serif, sans-serif;
+  --font-serif: 'Syne', ui-sans-serif, sans-serif;
+  --color-brand: #0f6b6b;
+  --color-brand-dark: #0b5555;
+  --color-ink: #0b1f24;
+  --color-canvas: #f3f6f7;
+  --color-surface: #ffffff;
+  --color-mist: #e6eef0;
+  --color-line: #d5e0e3;
 }
 
 body {
@@ -15,21 +20,83 @@ body {
   font-family: var(--font-sans);
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
-  background-color: #ffffff;
+  background-color: var(--color-canvas);
+  background-image:
+    radial-gradient(ellipse 90% 60% at 10% -10%, rgb(15 107 107 / 0.08), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 100% 0%, rgb(15 107 107 / 0.05), transparent 50%),
+    radial-gradient(ellipse 50% 40% at 50% 100%, rgb(11 31 36 / 0.03), transparent 60%);
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 button {
   cursor: pointer;
 }
 
+::selection {
+  background: rgb(15 107 107 / 0.18);
+  color: var(--color-ink);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.surface {
+  background: var(--color-surface);
+  border: 1px solid rgb(11 31 36 / 0.08);
+  border-radius: 1rem;
+}
+
+.page-mist {
+  background:
+    linear-gradient(180deg, rgb(243 246 247 / 0.4), transparent 40%),
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgb(15 107 107 / 0.06), transparent 70%);
+}
+
+.soft-shadow {
+  box-shadow: 0 12px 40px rgb(11 31 36 / 0.06);
+}
+
+.media-hover {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .media-hover,
+.media-hover:hover {
+  transform: translateY(-3px);
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes soft-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
   }
 }
 
@@ -44,15 +111,23 @@ button {
 }
 
 .animate-fade-up {
-  animation: fade-up 0.8s ease-out both;
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .animate-fade-up-delay {
-  animation: fade-up 0.8s ease-out 0.15s both;
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
 }
 
 .animate-fade-up-delay-2 {
-  animation: fade-up 0.8s ease-out 0.3s both;
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.24s both;
+}
+
+.animate-soft-rise {
+  animation: soft-rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-reveal {
+  animation: reveal 0.6s ease-out both;
 }
 
 .animate-float {
@@ -62,7 +137,7 @@ button {
 @keyframes notification-enter {
   from {
     opacity: 0;
-    transform: translateX(calc(100% + 1rem)) scale(0.96);
+    transform: translateX(calc(100% + 1rem)) scale(0.98);
   }
   to {
     opacity: 1;
@@ -77,7 +152,7 @@ button {
   }
   to {
     opacity: 0;
-    transform: translateX(calc(100% + 1rem)) scale(0.96);
+    transform: translateX(calc(100% + 1rem)) scale(0.98);
   }
 }
 
@@ -91,17 +166,17 @@ button {
 }
 
 .animate-notification-enter {
-  animation: notification-enter 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: notification-enter 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .animate-notification-exit {
-  animation: notification-exit 0.28s cubic-bezier(0.4, 0, 1, 1) forwards;
+  animation: notification-exit 0.25s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
 @keyframes menu-enter {
   from {
     opacity: 0;
-    transform: translateY(-8px) scale(0.98);
+    transform: translateY(-6px) scale(0.98);
   }
   to {
     opacity: 1;
@@ -110,5 +185,5 @@ button {
 }
 
 .animate-menu-enter {
-  animation: menu-enter 0.22s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: menu-enter 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }

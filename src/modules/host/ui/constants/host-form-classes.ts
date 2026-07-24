@@ -1,5 +1,5 @@
 export const hostFieldClassName =
-  'w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-base text-slate-900 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20';
+  'w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm text-ink outline-none transition duration-200 focus:border-brand focus:ring-2 focus:ring-brand/20';
 
 export const hostFieldLabelClassName =
-  'mb-2 block text-sm font-semibold uppercase tracking-wider text-slate-500';
+  'mb-2 block text-sm font-semibold uppercase tracking-wider text-ink/50';

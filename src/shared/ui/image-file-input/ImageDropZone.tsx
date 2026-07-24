@@ -43,10 +43,10 @@ const ImageDropZone = ({
   return (
     <div
       className={[
-        'relative flex flex-1 flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-8 text-center transition',
+        'relative flex flex-1 flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-8 text-center transition duration-200',
         isDragging
-          ? 'border-rose-400 bg-rose-50/80'
-          : 'border-slate-200 bg-slate-50/80 hover:border-rose-300 hover:bg-rose-50/40',
+          ? 'border-brand bg-brand/5'
+          : 'border-line bg-mist/60 hover:border-brand/40 hover:bg-brand/5',
         disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer',
       ].join(' ')}
       onDragEnter={(e) => {
@@ -89,12 +89,12 @@ const ImageDropZone = ({
         onChange={(e) => onFilesSelected(e.target.files)}
       />
 
-      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-rose-500 shadow-sm">
+      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-surface text-brand">
         <FontAwesomeIcon icon="image" className="h-5 w-5" />
       </div>
-      <p className="text-sm font-semibold text-slate-800">{dropLabel}</p>
-      <p className="mt-1 text-xs text-slate-500">{hint}</p>
-      <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs font-medium text-rose-600 shadow-sm">
+      <p className="text-sm font-semibold text-ink">{dropLabel}</p>
+      <p className="mt-1 text-xs text-ink/50">{hint}</p>
+      <p className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-surface px-3 py-1 text-xs font-medium text-brand">
         <FontAwesomeIcon icon="camera" className="h-3 w-3" />
         Parcourir
       </p>

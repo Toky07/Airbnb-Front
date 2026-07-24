@@ -24,7 +24,7 @@ const HostAmenityField = ({
       {error ? <p className="text-sm text-red-600">{error}</p> : null}
 
       {loading ? (
-        <div className="h-24 animate-pulse rounded-2xl bg-slate-100" />
+        <div className="h-24 animate-pulse rounded-xl bg-mist" />
       ) : (
         <AmenityMultiSelect
           label={label}

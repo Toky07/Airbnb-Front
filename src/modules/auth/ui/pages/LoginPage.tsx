@@ -52,7 +52,7 @@ const LoginPage = () => {
         </Button>
       </div>
 
-      <p className="mt-6 text-center text-sm text-slate-500">
+      <p className="mt-6 text-center text-sm text-ink/50">
         Pas encore de compte ?{' '}
         <Link to={registerHref} className="font-semibold text-brand hover:text-brand-dark">
           S&apos;inscrire

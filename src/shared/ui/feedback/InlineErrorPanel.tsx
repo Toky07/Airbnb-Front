@@ -6,7 +6,7 @@ type InlineErrorPanelProps = {
 
 const InlineErrorPanel = ({ message, hint, className = '' }: InlineErrorPanelProps) => (
   <div
-    className={`rounded-2xl border border-red-200 bg-red-50 px-6 py-8 text-center text-red-700 ${className}`.trim()}
+    className={`rounded-2xl border border-red-200/80 bg-red-50/80 px-6 py-8 text-center text-red-700 ${className}`.trim()}
   >
     {message}
     {hint ? <p className="mt-2 text-sm text-red-600">{hint}</p> : null}

@@ -10,24 +10,24 @@ const FavoritesPage = () => {
   const { favorites, loading, error } = useMyFavorites();
 
   return (
-    <div className="bg-gradient-to-b from-slate-50 via-white to-white">
+    <div className="page-mist">
       <PageContainer className="py-12 lg:py-16">
         <div className="mx-auto max-w-6xl">
           <div className="max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">Mon compte</p>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+            <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
               Mes favoris
             </h1>
-            <p className="mt-3 text-base text-slate-600">
+            <p className="mt-3 text-base text-ink/60">
               Retrouvez les logements que vous avez enregistrés pour vos prochains séjours.
             </p>
           </div>
 
           {loading ? (
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="aspect-square animate-pulse rounded-xl bg-slate-100" />
-              <div className="aspect-square animate-pulse rounded-xl bg-slate-100" />
-              <div className="aspect-square animate-pulse rounded-xl bg-slate-100" />
+              <div className="aspect-square animate-pulse rounded-xl bg-mist" />
+              <div className="aspect-square animate-pulse rounded-xl bg-mist" />
+              <div className="aspect-square animate-pulse rounded-xl bg-mist" />
             </div>
           ) : null}
 
@@ -38,11 +38,11 @@ const FavoritesPage = () => {
           ) : null}
 
           {!loading && !error && favorites.length === 0 ? (
-            <div className="mt-12 rounded-3xl border border-dashed border-slate-200 bg-white/80 p-12 text-center shadow-sm">
-              <p className="text-lg font-medium text-slate-700">
+            <div className="mt-12 rounded-2xl border border-dashed border-line bg-surface/80 p-12 text-center soft-shadow">
+              <p className="text-lg font-medium text-ink/70">
                 Vous n&apos;avez pas encore de favori
               </p>
-              <p className="mt-2 text-sm text-slate-500">
+              <p className="mt-2 text-sm text-ink/50">
                 Explorez les logements et enregistrez ceux qui vous plaisent.
               </p>
               <Link

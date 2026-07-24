@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { RoomTypeOption } from '../hooks/useRoomTypeOptions';
+import type { RoomTypeOption } from '../../hooks/useRoomTypeOptions';
 
 type HomeCategoryNavProps = {
   roomTypes: RoomTypeOption[];
@@ -39,13 +39,13 @@ const HomeCategoryNav = ({ roomTypes, onNearMeClick }: HomeCategoryNavProps) => 
   ];
 
   return (
-    <div className="mt-8 flex items-center justify-center gap-8 overflow-x-auto pb-4 text-sm font-medium text-slate-500 hide-scrollbar">
+    <div className="flex items-center justify-center gap-4 overflow-x-auto pb-2 hide-scrollbar sm:gap-6">
       {categories.map((category, index) => {
         const className = [
-          'flex flex-col items-center gap-2 border-b-2 pb-2 transition-colors',
+          'flex min-w-[5.5rem] flex-col items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition duration-200',
           index === 0
-            ? 'border-slate-900 text-slate-900'
-            : 'border-transparent hover:border-slate-300 hover:text-slate-900',
+            ? 'bg-brand/10 text-brand'
+            : 'text-ink/60 hover:bg-mist hover:text-ink',
         ].join(' ');
 
         if (category.key === 'near-me') {

@@ -14,7 +14,7 @@ const ImageGallery = ({ images, alt, onRemove }: ImageGalleryProps) => {
 
   if (urls.length === 0) {
     return (
-      <div className="flex aspect-[16/9] items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50 text-sm text-slate-500">
+      <div className="flex aspect-[16/9] items-center justify-center rounded-2xl border border-dashed border-line bg-mist text-sm text-ink/50">
         Aucune photo
       </div>
     );
@@ -55,7 +55,7 @@ const ImageGallery = ({ images, alt, onRemove }: ImageGalleryProps) => {
           key={`${url}-${index}`}
           src={url}
           alt={`${alt} ${index + 1}`}
-          className="aspect-[4/3] w-full rounded-xl object-cover ring-1 ring-slate-200"
+          className="aspect-[4/3] w-full rounded-2xl object-cover ring-1 ring-line"
         />
       ))}
     </div>

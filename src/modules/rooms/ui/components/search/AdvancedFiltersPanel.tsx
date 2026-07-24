@@ -131,7 +131,7 @@ const AdvancedFiltersPanel = ({
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
-        className="text-sm font-medium text-slate-700 underline-offset-2 hover:underline"
+        className="text-sm font-medium text-brand underline-offset-2 hover:text-brand-dark hover:underline"
       >
         {open ? 'Masquer les filtres avancés' : 'Filtres avancés'}
       </button>
@@ -139,55 +139,55 @@ const AdvancedFiltersPanel = ({
       {open ? (
         <form
           onSubmit={handleSubmit}
-          className="mt-4 grid gap-4 rounded-xl border border-slate-200 bg-slate-50 p-4 md:grid-cols-2"
+          className="surface mt-4 grid gap-4 rounded-2xl p-4 md:grid-cols-2"
         >
           <label className="flex flex-col gap-1 text-sm">
-            <span className="font-medium text-slate-700">Prix min. (€/nuit)</span>
+            <span className="font-medium text-ink/70">Prix min. (€/nuit)</span>
             <input
               type="number"
               min="0"
               value={minPrice}
               onChange={(event) => setMinPrice(event.target.value)}
-              className="rounded-lg border border-slate-200 px-3 py-2"
+              className="rounded-xl border border-line bg-white px-3 py-2 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
             />
           </label>
 
           <label className="flex flex-col gap-1 text-sm">
-            <span className="font-medium text-slate-700">Prix max. (€/nuit)</span>
+            <span className="font-medium text-ink/70">Prix max. (€/nuit)</span>
             <input
               type="number"
               min="0"
               value={maxPrice}
               onChange={(event) => setMaxPrice(event.target.value)}
-              className="rounded-lg border border-slate-200 px-3 py-2"
+              className="rounded-xl border border-line bg-white px-3 py-2 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
             />
           </label>
 
           <label className="flex flex-col gap-1 text-sm">
-            <span className="font-medium text-slate-700">Voyageurs min.</span>
+            <span className="font-medium text-ink/70">Voyageurs min.</span>
             <input
               type="number"
               min="1"
               value={minGuests}
               onChange={(event) => setMinGuests(event.target.value)}
-              className="rounded-lg border border-slate-200 px-3 py-2"
+              className="rounded-xl border border-line bg-white px-3 py-2 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
             />
           </label>
 
           <label className="flex flex-col gap-1 text-sm">
-            <span className="font-medium text-slate-700">Ville</span>
+            <span className="font-medium text-ink/70">Ville</span>
             <input
               type="text"
               value={city}
               onChange={(event) => setCity(event.target.value)}
               placeholder="Ex. Paris"
-              className="rounded-lg border border-slate-200 px-3 py-2"
+              className="rounded-xl border border-line bg-white px-3 py-2 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
             />
           </label>
 
           {amenities.length > 0 ? (
             <fieldset className="md:col-span-2">
-              <legend className="mb-2 text-sm font-medium text-slate-700">Équipements</legend>
+              <legend className="mb-2 text-sm font-medium text-ink/70">Équipements</legend>
               <div className="flex flex-wrap gap-2">
                 {amenities.map((amenity) => {
                   const active = amenityIds.includes(amenity.id);
@@ -197,10 +197,10 @@ const AdvancedFiltersPanel = ({
                       type="button"
                       onClick={() => toggleAmenity(amenity.id)}
                       className={[
-                        'rounded-full border px-3 py-1 text-sm transition',
+                        'rounded-xl border px-3 py-1.5 text-sm transition duration-200',
                         active
-                          ? 'border-slate-900 bg-slate-900 text-white'
-                          : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400',
+                          ? 'border-brand bg-brand text-white'
+                          : 'border-line bg-surface text-ink/70 hover:border-brand/30 hover:bg-mist',
                       ].join(' ')}
                     >
                       {amenity.name}

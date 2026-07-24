@@ -123,7 +123,7 @@ const SearchMapView = ({
 
   return (
     <div
-      className={`overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 ${className}`.trim()}
+      className={`overflow-hidden rounded-2xl border border-line bg-mist soft-shadow ${className}`.trim()}
       data-testid="search-map-view"
     >
       <MapContainer
@@ -142,8 +142,8 @@ const SearchMapView = ({
             center={[center.lat, center.lng]}
             radius={radiusKm * 1000}
             pathOptions={{
-              color: '#9f1239',
-              fillColor: '#9f1239',
+              color: '#0F6B6B',
+              fillColor: '#0F6B6B',
               fillOpacity: 0.12,
               weight: 2,
             }}
@@ -154,9 +154,9 @@ const SearchMapView = ({
           <Marker key={room.id} position={[coordinates.lat, coordinates.lng]}>
             <Popup>
               <div className="space-y-1 text-sm">
-                <p className="font-semibold text-slate-900">{room.name}</p>
-                <p className="text-slate-600">{getRoomLocation(room)}</p>
-                <p className="font-medium text-slate-900">
+                <p className="font-semibold text-ink">{room.name}</p>
+                <p className="text-ink/60">{getRoomLocation(room)}</p>
+                <p className="font-medium text-ink">
                   {formatPricePerNight(room.pricePerNight)} / nuit
                 </p>
                 <Link

@@ -16,11 +16,11 @@ const MediaCardImage = ({
   tag,
   children,
 }: MediaCardImageProps) => (
-  <div className={['relative overflow-hidden rounded-2xl bg-slate-100', aspectClass].join(' ')}>
+  <div className={['relative overflow-hidden rounded-2xl bg-mist', aspectClass].join(' ')}>
     <img
       src={src}
       alt={alt}
-      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+      className="media-hover h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
       loading="lazy"
     />
     {tag && (

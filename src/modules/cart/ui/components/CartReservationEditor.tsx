@@ -55,7 +55,7 @@ const CartReservationEditor = ({ item, updating, onUpdate }: CartReservationEdit
       <button
         type="button"
         onClick={() => setIsEditing(true)}
-        className="rounded-full px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+        className="rounded-xl px-4 py-2 text-sm font-semibold text-ink/70 transition duration-200 hover:bg-mist"
       >
         Modifier
       </button>
@@ -63,32 +63,32 @@ const CartReservationEditor = ({ item, updating, onUpdate }: CartReservationEdit
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-4 space-y-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
+    <form onSubmit={handleSubmit} className="surface mt-4 space-y-3 rounded-2xl p-4">
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="block text-sm">
-          <span className="mb-1 block font-medium text-slate-700">Arrivée</span>
+          <span className="mb-1 block font-medium text-ink/70">Arrivée</span>
           <input
             type="date"
             value={startDate}
             onChange={(event) => setStartDate(event.target.value)}
-            className="w-full rounded-sm border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand"
+            className="w-full rounded-xl border border-line bg-white px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
             required
           />
         </label>
         <label className="block text-sm">
-          <span className="mb-1 block font-medium text-slate-700">Départ</span>
+          <span className="mb-1 block font-medium text-ink/70">Départ</span>
           <input
             type="date"
             value={endDate}
             onChange={(event) => setEndDate(event.target.value)}
-            className="w-full rounded-sm border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand"
+            className="w-full rounded-xl border border-line bg-white px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
             required
           />
         </label>
       </div>
 
       <label className="block text-sm">
-        <span className="mb-1 block font-medium text-slate-700">Voyageurs</span>
+        <span className="mb-1 block font-medium text-ink/70">Voyageurs</span>
         <input
           type="number"
           min={1}
@@ -96,7 +96,7 @@ const CartReservationEditor = ({ item, updating, onUpdate }: CartReservationEdit
           onChange={(event) =>
             setGuestCount(Number.parseInt(event.target.value, 10) || 1)
           }
-          className="w-full rounded-sm border border-slate-200 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand"
+          className="w-full rounded-xl border border-line bg-white px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
           required
         />
       </label>

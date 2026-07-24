@@ -17,7 +17,7 @@ const SiteHeaderAuthActions = () => {
 
   if (isLoading) {
     return (
-      <div className="h-9 w-28 animate-pulse rounded-full bg-slate-100" aria-hidden />
+      <div className="h-9 w-28 animate-pulse rounded-xl bg-mist" aria-hidden />
     );
   }
 
@@ -26,13 +26,13 @@ const SiteHeaderAuthActions = () => {
       <>
         <Link
           to="/login"
-          className="rounded-full px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+          className="rounded-xl px-4 py-2 text-sm font-medium text-ink/70 transition duration-200 hover:bg-mist hover:text-ink"
         >
           Connexion
         </Link>
         <Link
           to="/register"
-          className="rounded-full bg-brand px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-dark"
+          className="rounded-xl bg-brand px-4 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-brand-dark"
         >
           Devenir hôte
         </Link>

@@ -57,13 +57,13 @@ export default function ReviewForm({
   }
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-      <p className="font-medium text-slate-900">Partagez votre expérience</p>
+    <div className="surface rounded-2xl p-4">
+      <p className="font-medium text-ink">Partagez votre expérience</p>
       <div className="mt-3">
         <StarRating value={rating} interactive onChange={setRating} />
       </div>
       <textarea
-        className="mt-4 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900"
+        className="mt-4 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
         rows={4}
         placeholder="Décrivez votre séjour…"
         value={comment}

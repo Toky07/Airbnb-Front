@@ -11,11 +11,11 @@ export const paymentStatusConfig: Record<
   PaymentStatusKey,
   { label: string; className: string }
 > = {
-  pending: { label: 'En attente', className: 'bg-amber-50 text-amber-700 ring-amber-600/20' },
-  processing: { label: 'En cours', className: 'bg-blue-50 text-blue-700 ring-blue-600/20' },
-  confirmed: { label: 'Payée', className: 'bg-emerald-50 text-emerald-700 ring-emerald-600/20' },
-  succeeded: { label: 'Payée', className: 'bg-emerald-50 text-emerald-700 ring-emerald-600/20' },
-  failed: { label: 'Échouée', className: 'bg-red-50 text-red-700 ring-red-600/20' },
-  canceled: { label: 'Annulée', className: 'bg-slate-50 text-slate-600 ring-slate-500/20' },
-  no_show: { label: 'No-show', className: 'bg-orange-50 text-orange-700 ring-orange-600/20' },
+  pending: { label: 'En attente', className: 'bg-amber-500/10 text-amber-700 ring-amber-500/15' },
+  processing: { label: 'En cours', className: 'bg-sky-500/10 text-sky-700 ring-sky-500/15' },
+  confirmed: { label: 'Payée', className: 'bg-emerald-500/10 text-emerald-700 ring-emerald-500/15' },
+  succeeded: { label: 'Payée', className: 'bg-emerald-500/10 text-emerald-700 ring-emerald-500/15' },
+  failed: { label: 'Échouée', className: 'bg-red-500/10 text-red-700 ring-red-500/15' },
+  canceled: { label: 'Annulée', className: 'bg-mist text-ink/60 ring-ink/10' },
+  no_show: { label: 'No-show', className: 'bg-orange-500/10 text-orange-700 ring-orange-500/15' },
 };

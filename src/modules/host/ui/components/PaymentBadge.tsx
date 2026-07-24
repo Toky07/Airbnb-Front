@@ -12,7 +12,7 @@ const PaymentBadge = ({ status }: PaymentBadgeProps) => {
 
   return (
     <span
-      className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset ${config.className}`}
+      className={`inline-flex items-center rounded-xl px-3 py-1 text-xs font-semibold ring-1 ring-inset ${config.className}`}
     >
       {config.label}
     </span>

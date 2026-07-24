@@ -160,9 +160,9 @@ export default function PurchaseCard({
       {contactError ? <p className="text-sm text-red-600">{contactError}</p> : null}
 
       {confirmOpen && preview ? (
-        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-          <p className="font-medium text-slate-900">{preview.policyLabel}</p>
-          <p className="mt-2 text-sm text-slate-600">
+        <div className="surface rounded-2xl p-4">
+          <p className="font-medium text-ink">{preview.policyLabel}</p>
+          <p className="mt-2 text-sm text-ink/60">
             Remboursement estimé :{' '}
             {formatRefundAmount(preview.refundAmount, preview.currency)} ({preview.refundPercent}
             %)

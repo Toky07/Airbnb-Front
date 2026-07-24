@@ -28,7 +28,7 @@ export default function Avatar({ src, initials, alt, size = 'md' }: AvatarProps)
       <img
         src={imageUrl}
         alt={alt}
-        className={`${sizeClasses[size]} shrink-0 rounded-full object-cover ring-2 ring-slate-100`}
+        className={`${sizeClasses[size]} shrink-0 rounded-full object-cover ring-2 ring-line`}
         onError={() => setHasImageError(true)}
       />
     );
@@ -36,7 +36,7 @@ export default function Avatar({ src, initials, alt, size = 'md' }: AvatarProps)
 
   return (
     <div
-      className={`${sizeClasses[size]} flex shrink-0 items-center justify-center rounded-full bg-rose-500 font-semibold text-white ring-2 ring-rose-100`}
+      className={`${sizeClasses[size]} flex shrink-0 items-center justify-center rounded-full bg-brand font-semibold text-white ring-2 ring-brand/20`}
       aria-hidden
     >
       {initials}

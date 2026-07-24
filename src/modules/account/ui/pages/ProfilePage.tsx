@@ -24,23 +24,23 @@ const ProfilePage = () => {
   const initials = getUserInitials(session);
 
   return (
-    <PageContainer className="py-10">
+    <PageContainer className="page-mist py-10">
       <div className="mx-auto max-w-2xl">
         <div className="mb-8">
-          <p className="text-sm font-medium uppercase tracking-wide text-brand">Compte</p>
-          <h1 className="mt-1 text-3xl font-bold text-slate-900">Mon profil</h1>
-          <p className="mt-2 text-slate-500">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">Compte</p>
+          <h1 className="mt-1 font-display text-3xl font-bold tracking-tight text-ink">Mon profil</h1>
+          <p className="mt-2 text-ink/50">
             Gérez vos informations personnelles et votre photo de profil.
           </p>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
+          className="surface rounded-2xl p-6 soft-shadow sm:p-8"
         >
           <div className="mb-8">
-            <p className="mb-1 text-lg font-semibold text-slate-900">{displayName}</p>
-            <p className="mb-6 text-sm text-slate-500">{email}</p>
+            <p className="mb-1 text-lg font-semibold text-ink">{displayName}</p>
+            <p className="mb-6 text-sm text-ink/50">{email}</p>
             <ImageFileInput
               label="Photo de profil"
               value={avatarPreview || session.profile?.avatar || ''}
@@ -82,7 +82,7 @@ const ProfilePage = () => {
             {session.canAccessHostDashboard ? (
               <Link
                 to="/host"
-                className="inline-flex items-center rounded-full border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                className="inline-flex items-center rounded-xl border border-line px-5 py-2.5 text-sm font-medium text-ink/70 transition duration-200 hover:border-brand/30 hover:bg-mist"
               >
                 Accéder à mon établissement
               </Link>

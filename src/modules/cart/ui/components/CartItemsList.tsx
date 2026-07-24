@@ -44,7 +44,7 @@ const CartItemsList = ({
                 type="button"
                 onClick={() => onRemove(item.id)}
                 disabled={removingId === item.id}
-                className="rounded-full px-4 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:opacity-50"
+                className="rounded-xl px-4 py-2 text-sm font-semibold text-red-600 transition duration-200 hover:bg-red-50 disabled:opacity-50"
               >
                 {removingId === item.id ? 'Suppression…' : 'Retirer'}
               </button>

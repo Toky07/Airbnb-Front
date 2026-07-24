@@ -14,8 +14,8 @@ const HostReservationsPage = () => {
   return (
     <div className="space-y-10">
       <div>
-        <h1 className="font-serif text-4xl font-bold text-slate-900">Réservations</h1>
-        <p className="mt-3 text-lg text-slate-500">
+        <h1 className="font-display text-4xl font-bold text-ink">Réservations</h1>
+        <p className="mt-3 text-lg text-ink/50">
           Suivez toutes les réservations effectuées sur votre établissement.
         </p>
       </div>
@@ -25,31 +25,31 @@ const HostReservationsPage = () => {
           icon="layer-group"
           label="Total"
           value={stats?.totalCount ?? 0}
-          accent="bg-slate-100 text-slate-700"
+          accent="bg-mist text-ink/70"
         />
         <HostDashboardStatCard
           icon="calendar-check"
           label="Confirmées"
           value={stats?.activeCount ?? 0}
-          accent="bg-emerald-50 text-emerald-600"
+          accent="bg-emerald-500/10 text-emerald-700"
         />
         <HostDashboardStatCard
           icon="clock"
           label="En attente"
           value={stats?.pendingCount ?? 0}
-          accent="bg-amber-50 text-amber-600"
+          accent="bg-amber-500/10 text-amber-700"
         />
         <HostDashboardStatCard
           icon="coins"
           label="Revenu (mois)"
           value={formatHostCurrency(stats?.monthlyRevenue ?? 0)}
-          accent="bg-rose-50 text-brand"
+          accent="bg-brand/10 text-brand"
         />
       </div>
 
-      <div className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm">
-        <div className="flex flex-col items-start justify-between gap-4 border-b border-slate-100 px-8 py-6 sm:flex-row sm:items-center">
-          <h2 className="font-serif text-2xl font-bold text-slate-900">Commandes récentes</h2>
+      <div className="overflow-hidden rounded-2xl border border-ink/8 bg-surface soft-shadow">
+        <div className="flex flex-col items-start justify-between gap-4 border-b border-ink/8 px-8 py-6 sm:flex-row sm:items-center">
+          <h2 className="font-display text-2xl font-bold text-ink">Commandes récentes</h2>
           <div className="flex w-full max-w-2xl flex-col gap-3 sm:flex-row sm:items-center">
             {properties.length > 1 ? (
               <select
@@ -58,7 +58,7 @@ const HostReservationsPage = () => {
                   const value = event.target.value;
                   setPropertyId(value ? Number.parseInt(value, 10) : null);
                 }}
-                className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                className="rounded-xl border border-line bg-mist/60 px-4 py-3 text-sm text-ink outline-none transition focus:border-brand focus:bg-surface focus:ring-2 focus:ring-brand/20"
               >
                 <option value="">Tous les établissements</option>
                 {properties.map((property) => (
@@ -72,14 +72,14 @@ const HostReservationsPage = () => {
             <div className="relative flex-1">
               <FontAwesomeIcon
                 icon="magnifying-glass"
-                className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+                className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/40"
               />
               <input
                 type="text"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Rechercher un client..."
-                className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-brand focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand/20"
+                className="w-full rounded-xl border border-line bg-mist/60 py-3 pl-11 pr-4 text-sm text-ink placeholder:text-ink/40 outline-none transition focus:border-brand focus:bg-surface focus:ring-2 focus:ring-brand/20"
               />
             </div>
             </form>

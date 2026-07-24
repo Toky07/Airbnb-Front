@@ -16,7 +16,7 @@ export default function NotificationToast({ item, onDismiss, accent }: Notificat
     item.type === 'success'
       ? accent === 'brand'
         ? 'bg-brand'
-        : 'bg-rose-500'
+        : 'bg-brand'
       : styles.progress;
 
   const handleDismiss = () => {
@@ -42,7 +42,7 @@ export default function NotificationToast({ item, onDismiss, accent }: Notificat
       role="status"
       aria-live="polite"
       className={[
-        'pointer-events-auto relative w-full max-w-sm overflow-hidden rounded-2xl border border-white/60 bg-white/95 p-4 shadow-xl shadow-slate-900/10 ring-1 backdrop-blur-md',
+        'pointer-events-auto relative w-full max-w-sm overflow-hidden rounded-2xl border border-line bg-surface p-4 soft-shadow',
         styles.ring,
         isExiting ? 'animate-notification-exit' : 'animate-notification-enter',
       ].join(' ')}
@@ -50,7 +50,7 @@ export default function NotificationToast({ item, onDismiss, accent }: Notificat
       <div className="flex items-start gap-3">
         <div
           className={[
-            'flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-sm',
+            'flex h-9 w-9 shrink-0 items-center justify-center rounded-xl',
             styles.iconBg,
             styles.iconColor,
           ].join(' ')}
@@ -58,7 +58,7 @@ export default function NotificationToast({ item, onDismiss, accent }: Notificat
           <FontAwesomeIcon icon={styles.icon} className="h-4 w-4" />
         </div>
 
-        <p className="min-w-0 flex-1 pt-1 text-sm font-medium leading-snug text-slate-800">
+        <p className="min-w-0 flex-1 pt-1 text-sm font-medium leading-snug text-ink/80">
           {item.message}
         </p>
 
@@ -66,14 +66,14 @@ export default function NotificationToast({ item, onDismiss, accent }: Notificat
           type="button"
           onClick={handleDismiss}
           aria-label="Fermer la notification"
-          className="shrink-0 rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+          className="shrink-0 rounded-lg p-1.5 text-ink/40 transition duration-200 hover:bg-mist hover:text-ink/70"
         >
           <FontAwesomeIcon icon="xmark" className="h-3.5 w-3.5" />
         </button>
       </div>
 
       {item.duration > 0 ? (
-        <div className="absolute inset-x-0 bottom-0 h-1 overflow-hidden bg-slate-100">
+        <div className="absolute inset-x-0 bottom-0 h-1 overflow-hidden bg-mist">
           <div
             className={['h-full origin-left', accentProgress].join(' ')}
             style={{

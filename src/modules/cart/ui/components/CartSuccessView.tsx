@@ -8,13 +8,13 @@ type CartSuccessViewProps = {
 
 const CartSuccessView = ({ onViewPurchases, onGoHome }: CartSuccessViewProps) => (
   <PublicPageLayout>
-    <PageContainer className="py-16">
-      <div className="mx-auto max-w-xl rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-10 text-center shadow-lg shadow-emerald-100/50">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-2xl text-emerald-700">
+    <PageContainer className="page-mist py-16">
+      <div className="mx-auto max-w-xl rounded-2xl border border-emerald-200 bg-surface p-10 text-center soft-shadow">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-xl bg-brand/10 text-2xl text-brand">
           ✓
         </div>
-        <h1 className="mt-6 text-2xl font-bold text-emerald-900">Paiement confirmé</h1>
-        <p className="mt-3 text-sm leading-6 text-emerald-800">
+        <h1 className="mt-6 font-display text-2xl font-bold text-ink">Paiement confirmé</h1>
+        <p className="mt-3 text-sm leading-6 text-ink/60">
           Vos réservations ont été confirmées. Retrouvez-les dans votre espace achats.
         </p>
         <Button type="button" className="mt-8 w-full" onClick={onViewPurchases}>

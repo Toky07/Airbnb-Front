@@ -37,15 +37,15 @@ const CartPaymentView = ({ paymentSession, onSuccess, onCancel }: CartPaymentVie
 
   return (
     <PublicPageLayout>
-      <PageContainer className="py-16">
-        <div className="mx-auto max-w-xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">
-          <div className="border-b border-slate-100 bg-slate-50 px-8 py-6">
-            <h1 className="text-2xl font-bold text-slate-900">Paiement sécurisé</h1>
-            <p className="mt-2 text-sm text-slate-500">
+      <PageContainer className="page-mist py-16">
+        <div className="mx-auto max-w-xl overflow-hidden rounded-2xl border border-line bg-surface soft-shadow">
+          <div className="border-b border-line bg-mist px-8 py-6">
+            <h1 className="font-display text-2xl font-bold text-ink">Paiement sécurisé</h1>
+            <p className="mt-2 text-sm text-ink/50">
               Montant total : {formatPaymentAmount(paymentSession.amount, paymentSession.currency)}
             </p>
             {holdLabel && !holdExpired ? (
-              <p className="mt-2 text-sm font-medium text-slate-700">
+              <p className="mt-2 text-sm font-medium text-ink/70">
                 Réservation garantie jusqu’à {holdLabel}
               </p>
             ) : null}
@@ -57,7 +57,7 @@ const CartPaymentView = ({ paymentSession, onSuccess, onCancel }: CartPaymentVie
                 <button
                   type="button"
                   onClick={onCancel}
-                  className="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
+                  className="rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white transition duration-200 hover:bg-brand-dark"
                 >
                   Retour au panier
                 </button>

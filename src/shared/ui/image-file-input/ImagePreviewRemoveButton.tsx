@@ -15,7 +15,7 @@ const ImagePreviewRemoveButton = ({
       event.stopPropagation();
       onClick();
     }}
-    className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-red-500 text-white shadow-md transition hover:bg-red-600"
+    className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-xl border-2 border-surface bg-red-500 text-white transition duration-200 hover:bg-red-600"
     aria-label={label}
   >
     <FontAwesomeIcon icon="xmark" className="h-3 w-3" />

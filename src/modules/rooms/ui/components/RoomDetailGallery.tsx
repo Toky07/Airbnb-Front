@@ -12,7 +12,7 @@ const RoomDetailGallery = ({ room }: RoomDetailGalleryProps) => {
 
   if (images.length === 0) {
     return (
-      <div className="flex aspect-[16/9] items-center justify-center rounded-3xl bg-slate-100 text-slate-400">
+      <div className="flex aspect-[16/9] items-center justify-center rounded-2xl bg-mist text-ink/40">
         Aucune photo disponible
       </div>
     );
@@ -20,7 +20,7 @@ const RoomDetailGallery = ({ room }: RoomDetailGalleryProps) => {
 
   return (
     <div className="space-y-3">
-      <div className="overflow-hidden rounded-3xl bg-slate-100">
+      <div className="overflow-hidden rounded-2xl bg-mist soft-shadow">
         <img
           src={activeImage ?? undefined}
           alt={room.name}
@@ -35,7 +35,7 @@ const RoomDetailGallery = ({ room }: RoomDetailGalleryProps) => {
               type="button"
               onClick={() => setActiveIndex(index)}
               className={[
-                'overflow-hidden rounded-xl border-2 transition',
+                'overflow-hidden rounded-xl border-2 transition duration-200',
                 index === activeIndex ? 'border-brand' : 'border-transparent opacity-80 hover:opacity-100',
               ].join(' ')}
             >

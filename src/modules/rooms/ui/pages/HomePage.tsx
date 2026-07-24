@@ -10,6 +10,9 @@ import RoomSearchBar from '../components/RoomSearchBar';
 import HomeCategoryNav from '../components/home/HomeCategoryNav';
 import HomeDestinationLinks from '../components/home/HomeDestinationLinks';
 
+const HERO_IMAGE =
+  'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2400&q=80';
+
 const HomePage = () => {
   usePageTitle('Accueil');
   const navigate = useNavigate();
@@ -40,17 +43,42 @@ const HomePage = () => {
 
   return (
     <PublicPageLayout>
-      <section className="border-b border-slate-200 bg-white pt-8 pb-6">
-        <PageContainer>
-          <div className="mx-auto max-w-4xl">
-            <RoomSearchBar />
+      <section className="relative flex min-h-[85vh] items-center">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${HERO_IMAGE})` }}
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0 bg-ink/55" aria-hidden="true" />
+
+        <div className="relative z-10 w-full px-4 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center text-white">
+            <p className="font-display text-5xl font-bold tracking-tight md:text-7xl">airbnb</p>
+            <h1 className="mt-6 font-display text-3xl font-bold tracking-tight md:text-5xl">
+              Trouvez votre prochain séjour
+            </h1>
+            <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/85 md:text-lg">
+              Des logements uniques, partout dans le monde — réservez en quelques clics.
+            </p>
+            <div className="mx-auto mt-10 max-w-4xl">
+              <RoomSearchBar />
+            </div>
           </div>
+        </div>
+      </section>
+
+      <section className="border-b border-line bg-surface py-8">
+        <PageContainer>
           <HomeCategoryNav roomTypes={roomTypes} onNearMeClick={handleNearMeClick} />
         </PageContainer>
       </section>
 
-      <section className="py-8 md:py-12">
+      <section className="page-mist py-12 md:py-16">
         <PageContainer>
+          <h2 className="mb-8 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+            Logements à la une
+          </h2>
+
           {loading ? <RoomGridSkeleton /> : null}
 
           {!loading && error ? (
@@ -72,7 +100,7 @@ const HomePage = () => {
           <div className="mt-12 text-center">
             <Link
               to="/search"
-              className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-6 py-3.5 text-base font-semibold text-white transition hover:bg-slate-800"
+              className="inline-flex items-center justify-center rounded-xl bg-brand px-6 py-3.5 text-base font-semibold text-white transition duration-200 hover:bg-brand-dark"
             >
               Afficher plus
             </Link>

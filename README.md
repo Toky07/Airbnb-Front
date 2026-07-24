@@ -30,3 +30,8 @@ Avec Docker, depuis la racine du monorepo : `make dev`.
 - `src/modules/` — modules métier (rooms, cart, reservation, host, auth…)
 
 Documentation monorepo : [../README.md](../README.md).
+
+## Documentation
+
+- [docs/README.md](docs/README.md) — guides par fonctionnalité (utilisateur + technique)
+- Vue globale voyageur : [../docs/utilisateur/README.md](../docs/utilisateur/README.md)

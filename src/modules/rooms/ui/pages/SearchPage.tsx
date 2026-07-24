@@ -86,7 +86,7 @@ const SearchPage = () => {
 
   return (
     <PublicPageLayout>
-      <PageContainer className="py-8 md:py-12">
+      <PageContainer className="page-mist py-8 md:py-12">
         <div className="mx-auto max-w-3xl">
           <RoomSearchBar
             initialSearch={searchState.query}
@@ -100,7 +100,7 @@ const SearchPage = () => {
           <SearchResultsHeader query={searchState.query} loading={loading} total={result.meta.total} />
 
           <div
-            className="inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-sm"
+            className="inline-flex rounded-xl border border-line bg-surface p-1 soft-shadow"
             role="group"
             aria-label="Mode d'affichage"
           >
@@ -111,10 +111,10 @@ const SearchPage = () => {
                 aria-pressed={viewMode === option.value}
                 onClick={() => setViewMode(option.value)}
                 className={[
-                  'rounded-lg px-3 py-2 text-sm font-medium transition',
+                  'rounded-lg px-3 py-2 text-sm font-medium transition duration-200',
                   viewMode === option.value
-                    ? 'bg-slate-900 text-white'
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900',
+                    ? 'bg-brand text-white'
+                    : 'text-ink/60 hover:bg-mist hover:text-ink',
                 ].join(' ')}
               >
                 {option.label}

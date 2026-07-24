@@ -19,7 +19,7 @@ export default function ConversationList({
 }: ConversationListProps) {
   if (conversations.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-slate-200 bg-white p-8 text-center text-sm text-slate-500">
+      <div className="rounded-2xl border border-dashed border-line bg-surface p-8 text-center text-sm text-ink/50">
         Aucune conversation pour le moment.
       </div>
     );
@@ -36,17 +36,17 @@ export default function ConversationList({
             type="button"
             onClick={() => onSelect(conversation.id)}
             className={[
-              'w-full rounded-2xl border px-4 py-4 text-left transition',
+              'w-full rounded-xl border px-4 py-4 text-left transition duration-200',
               isSelected
-                ? 'border-slate-900 bg-slate-900 text-white'
-                : 'border-slate-200 bg-white hover:border-slate-300',
+                ? 'border-brand bg-brand text-white'
+                : 'border-line bg-surface hover:border-brand/30 hover:bg-mist',
             ].join(' ')}
           >
             <p className="font-medium">Réservation #{conversation.reservationId}</p>
             <p
               className={[
                 'mt-1 text-sm',
-                isSelected ? 'text-slate-200' : 'text-slate-500',
+                isSelected ? 'text-white/80' : 'text-ink/50',
               ].join(' ')}
             >
               {conversation.lastMessageAt

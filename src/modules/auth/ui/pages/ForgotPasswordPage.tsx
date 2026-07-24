@@ -36,7 +36,7 @@ const ForgotPasswordPage = () => {
         </>
       ) : null}
 
-      <p className="mt-6 text-center text-sm text-slate-500">
+      <p className="mt-6 text-center text-sm text-ink/50">
         <Link to="/login" className="font-semibold text-brand hover:text-brand-dark">
           Retour à la connexion
         </Link>

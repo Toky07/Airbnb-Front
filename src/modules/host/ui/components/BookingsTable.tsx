@@ -24,7 +24,7 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
     return (
       <div className="space-y-4 p-8">
         {Array.from({ length: 5 }).map((_, index) => (
-          <div key={index} className="h-16 animate-pulse rounded-2xl bg-slate-50" />
+          <div key={index} className="h-16 animate-pulse rounded-xl bg-mist" />
         ))}
       </div>
     );
@@ -33,11 +33,11 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
   if (bookings.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-slate-50">
-          <FontAwesomeIcon icon="calendar-check" className="h-8 w-8 text-slate-300" />
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-mist">
+          <FontAwesomeIcon icon="calendar-check" className="h-8 w-8 text-ink/30" />
         </div>
-        <p className="mt-6 text-xl font-bold text-slate-900">Aucune réservation</p>
-        <p className="mt-2 text-slate-500">Les réservations de vos clients apparaîtront ici.</p>
+        <p className="mt-6 font-display text-xl font-bold text-ink">Aucune réservation</p>
+        <p className="mt-2 text-ink/50">Les réservations de vos clients apparaîtront ici.</p>
       </div>
     );
   }
@@ -45,7 +45,7 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
   return (
     <div className="overflow-x-auto">
       {error ? (
-        <div className="mx-8 mt-6 flex items-center justify-between rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="mx-8 mt-6 flex items-center justify-between rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-700">
           <span>{error}</span>
           <button type="button" onClick={clearError} className="font-semibold underline">
             Fermer
@@ -54,28 +54,28 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
       ) : null}
       <table className="w-full text-left text-sm">
         <thead>
-          <tr className="border-b border-slate-100 bg-slate-50/50">
-            <th className="whitespace-nowrap px-8 py-4 font-semibold uppercase tracking-wider text-slate-500">
+          <tr className="border-b border-ink/8 bg-mist/60">
+            <th className="whitespace-nowrap px-8 py-4 font-semibold uppercase tracking-wider text-ink/50">
               Client
             </th>
-            <th className="whitespace-nowrap px-8 py-4 font-semibold uppercase tracking-wider text-slate-500">
+            <th className="whitespace-nowrap px-8 py-4 font-semibold uppercase tracking-wider text-ink/50">
               Date
             </th>
-            <th className="whitespace-nowrap px-8 py-4 font-semibold uppercase tracking-wider text-slate-500">
+            <th className="whitespace-nowrap px-8 py-4 font-semibold uppercase tracking-wider text-ink/50">
               Articles
             </th>
-            <th className="whitespace-nowrap px-8 py-4 font-semibold uppercase tracking-wider text-slate-500">
+            <th className="whitespace-nowrap px-8 py-4 font-semibold uppercase tracking-wider text-ink/50">
               Montant
             </th>
-            <th className="whitespace-nowrap px-8 py-4 font-semibold uppercase tracking-wider text-slate-500">
+            <th className="whitespace-nowrap px-8 py-4 font-semibold uppercase tracking-wider text-ink/50">
               Statut
             </th>
-            <th className="whitespace-nowrap px-8 py-4 font-semibold uppercase tracking-wider text-slate-500">
+            <th className="whitespace-nowrap px-8 py-4 font-semibold uppercase tracking-wider text-ink/50">
               Actions
             </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-ink/8">
           {bookings.map((booking) => {
             const reservationId = booking.reservationId;
             const canCancel =
@@ -94,43 +94,43 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
             return (
               <tr
                 key={`${booking.paymentId}-${booking.propertyId ?? 0}-${reservationId ?? 0}`}
-                className="transition-colors hover:bg-slate-50/50"
+                className="transition-colors hover:bg-mist/40"
               >
                 <td className="whitespace-nowrap px-8 py-5">
                   <div>
-                    <p className="font-bold text-slate-900">{booking.customerName}</p>
-                    <p className="mt-0.5 text-sm text-slate-500">{booking.customerEmail}</p>
+                    <p className="font-bold text-ink">{booking.customerName}</p>
+                    <p className="mt-0.5 text-sm text-ink/50">{booking.customerEmail}</p>
                   </div>
                 </td>
-                <td className="whitespace-nowrap px-8 py-5 text-slate-600">
+                <td className="whitespace-nowrap px-8 py-5 text-ink/70">
                   {formatHostDate(booking.paidAt)}
                 </td>
                 <td className="px-8 py-5">
-                  <span className="font-medium text-slate-900">
+                  <span className="font-medium text-ink">
                     {booking.itemCount} chambre{booking.itemCount > 1 ? 's' : ''}
                   </span>
                   {booking.previewLabel ? (
-                    <p className="mt-1 max-w-[250px] truncate text-sm text-slate-500">
+                    <p className="mt-1 max-w-[250px] truncate text-sm text-ink/50">
                       {booking.previewLabel}
                     </p>
                   ) : null}
                   {booking.propertyName ? (
-                    <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-400">
+                    <p className="mt-1 text-xs font-medium uppercase tracking-wide text-ink/40">
                       {booking.propertyName}
                     </p>
                   ) : null}
                   {booking.checkIn ? (
-                    <p className="mt-1 text-xs text-slate-500">Arrivée : {booking.checkIn}</p>
+                    <p className="mt-1 text-xs text-ink/50">Arrivée : {booking.checkIn}</p>
                   ) : null}
                 </td>
-                <td className="whitespace-nowrap px-8 py-5 text-lg font-bold text-slate-900">
+                <td className="whitespace-nowrap px-8 py-5 text-lg font-bold text-ink">
                   {formatHostCurrency(booking.amount)}
                 </td>
                 <td className="whitespace-nowrap px-8 py-5">
                   <div className="flex flex-col gap-2">
                     <PaymentBadge status={booking.paymentStatus} />
                     {reservationLabel ? (
-                      <span className="text-xs font-medium text-slate-500">{reservationLabel}</span>
+                      <span className="text-xs font-medium text-ink/50">{reservationLabel}</span>
                     ) : null}
                   </div>
                 </td>
@@ -159,7 +159,7 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
                       ) : null}
                     </div>
                   ) : (
-                    <span className="text-xs text-slate-400">—</span>
+                    <span className="text-xs text-ink/40">—</span>
                   )}
                 </td>
               </tr>

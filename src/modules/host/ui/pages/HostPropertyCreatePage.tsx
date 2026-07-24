@@ -34,21 +34,21 @@ const HostPropertyCreatePage = () => {
     <div className="mx-auto max-w-4xl space-y-8">
       <Link
         to="/host/property"
-        className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900"
+        className="inline-flex items-center gap-2 text-sm font-medium text-ink/60 transition hover:text-ink"
       >
         <FontAwesomeIcon icon="arrow-left" className="h-3.5 w-3.5" />
         Retour à mes établissements
       </Link>
 
       <div>
-        <h1 className="font-serif text-4xl font-bold text-slate-900">Nouvel établissement</h1>
-        <p className="mt-3 text-lg text-slate-500">
+        <h1 className="font-display text-4xl font-bold text-ink">Nouvel établissement</h1>
+        <p className="mt-3 text-lg text-ink/50">
           Ajoutez un nouvel hôtel ou établissement à votre compte.
         </p>
       </div>
 
       {loading ? (
-        <div className="h-96 animate-pulse rounded-3xl bg-white" />
+        <div className="h-96 animate-pulse rounded-2xl bg-surface" />
       ) : (
         <PropertyForm
           propertyExists={false}

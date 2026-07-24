@@ -48,10 +48,10 @@ const ImageFileInput = (props: ImageFileInputProps) => {
 
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium text-slate-700">
+      <label className="block text-sm font-medium text-ink/80">
         {label}
         {optional && (
-          <span className="ml-1 font-normal text-slate-400">(optionnel)</span>
+          <span className="ml-1 font-normal text-ink/40">(optionnel)</span>
         )}
       </label>
 
@@ -87,7 +87,7 @@ const ImageFileInput = (props: ImageFileInputProps) => {
       </div>
 
       {isReading && multiple && (
-        <p className="text-sm text-slate-500">Chargement des images...</p>
+        <p className="text-sm text-ink/60">Chargement des images...</p>
       )}
 
       {error && (

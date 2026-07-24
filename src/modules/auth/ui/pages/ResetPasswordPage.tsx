@@ -33,7 +33,7 @@ const ResetPasswordPage = () => {
         description={email ? `Compte : ${email}` : 'Choisissez un nouveau mot de passe.'}
       />
 
-      {validating ? <p className="text-center text-sm text-slate-500">Vérification du lien…</p> : null}
+      {validating ? <p className="text-center text-sm text-ink/50">Vérification du lien…</p> : null}
       {error ? <FormErrorAlert message={error} className="mb-6" /> : null}
 
       {canShowForm ? (
@@ -63,7 +63,7 @@ const ResetPasswordPage = () => {
         </>
       ) : null}
 
-      <p className="mt-6 text-center text-sm text-slate-500">
+      <p className="mt-6 text-center text-sm text-ink/50">
         <Link to="/login" className="font-semibold text-brand hover:text-brand-dark">
           Retour à la connexion
         </Link>

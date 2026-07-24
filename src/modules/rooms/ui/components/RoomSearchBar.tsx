@@ -39,7 +39,7 @@ const RoomSearchBar = ({
     <form
       onSubmit={handleSubmit}
       className={[
-        'flex w-full flex-col gap-2 rounded-2xl border border-slate-200 bg-white shadow-md transition-all duration-200 hover:shadow-lg focus-within:bg-slate-50 sm:flex-row sm:items-center sm:rounded-full sm:gap-0',
+        'flex w-full flex-col gap-2 rounded-2xl border border-line bg-surface soft-shadow transition duration-200 focus-within:border-brand/30 sm:flex-row sm:items-center sm:gap-0',
         compact ? 'p-1.5' : 'p-2',
       ].join(' ')}
     >
@@ -49,36 +49,37 @@ const RoomSearchBar = ({
           value={search}
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Rechercher une destination"
-          className="w-full border-0 bg-transparent text-sm font-medium text-slate-900 outline-none placeholder:font-normal placeholder:text-slate-500"
+          className="w-full border-0 bg-transparent text-sm font-medium text-ink outline-none placeholder:font-normal placeholder:text-ink/50"
         />
       </label>
-      <div className="hidden h-8 w-px bg-slate-200 sm:block" />
+      <div className="hidden h-8 w-px bg-line sm:block" />
       <label className="flex items-center gap-2 px-4 sm:min-w-[9rem]">
-        <span className="text-xs font-medium text-slate-500">Arrivée</span>
+        <span className="text-xs font-medium text-ink/50">Arrivée</span>
         <input
           type="date"
           value={checkIn}
           onChange={(event) => setCheckIn(event.target.value)}
-          className="w-full border-0 bg-transparent text-sm font-medium text-slate-900 outline-none"
+          className="w-full border-0 bg-transparent text-sm font-medium text-ink outline-none"
         />
       </label>
-      <div className="hidden h-8 w-px bg-slate-200 sm:block" />
+      <div className="hidden h-8 w-px bg-line sm:block" />
       <label className="flex items-center gap-2 px-4 sm:min-w-[9rem]">
-        <span className="text-xs font-medium text-slate-500">Départ</span>
+        <span className="text-xs font-medium text-ink/50">Départ</span>
         <input
           type="date"
           value={checkOut}
           min={checkIn || undefined}
           onChange={(event) => setCheckOut(event.target.value)}
-          className="w-full border-0 bg-transparent text-sm font-medium text-slate-900 outline-none"
+          className="w-full border-0 bg-transparent text-sm font-medium text-ink outline-none"
         />
       </label>
       <button
         type="submit"
-        className="flex h-10 w-full shrink-0 items-center justify-center rounded-full bg-[var(--color-brand)] text-white transition hover:bg-[var(--color-brand-dark)] sm:w-10"
+        className="flex h-11 w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-brand px-5 text-sm font-semibold text-white transition duration-200 hover:bg-brand-dark sm:w-auto"
         aria-label="Rechercher"
       >
         <FontAwesomeIcon icon="magnifying-glass" className="h-4 w-4" />
+        <span className="sm:hidden">Rechercher</span>
       </button>
     </form>
   );

@@ -8,21 +8,21 @@ type HostRecentActivityListProps = {
 const HostRecentActivityList = ({ activities }: HostRecentActivityListProps) => {
   if (!activities.length) {
     return (
-      <p className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-5 py-8 text-center text-sm text-slate-500">
+      <p className="rounded-xl border border-dashed border-line bg-mist/60 px-5 py-8 text-center text-sm text-ink/50">
         Aucune réservation récente pour le moment.
       </p>
     );
   }
 
   return (
-    <ul className="divide-y divide-slate-100 rounded-2xl border border-slate-100 bg-white">
+    <ul className="divide-y divide-ink/8 rounded-xl border border-ink/8 bg-surface">
       {activities.map((activity) => (
         <li key={activity.id} className="flex items-start justify-between gap-4 px-5 py-4">
           <div className="min-w-0">
-            <p className="truncate font-medium text-slate-900">{activity.label}</p>
-            <p className="mt-1 text-sm text-slate-500">{formatHostDate(activity.createdAt)}</p>
+            <p className="truncate font-medium text-ink">{activity.label}</p>
+            <p className="mt-1 text-sm text-ink/50">{formatHostDate(activity.createdAt)}</p>
           </div>
-          <p className="shrink-0 text-sm font-semibold text-slate-900">
+          <p className="shrink-0 text-sm font-semibold text-ink">
             {formatHostCurrency(activity.totalPrice)}
           </p>
         </li>

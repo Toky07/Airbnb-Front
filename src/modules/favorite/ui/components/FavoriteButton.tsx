@@ -31,14 +31,14 @@ const FavoriteButton = ({
         void toggle();
       }}
       className={[
-        'inline-flex items-center justify-center rounded-full border border-slate-200 bg-white/95 text-slate-700 shadow-sm backdrop-blur-md transition hover:scale-105 hover:border-slate-300 hover:text-brand disabled:cursor-not-allowed disabled:opacity-60',
+        'inline-flex items-center justify-center rounded-xl border border-line bg-surface/95 text-ink/70 backdrop-blur-md transition duration-200 hover:border-brand/30 hover:text-brand disabled:cursor-not-allowed disabled:opacity-60 soft-shadow',
         sizeClasses[size],
         className,
       ].join(' ')}
     >
       <FontAwesomeIcon
         icon="heart"
-        className={isFavorite ? 'text-brand' : 'text-slate-500 opacity-80'}
+        className={isFavorite ? 'text-brand' : 'text-ink/50'}
       />
     </button>
   );
