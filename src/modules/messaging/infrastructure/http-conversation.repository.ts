@@ -42,6 +42,7 @@ export class HttpConversationRepository implements ConversationRepository {
   ): Promise<ConversationResult> {
     const response = await this.httpClient.post(
       `/conversations/from-reservation/${reservationId}`,
+      {},
     );
     const data: unknown = await response.json();
 
@@ -108,6 +109,7 @@ export class HttpConversationRepository implements ConversationRepository {
   async markRead(conversationId: number): Promise<MarkReadResult> {
     const response = await this.httpClient.post(
       `/conversations/${conversationId}/read`,
+      {},
     );
 
     if (!response.ok) {

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useSearchParams } from 'react-router';
-import type { ListQueryParams } from '../../../shared/pagination/types';
+import type { ListQueryParams } from '../../../../shared/pagination/types';
 
 function parsePositiveInt(value: string | null): number | undefined {
   if (!value) {

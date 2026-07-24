@@ -1,7 +1,11 @@
 import type { FavoriteRepository } from '../ports/favorite.repository';
 
 export class ListMyFavoritesUseCase {
-  constructor(private readonly favoriteRepository: FavoriteRepository) {}
+  private readonly favoriteRepository: FavoriteRepository;
+
+  constructor(favoriteRepository: FavoriteRepository) {
+    this.favoriteRepository = favoriteRepository;
+  }
 
   execute() {
     return this.favoriteRepository.listMine();
@@ -9,7 +13,11 @@ export class ListMyFavoritesUseCase {
 }
 
 export class AddFavoriteUseCase {
-  constructor(private readonly favoriteRepository: FavoriteRepository) {}
+  private readonly favoriteRepository: FavoriteRepository;
+
+  constructor(favoriteRepository: FavoriteRepository) {
+    this.favoriteRepository = favoriteRepository;
+  }
 
   execute(roomId: number) {
     return this.favoriteRepository.add(roomId);
@@ -17,7 +25,11 @@ export class AddFavoriteUseCase {
 }
 
 export class RemoveFavoriteUseCase {
-  constructor(private readonly favoriteRepository: FavoriteRepository) {}
+  private readonly favoriteRepository: FavoriteRepository;
+
+  constructor(favoriteRepository: FavoriteRepository) {
+    this.favoriteRepository = favoriteRepository;
+  }
 
   execute(roomId: number) {
     return this.favoriteRepository.remove(roomId);
@@ -25,7 +37,11 @@ export class RemoveFavoriteUseCase {
 }
 
 export class CheckFavoritesUseCase {
-  constructor(private readonly favoriteRepository: FavoriteRepository) {}
+  private readonly favoriteRepository: FavoriteRepository;
+
+  constructor(favoriteRepository: FavoriteRepository) {
+    this.favoriteRepository = favoriteRepository;
+  }
 
   execute(roomIds: number[]) {
     return this.favoriteRepository.check(roomIds);

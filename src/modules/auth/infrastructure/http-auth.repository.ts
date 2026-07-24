@@ -7,6 +7,7 @@ import type {
   LoginCredentials,
   LoginResult,
   MutationResult,
+  PasswordResetValidation,
   PasswordSetupValidation,
   RegisterPayload,
 } from '../application/ports/auth.repository';

@@ -10,8 +10,8 @@ import type {
   FavoriteCheckResult,
   FavoriteListResult,
   FavoriteMutationResult,
-  FavoriteRepository,
-} from '../application/ports/favorite.repository';
+} from '../core/types/favorite.types';
+import type { FavoriteRepository } from '../application/ports/favorite.repository';
 
 export class HttpFavoriteRepository implements FavoriteRepository {
   private readonly httpClient: HttpClient;

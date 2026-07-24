@@ -28,6 +28,9 @@ function createAuthRepository(
     register: vi.fn(),
     validatePasswordSetup: vi.fn(),
     setPassword: vi.fn(),
+    requestPasswordReset: vi.fn(),
+    validatePasswordReset: vi.fn(),
+    resetPassword: vi.fn(),
     fetchMe: vi.fn(),
     ...overrides,
   };

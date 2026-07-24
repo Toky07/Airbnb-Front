@@ -8,7 +8,11 @@ import type {
 } from '../ports/conversation.repository';
 
 export class ListMyConversationsUseCase {
-  constructor(private readonly repository: ConversationRepository) {}
+  private readonly repository: ConversationRepository;
+
+  constructor(repository: ConversationRepository) {
+    this.repository = repository;
+  }
 
   execute(): Promise<ConversationListResult> {
     return this.repository.listMine();
@@ -16,7 +20,11 @@ export class ListMyConversationsUseCase {
 }
 
 export class GetOrCreateConversationUseCase {
-  constructor(private readonly repository: ConversationRepository) {}
+  private readonly repository: ConversationRepository;
+
+  constructor(repository: ConversationRepository) {
+    this.repository = repository;
+  }
 
   execute(reservationId: number): Promise<ConversationResult> {
     return this.repository.getOrCreateFromReservation(reservationId);
@@ -24,7 +32,11 @@ export class GetOrCreateConversationUseCase {
 }
 
 export class ListMessagesUseCase {
-  constructor(private readonly repository: ConversationRepository) {}
+  private readonly repository: ConversationRepository;
+
+  constructor(repository: ConversationRepository) {
+    this.repository = repository;
+  }
 
   execute(conversationId: number, since?: string): Promise<MessageListResult> {
     return this.repository.listMessages(conversationId, since);
@@ -32,7 +44,11 @@ export class ListMessagesUseCase {
 }
 
 export class SendMessageUseCase {
-  constructor(private readonly repository: ConversationRepository) {}
+  private readonly repository: ConversationRepository;
+
+  constructor(repository: ConversationRepository) {
+    this.repository = repository;
+  }
 
   execute(conversationId: number, body: string): Promise<SendMessageResult> {
     return this.repository.sendMessage(conversationId, body);
@@ -40,7 +56,11 @@ export class SendMessageUseCase {
 }
 
 export class MarkConversationReadUseCase {
-  constructor(private readonly repository: ConversationRepository) {}
+  private readonly repository: ConversationRepository;
+
+  constructor(repository: ConversationRepository) {
+    this.repository = repository;
+  }
 
   execute(conversationId: number): Promise<MarkReadResult> {
     return this.repository.markRead(conversationId);
