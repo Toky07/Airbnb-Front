@@ -32,7 +32,7 @@ export function useCartCheckout() {
     }
 
     return formatCartPrice(cart?.totalPrice ?? 0);
-  }, [cart?.pricingBreakdown, cart?.totalPrice]);
+  }, [cart]);
 
   const itemCount = cart?.itemCount ?? 0;
 

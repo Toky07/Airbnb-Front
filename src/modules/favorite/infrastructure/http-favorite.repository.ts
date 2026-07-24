@@ -57,12 +57,7 @@ export class HttpFavoriteRepository implements FavoriteRepository {
     const response = await this.httpClient.delete(`/favorites/${roomId}`);
 
     if (!response.ok) {
-      let data: unknown = null;
-      try {
-        data = await response.json();
-      } catch {
-        data = null;
-      }
+      const data: unknown = await response.json().catch(() => null);
 
       return {
         success: false,

@@ -29,7 +29,7 @@ export function useProfileForm() {
       lastName: profile.lastName,
       phoneNumber: profile.phoneNumber,
     });
-  }, [profile?.firstName, profile?.lastName, profile?.phoneNumber]);
+  }, [profile]);
 
   const update = (field: keyof typeof form, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));

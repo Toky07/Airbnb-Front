@@ -42,12 +42,7 @@ export class HttpInvoiceRepository implements InvoiceRepository {
     const response = await this.httpClient.get(`/invoices/me/${invoiceId}/download`);
 
     if (!response.ok) {
-      let data: unknown = null;
-      try {
-        data = await response.json();
-      } catch {
-        data = null;
-      }
+      const data: unknown = await response.json().catch(() => null);
 
       return {
         success: false,

@@ -1,6 +1,4 @@
-import { useMemo, useState } from 'react';
 import { Link } from 'react-router';
-import { getGetOrCreateConversationUseCase } from '../../application/composition/messaging.composition';
 import type { Conversation } from '../../core/types/conversation.types';
 import { formatMessageTime } from '../../core/types/conversation.types';
 
@@ -65,30 +63,4 @@ export default function ConversationList({
       })}
     </div>
   );
-}
-
-export function useContactHost(reservationId: number) {
-  const getOrCreateConversationUseCase = useMemo(
-    () => getGetOrCreateConversationUseCase(),
-    [],
-  );
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const contactHost = async (): Promise<number | null> => {
-    setLoading(true);
-    setError(null);
-
-    const result = await getOrCreateConversationUseCase.execute(reservationId);
-    setLoading(false);
-
-    if (!result.success) {
-      setError(result.error);
-      return null;
-    }
-
-    return result.conversation.id;
-  };
-
-  return { contactHost, loading, error };
 }

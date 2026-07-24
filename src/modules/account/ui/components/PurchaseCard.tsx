@@ -10,7 +10,7 @@ import { formatPricePerNight } from '../../../rooms/core/types/room.types';
 import { StayProductCard } from '../../../../shared/ui/product/StayProductCard';
 import { parseProductLabel } from '../../../../shared/ui/product/parse-product-label';
 import { useCancelReservation } from '../hooks/useCancelReservation';
-import { useContactHost } from '../../../messaging/ui/components/ConversationList';
+import { useContactHost } from '../../../messaging/ui/hooks/useContactHost';
 import ReviewForm from '../../../review/ui/components/ReviewForm';
 import { useCreateReview } from '../../../review/ui/hooks/useCreateReview';
 import { canLeaveReview } from '../../../review/core/utils/review-eligibility';
