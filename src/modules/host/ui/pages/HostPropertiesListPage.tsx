@@ -11,7 +11,7 @@ const HostPropertiesListPage = () => {
 
   if (loading) {
     return (
-      <div className="h-96 animate-pulse rounded-3xl border border-slate-100 bg-white p-8 shadow-sm" />
+      <div className="h-96 animate-pulse rounded-2xl border border-ink/8 bg-surface p-8 soft-shadow" />
     );
   }
 
@@ -19,8 +19,8 @@ const HostPropertiesListPage = () => {
     <div className="mx-auto max-w-6xl space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-6">
         <div>
-          <h1 className="font-serif text-4xl font-bold text-slate-900">Mes établissements</h1>
-          <p className="mt-3 text-lg text-slate-500">
+          <h1 className="font-display text-4xl font-bold text-ink">Mes établissements</h1>
+          <p className="mt-3 text-lg text-ink/50">
             Consultez vos hôtels et gérez les chambres de chaque établissement.
           </p>
         </div>
@@ -33,12 +33,12 @@ const HostPropertiesListPage = () => {
       </div>
 
       {properties.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-200 bg-white px-8 py-16 text-center shadow-sm">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-500">
+        <div className="rounded-2xl border border-dashed border-line bg-surface px-8 py-16 text-center soft-shadow">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-xl bg-mist text-ink/50">
             <FontAwesomeIcon icon="hotel" className="h-7 w-7" />
           </div>
-          <h2 className="mt-6 text-2xl font-semibold text-slate-900">Aucun établissement</h2>
-          <p className="mx-auto mt-3 max-w-md text-slate-500">
+          <h2 className="mt-6 font-display text-2xl font-semibold text-ink">Aucun établissement</h2>
+          <p className="mx-auto mt-3 max-w-md text-ink/50">
             Créez votre premier établissement pour commencer à publier des chambres.
           </p>
           <Link to="/host/property/new" className="mt-8 inline-block">

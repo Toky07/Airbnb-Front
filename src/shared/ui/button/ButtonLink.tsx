@@ -2,9 +2,9 @@ import { getButtonClassName } from './button-classes';
 import type { ButtonLinkProps } from './types';
 
 const navVariantClasses: Record<string, string> = {
-  nav: 'rounded-full px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10',
+  nav: 'rounded-xl px-4 py-2 text-sm font-medium text-white transition duration-200 hover:bg-white/10',
   'nav-cta':
-    'rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-100',
+    'rounded-xl bg-surface px-4 py-2 text-sm font-semibold text-ink transition duration-200 hover:bg-mist',
 };
 
 const ButtonLink = ({

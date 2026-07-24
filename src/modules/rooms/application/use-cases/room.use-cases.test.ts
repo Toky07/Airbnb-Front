@@ -33,6 +33,7 @@ function createRoomRepository(
     list: vi.fn(),
     getById: vi.fn(),
     getBySlug: vi.fn(),
+    getPricingPreview: vi.fn(),
     ...overrides,
   };
 }

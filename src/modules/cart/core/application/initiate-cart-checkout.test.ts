@@ -31,6 +31,7 @@ const sampleCart: Cart = {
   ],
   totalPrice: 240,
   itemCount: 1,
+  pricingBreakdown: null,
 };
 
 function createCartService(overrides: Partial<CartService> = {}): CartService {

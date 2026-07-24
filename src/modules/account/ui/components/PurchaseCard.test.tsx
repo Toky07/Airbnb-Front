@@ -9,6 +9,7 @@ const reservation: Reservation = {
   itemId: 34,
   roomId: 5,
   userId: 1,
+  paymentId: null,
   startDate: '2099-06-01',
   endDate: '2099-06-03',
   guestCount: 2,

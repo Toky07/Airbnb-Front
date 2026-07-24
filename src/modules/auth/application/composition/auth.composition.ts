@@ -6,6 +6,9 @@ import { LoadSessionUseCase } from '../use-cases/load-session.use-case';
 import { RegisterUseCase } from '../use-cases/register.use-case';
 import { SetPasswordUseCase } from '../use-cases/set-password.use-case';
 import { ValidatePasswordSetupUseCase } from '../use-cases/validate-password-setup.use-case';
+import { RequestPasswordResetUseCase } from '../use-cases/request-password-reset.use-case';
+import { ValidatePasswordResetUseCase } from '../use-cases/validate-password-reset.use-case';
+import { ResetPasswordUseCase } from '../use-cases/reset-password.use-case';
 import { HttpAuthRepository } from '../../infrastructure/http-auth.repository';
 import { getTokenSessionStore } from '../../infrastructure/token-session.store';
 
@@ -15,6 +18,9 @@ let loadSessionUseCase: LoadSessionUseCase | null = null;
 let registerUseCase: RegisterUseCase | null = null;
 let validatePasswordSetupUseCase: ValidatePasswordSetupUseCase | null = null;
 let setPasswordUseCase: SetPasswordUseCase | null = null;
+let requestPasswordResetUseCase: RequestPasswordResetUseCase | null = null;
+let validatePasswordResetUseCase: ValidatePasswordResetUseCase | null = null;
+let resetPasswordUseCase: ResetPasswordUseCase | null = null;
 
 export function getAuthRepository(): AuthRepository {
   if (!authRepository) {
@@ -60,4 +66,25 @@ export function getSetPasswordUseCase(): SetPasswordUseCase {
     setPasswordUseCase = new SetPasswordUseCase(getAuthRepository());
   }
   return setPasswordUseCase;
+}
+
+export function getRequestPasswordResetUseCase(): RequestPasswordResetUseCase {
+  if (!requestPasswordResetUseCase) {
+    requestPasswordResetUseCase = new RequestPasswordResetUseCase(getAuthRepository());
+  }
+  return requestPasswordResetUseCase;
+}
+
+export function getValidatePasswordResetUseCase(): ValidatePasswordResetUseCase {
+  if (!validatePasswordResetUseCase) {
+    validatePasswordResetUseCase = new ValidatePasswordResetUseCase(getAuthRepository());
+  }
+  return validatePasswordResetUseCase;
+}
+
+export function getResetPasswordUseCase(): ResetPasswordUseCase {
+  if (!resetPasswordUseCase) {
+    resetPasswordUseCase = new ResetPasswordUseCase(getAuthRepository());
+  }
+  return resetPasswordUseCase;
 }

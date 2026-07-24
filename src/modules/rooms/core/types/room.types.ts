@@ -16,6 +16,8 @@ export type PropertySummary = {
   description: string;
   checkInTime: string;
   checkOutTime: string;
+  latitude?: number;
+  longitude?: number;
   cancellationPolicy?: string | null;
   propertyType: CategorySummary | null;
 };
@@ -25,12 +27,18 @@ export type UnavailableDateRange = {
   endDate: string;
 };
 
+export type GeoCoordinates = {
+  lat: number;
+  lng: number;
+};
+
 export type RoomListItem = {
   id: number;
   name: string;
   slug: string;
   description: string;
   pricePerNight: number;
+  weekendPricePerNight?: number | null;
   maxGuests: number;
   bedrooms: number;
   bathrooms: number;
@@ -63,6 +71,21 @@ export function getRoomLocation(room: RoomListItem): string {
   }
 
   return city || country || room.property?.name || 'Destination';
+}
+
+export function getRoomCoordinates(room: RoomListItem): GeoCoordinates | null {
+  const lat = room.property?.latitude;
+  const lng = room.property?.longitude;
+
+  if (lat === undefined || lng === undefined) {
+    return null;
+  }
+
+  if (!Number.isFinite(lat) || !Number.isFinite(lng) || (lat === 0 && lng === 0)) {
+    return null;
+  }
+
+  return { lat, lng };
 }
 
 export function getRoomPrimaryImage(room: RoomListItem): string | null {

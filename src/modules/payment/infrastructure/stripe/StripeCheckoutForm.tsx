@@ -77,7 +77,7 @@ const StripeCheckoutForm = ({ onSuccess, onCancel }: StripeCheckoutFormProps) =>
         type="button"
         onClick={onCancel}
         disabled={submitting}
-        className="w-full text-sm font-medium text-slate-500 hover:text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full text-sm font-medium text-ink/50 transition duration-200 hover:text-brand disabled:cursor-not-allowed disabled:opacity-50"
       >
         Modifier les dates
       </button>

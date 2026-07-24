@@ -34,6 +34,8 @@ export function mapRoomListItem(data: unknown): RoomListItem | null {
       country: String(raw.country ?? ''),
       address: String(raw.address ?? ''),
       description: String(raw.description ?? ''),
+      latitude: typeof raw.latitude === 'number' ? raw.latitude : undefined,
+      longitude: typeof raw.longitude === 'number' ? raw.longitude : undefined,
       checkInTime: String(raw.checkInTime ?? ''),
       checkOutTime: String(raw.checkOutTime ?? ''),
       cancellationPolicy:
@@ -65,6 +67,10 @@ export function mapRoomListItem(data: unknown): RoomListItem | null {
     slug: String(record.slug ?? ''),
     description: String(record.description ?? ''),
     pricePerNight: record.pricePerNight,
+    weekendPricePerNight:
+      typeof record.weekendPricePerNight === 'number'
+        ? record.weekendPricePerNight
+        : null,
     maxGuests: Number(record.maxGuests ?? 0),
     bedrooms: Number(record.bedrooms ?? 0),
     bathrooms: Number(record.bathrooms ?? 0),

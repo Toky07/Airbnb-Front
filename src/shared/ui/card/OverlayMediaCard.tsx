@@ -22,10 +22,10 @@ const OverlayMediaCard = ({
       <img
         src={imageUrl}
         alt={alt}
-        className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+        className="media-hover h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
         loading="lazy"
       />
-      <div className="absolute inset-0 bg-linear-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t from-ink/80 via-ink/20 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 p-5">{footer}</div>
     </div>
   </a>

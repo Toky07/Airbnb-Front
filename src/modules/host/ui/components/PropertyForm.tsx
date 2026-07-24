@@ -37,7 +37,7 @@ const PropertyForm = ({
   amenityIds,
   onAmenityIdsChange,
 }: PropertyFormProps) => (
-  <form onSubmit={onSubmit} className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm">
+  <form onSubmit={onSubmit} className="overflow-hidden rounded-2xl border border-ink/8 bg-surface soft-shadow">
     <div className="p-8 sm:p-10">
       {error ? <HostFormError message={error} className="mb-8" /> : null}
 
@@ -136,8 +136,24 @@ const PropertyForm = ({
               </option>
             ))}
           </select>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-ink/50">
             Détermine le montant remboursé lors d&apos;une annulation par le voyageur.
+          </p>
+        </HostFormField>
+
+        <HostFormField label="Taxe de séjour (€ / personne / nuit)" fullWidth>
+          <input
+            type="number"
+            min={0}
+            step={0.01}
+            value={form.touristTaxPerGuestNight}
+            onChange={(event) =>
+              onUpdate('touristTaxPerGuestNight', Number.parseFloat(event.target.value) || 0)
+            }
+            className={hostFieldClassName}
+          />
+          <p className="mt-2 text-sm text-ink/50">
+            Montant par voyageur et par nuit, ajouté au total lors du paiement.
           </p>
         </HostFormField>
 
@@ -163,7 +179,7 @@ const PropertyForm = ({
       </div>
     </div>
 
-    <div className="flex items-center justify-end border-t border-slate-100 bg-slate-50 px-8 py-6 sm:px-10">
+    <div className="flex items-center justify-end border-t border-ink/8 bg-mist/40 px-8 py-6 sm:px-10">
       <Button type="submit" disabled={saving} className="px-8 py-4 text-base">
         {saving
           ? 'Enregistrement…'

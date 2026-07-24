@@ -5,6 +5,7 @@ export type Reservation = {
   itemId: number;
   roomId: number;
   userId: number;
+  paymentId: number | null;
   startDate: string;
   endDate: string;
   guestCount: number;

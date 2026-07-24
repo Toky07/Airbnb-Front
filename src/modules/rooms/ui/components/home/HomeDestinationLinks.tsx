@@ -25,17 +25,17 @@ const HomeDestinationLinks = ({ rooms }: HomeDestinationLinksProps) => {
   }
 
   return (
-    <section className="bg-slate-50 py-12">
+    <section className="bg-mist py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="mb-6 text-2xl font-semibold text-slate-900">
+        <h2 className="mb-6 font-display text-2xl font-bold tracking-tight text-ink">
           Inspiration pour vos prochains voyages
         </h2>
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-3">
           {destinations.map((location) => (
             <Link
               key={location}
               to={`/search?q=${encodeURIComponent(location.split(',')[0]?.trim() ?? location)}`}
-              className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-900 hover:shadow-sm"
+              className="rounded-xl border border-line bg-surface px-4 py-2.5 text-sm font-medium text-ink/70 transition duration-200 hover:border-brand/30 hover:text-brand"
             >
               {location}
             </Link>

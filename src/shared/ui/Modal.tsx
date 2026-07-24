@@ -59,26 +59,26 @@ export default function Modal({
     >
       <button
         type="button"
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-ink/50 backdrop-blur-sm transition duration-200"
         aria-label="Fermer"
         onClick={onClose}
       />
       <div
-        className={`relative flex w-full ${sizeClasses[size]} max-h-[90vh] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl`}
+        className={`relative flex w-full ${sizeClasses[size]} max-h-[90vh] flex-col overflow-hidden rounded-2xl border border-line bg-surface soft-shadow`}
       >
-        <div className="flex items-start justify-between border-b border-slate-100 px-6 py-5">
+        <div className="flex items-start justify-between border-b border-line px-6 py-5">
           <div>
-            <h2 id="modal-title" className="text-lg font-bold text-slate-900">
+            <h2 id="modal-title" className="font-display text-lg font-bold text-ink">
               {title}
             </h2>
             {description ? (
-              <p className="mt-1 text-sm text-slate-500">{description}</p>
+              <p className="mt-1 text-sm text-ink/60">{description}</p>
             ) : null}
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+            className="rounded-xl p-2 text-ink/40 transition duration-200 hover:bg-mist hover:text-ink/70"
             aria-label="Fermer la fenêtre"
           >
             <FontAwesomeIcon icon="xmark" className="h-4 w-4" />
@@ -88,7 +88,7 @@ export default function Modal({
         <div className="flex-1 overflow-y-auto px-6 py-5">{children}</div>
 
         {footer ? (
-          <div className="flex items-center justify-end gap-3 border-t border-slate-100 bg-slate-50/80 px-6 py-4">
+          <div className="flex items-center justify-end gap-3 border-t border-line bg-canvas/80 px-6 py-4">
             {footer}
           </div>
         ) : null}

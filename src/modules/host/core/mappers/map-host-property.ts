@@ -23,6 +23,7 @@ export function mapHostProperty(data: unknown): HostProperty | null {
     checkInTime: String(record.checkInTime ?? ''),
     checkOutTime: String(record.checkOutTime ?? ''),
     cancellationPolicy: String(record.cancellationPolicy ?? 'moderate'),
+    touristTaxPerGuestNight: Number(record.touristTaxPerGuestNight ?? 0),
     ownerId: Number(record.ownerId ?? 0),
     propertyTypeId:
       typeof record.propertyTypeId === 'number' ? record.propertyTypeId : null,

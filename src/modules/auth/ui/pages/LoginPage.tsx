@@ -42,12 +42,17 @@ const LoginPage = () => {
           onChange={(event) => setPassword(event.target.value)}
           required
         />
+        <p className="text-right text-sm">
+          <Link to="/forgot-password" className="font-medium text-brand hover:text-brand-dark">
+            Mot de passe oublié ?
+          </Link>
+        </p>
         <Button type="submit" className="w-full" disabled={loading}>
           {loading ? 'Connexion…' : 'Se connecter'}
         </Button>
       </div>
 
-      <p className="mt-6 text-center text-sm text-slate-500">
+      <p className="mt-6 text-center text-sm text-ink/50">
         Pas encore de compte ?{' '}
         <Link to={registerHref} className="font-semibold text-brand hover:text-brand-dark">
           S&apos;inscrire

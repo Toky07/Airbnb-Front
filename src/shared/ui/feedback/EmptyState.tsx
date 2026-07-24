@@ -17,15 +17,17 @@ const EmptyState = ({
 }: EmptyStateProps) => (
   <div
     className={[
-      'rounded-3xl px-6 py-12 text-center sm:py-16',
-      dashed ? 'border border-dashed border-slate-200 bg-white/80 shadow-sm' : 'border border-slate-200 bg-white',
+      'rounded-2xl px-6 py-12 text-center sm:py-16',
+      dashed
+        ? 'border border-dashed border-line bg-surface/80 soft-shadow'
+        : 'surface soft-shadow',
       className,
     ]
       .filter(Boolean)
       .join(' ')}
   >
-    <p className="text-lg font-medium text-slate-700">{title}</p>
-    {description ? <p className="mt-2 text-sm text-slate-500">{description}</p> : null}
+    <p className="font-display text-lg font-medium text-ink/80">{title}</p>
+    {description ? <p className="mt-2 text-sm text-ink/60">{description}</p> : null}
     {action ? <div className="mt-8">{action}</div> : null}
   </div>
 );

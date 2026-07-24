@@ -9,7 +9,7 @@ type NavLinksProps = {
 const NavLinks = ({
   links,
   className = '',
-  linkClassName = 'text-sm font-medium text-white/80 transition hover:text-white',
+  linkClassName = 'text-sm font-medium text-white/80 transition duration-200 hover:text-white',
 }: NavLinksProps) => (
   <nav className={className}>
     {links.map((link) => (

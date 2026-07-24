@@ -6,11 +6,12 @@ import HostPropertyDetailHeader from '../components/HostPropertyDetailHeader';
 import HostPropertyNotFound from '../components/HostPropertyNotFound';
 import { HostPropertyInfoTab, HostPropertyRoomsTab } from '../components/HostPropertyDetailTabs';
 import HostPropertyAvailabilityTab from '../components/HostPropertyAvailabilityTab';
+import HostPropertyPricingTab from '../components/HostPropertyPricingTab';
 import { useHostPropertyForm } from '../hooks/useHostPropertyForm';
 import { useHostRooms } from '../hooks/useHostRooms';
 import { useRoomForm } from '../hooks/useRoomForm';
 
-type DetailTab = 'rooms' | 'info' | 'availability';
+type DetailTab = 'rooms' | 'info' | 'availability' | 'pricing';
 
 const HostPropertyDetailPage = () => {
   const { id } = useParams();
@@ -97,6 +98,14 @@ const HostPropertyDetailPage = () => {
 
       {activeTab === 'availability' ? (
         <HostPropertyAvailabilityTab
+          propertyId={validPropertyId}
+          rooms={roomsState.rooms}
+          roomsLoading={roomsState.loading}
+        />
+      ) : null}
+
+      {activeTab === 'pricing' ? (
+        <HostPropertyPricingTab
           propertyId={validPropertyId}
           rooms={roomsState.rooms}
           roomsLoading={roomsState.loading}

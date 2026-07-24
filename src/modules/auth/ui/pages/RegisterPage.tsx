@@ -73,7 +73,7 @@ const RegisterPage = () => {
         {loading ? 'Création…' : 'Créer mon compte'}
       </Button>
 
-      <p className="mt-6 text-center text-sm text-slate-500">
+      <p className="mt-6 text-center text-sm text-ink/50">
         Déjà inscrit ?{' '}
         <Link to={loginHref} className="font-semibold text-brand hover:text-brand-dark">
           Se connecter

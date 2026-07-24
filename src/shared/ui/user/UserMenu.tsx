@@ -65,7 +65,7 @@ const UserMenu = ({
         aria-haspopup="menu"
         aria-controls={menuId}
         onClick={() => setIsOpen((current) => !current)}
-        className="flex items-center gap-2 rounded-full border border-slate-200 bg-white py-1.5 pl-1.5 pr-3 shadow-sm transition hover:border-slate-300 hover:shadow-md"
+        className="flex items-center gap-2 rounded-xl border border-line bg-surface py-1.5 pl-1.5 pr-3 transition duration-200 hover:border-brand/30 hover:bg-mist"
       >
         <UserAvatar
           src={session.profile?.avatar}
@@ -73,13 +73,13 @@ const UserMenu = ({
           alt={displayName}
           size="sm"
         />
-        <span className="hidden max-w-[140px] truncate text-sm font-medium text-slate-800 sm:inline">
+        <span className="hidden max-w-[140px] truncate text-sm font-medium text-ink sm:inline">
           {displayName}
         </span>
         <FontAwesomeIcon
           icon="chevron-down"
           className={[
-            'h-3 w-3 text-slate-400 transition-transform duration-200',
+            'h-3 w-3 text-ink/40 transition-transform duration-200',
             isOpen ? 'rotate-180' : '',
           ].join(' ')}
         />
@@ -89,11 +89,11 @@ const UserMenu = ({
         <div
           id={menuId}
           role="menu"
-          className="absolute right-0 top-[calc(100%+0.5rem)] z-50 min-w-[240px] origin-top-right animate-menu-enter overflow-hidden rounded-2xl border border-slate-200 bg-white py-2 shadow-xl shadow-slate-900/10"
+          className="absolute right-0 top-[calc(100%+0.5rem)] z-50 min-w-[240px] origin-top-right animate-menu-enter overflow-hidden rounded-2xl border border-line bg-surface py-2 soft-shadow"
         >
-          <div className="border-b border-slate-100 px-4 py-3">
-            <p className="truncate text-sm font-semibold text-slate-900">{displayName}</p>
-            <p className="truncate text-xs text-slate-500">{email}</p>
+          <div className="border-b border-line px-4 py-3">
+            <p className="truncate text-sm font-semibold text-ink">{displayName}</p>
+            <p className="truncate text-xs text-ink/60">{email}</p>
           </div>
 
           <div className="py-1">
@@ -104,9 +104,9 @@ const UserMenu = ({
                   to={item.to}
                   role="menuitem"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-ink/80 transition duration-200 hover:bg-mist hover:text-ink"
                 >
-                  <FontAwesomeIcon icon={item.icon} className="h-4 w-4 text-slate-400" />
+                  <FontAwesomeIcon icon={item.icon} className="h-4 w-4 text-ink/40" />
                   {item.label}
                 </Link>
               ) : (
@@ -118,7 +118,7 @@ const UserMenu = ({
                     setIsOpen(false);
                     item.onSelect();
                   }}
-                  className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-medium text-slate-700 transition hover:bg-red-50 hover:text-red-600"
+                  className="flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-medium text-ink/80 transition duration-200 hover:bg-red-50 hover:text-red-600"
                 >
                   <FontAwesomeIcon icon={item.icon} className="h-4 w-4" />
                   {item.label}

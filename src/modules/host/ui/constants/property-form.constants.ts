@@ -12,6 +12,7 @@ export const emptyPropertyForm: PropertyFormPayload = {
   checkInTime: '15:00',
   checkOutTime: '11:00',
   cancellationPolicy: CANCELLATION_POLICY.MODERATE,
+  touristTaxPerGuestNight: 0,
   propertyTypeId: null,
   imageFile: null,
 };
@@ -28,6 +29,7 @@ export function propertyToFormPayload(property: HostProperty): PropertyFormPaylo
     checkInTime: property.checkInTime,
     checkOutTime: property.checkOutTime,
     cancellationPolicy: property.cancellationPolicy,
+    touristTaxPerGuestNight: property.touristTaxPerGuestNight,
     propertyTypeId: property.propertyTypeId,
     imageFile: null,
   };

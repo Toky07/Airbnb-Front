@@ -14,11 +14,11 @@ const AmenityList = ({ title, amenities }: AmenityListProps) => {
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
+      <h3 className="font-display text-lg font-bold text-ink">{title}</h3>
       <ul className="grid gap-3 sm:grid-cols-2">
         {amenities.map((amenity) => (
-          <li key={amenity.id} className="flex items-center gap-3 text-sm text-slate-700">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+          <li key={amenity.id} className="flex items-center gap-3 text-sm text-ink/70">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-mist text-brand">
               <FontAwesomeIcon
                 icon={resolveAmenityIcon(amenity.icon)}
                 className="h-4 w-4"

@@ -6,7 +6,7 @@ type HostFormErrorProps = {
 };
 
 const HostFormError = ({ message, className = '' }: HostFormErrorProps) => (
-  <FormErrorAlert message={message} className={`rounded-2xl px-5 py-4 ${className}`.trim()} />
+  <FormErrorAlert message={message} className={`rounded-xl px-5 py-4 ${className}`.trim()} />
 );
 
 export default HostFormError;

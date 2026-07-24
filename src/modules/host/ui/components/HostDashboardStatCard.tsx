@@ -14,14 +14,14 @@ const HostDashboardStatCard = ({
   value,
   accent,
 }: HostDashboardStatCardProps) => (
-  <div className="relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition-all hover:shadow-md">
+  <div className="relative overflow-hidden rounded-2xl border border-ink/8 bg-surface p-6 soft-shadow">
     <div className="flex items-center gap-5">
-      <span className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${accent}`}>
+      <span className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl ${accent}`}>
         <FontAwesomeIcon icon={icon} className="h-6 w-6" />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold uppercase tracking-wider text-slate-400">{label}</p>
-        <p className="mt-1 text-3xl font-bold text-slate-900">{value}</p>
+        <p className="truncate text-sm font-semibold uppercase tracking-wider text-ink/40">{label}</p>
+        <p className="mt-1 font-display text-3xl font-bold text-ink">{value}</p>
       </div>
     </div>
   </div>

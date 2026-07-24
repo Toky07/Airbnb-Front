@@ -21,6 +21,7 @@ const properties: HostProperty[] = [
     image: null,
     roomCount: 4,
     cancellationPolicy: 'moderate',
+    touristTaxPerGuestNight: 0,
   },
 ];
 

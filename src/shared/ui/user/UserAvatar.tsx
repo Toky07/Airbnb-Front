@@ -32,7 +32,7 @@ export default function UserAvatar({
       <img
         src={imageUrl}
         alt={alt}
-        className={`${sizeClasses[size]} shrink-0 rounded-full object-cover ring-2 ring-white shadow-sm`}
+        className={`${sizeClasses[size]} shrink-0 rounded-full object-cover ring-2 ring-surface`}
         onError={() => setHasImageError(true)}
       />
     );
@@ -41,7 +41,7 @@ export default function UserAvatar({
   return (
     <div
       aria-hidden
-      className={`${sizeClasses[size]} flex shrink-0 items-center justify-center rounded-full bg-brand font-semibold text-white ring-2 ring-white shadow-sm`}
+      className={`${sizeClasses[size]} flex shrink-0 items-center justify-center rounded-full bg-brand font-semibold text-white ring-2 ring-surface`}
     >
       {initials}
     </div>

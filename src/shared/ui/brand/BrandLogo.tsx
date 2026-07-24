@@ -10,12 +10,12 @@ const BrandLogo = ({ variant = 'dark', to = '/' }: BrandLogoProps) => (
   <Link
     to={to}
     className={[
-      'flex items-center gap-2 transition hover:opacity-80',
-      variant === 'light' ? 'text-white' : 'text-[var(--color-brand)]',
+      'flex items-center gap-2.5 transition duration-200 hover:opacity-80',
+      variant === 'light' ? 'text-white' : 'text-brand',
     ].join(' ')}
   >
-    <FontAwesomeIcon icon="house" className="h-8 w-8" />
-    <span className="hidden text-xl font-bold tracking-tight md:block">airbnb</span>
+    <FontAwesomeIcon icon="house" className="h-9 w-9" />
+    <span className="font-display hidden text-2xl font-bold tracking-tight md:block">airbnb</span>
   </Link>
 );
 

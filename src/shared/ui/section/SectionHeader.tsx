@@ -23,11 +23,11 @@ const SectionHeader = ({
     ].join(' ')}
   >
     <div className={align === 'center' ? 'mx-auto' : ''}>
-      <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{title}</h2>
+      <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">{title}</h2>
       {description && (
         <p
           className={[
-            'mt-2 text-slate-600',
+            'mt-2 text-ink/60',
             align === 'center' ? 'mx-auto max-w-xl' : 'max-w-lg',
           ].join(' ')}
         >
@@ -39,7 +39,7 @@ const SectionHeader = ({
     {action && (
       <a
         href={action.href}
-        className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-brand)] transition hover:gap-3"
+        className="inline-flex items-center gap-2 text-sm font-semibold text-brand transition duration-200 hover:gap-3 hover:text-brand-dark"
       >
         {action.label}
         <FontAwesomeIcon icon="arrow-right" className="h-3.5 w-3.5" />

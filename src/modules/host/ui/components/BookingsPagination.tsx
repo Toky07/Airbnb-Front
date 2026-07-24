@@ -14,10 +14,10 @@ const BookingsPagination = ({ meta, onPageChange }: BookingsPaginationProps) => 
   const startPage = Math.max(1, Math.min(meta.page - 2, meta.totalPages - 4));
 
   return (
-    <div className="flex items-center justify-between border-t border-slate-100 px-8 py-5">
-      <p className="text-sm text-slate-500">
-        Page <span className="font-medium text-slate-900">{meta.page}</span> sur{' '}
-        <span className="font-medium text-slate-900">{meta.totalPages}</span> · {meta.total} résultat
+    <div className="flex items-center justify-between border-t border-ink/8 px-8 py-5">
+      <p className="text-sm text-ink/50">
+        Page <span className="font-medium text-ink">{meta.page}</span> sur{' '}
+        <span className="font-medium text-ink">{meta.totalPages}</span> · {meta.total} résultat
         {meta.total > 1 ? 's' : ''}
       </p>
       <div className="flex items-center gap-2">
@@ -25,7 +25,7 @@ const BookingsPagination = ({ meta, onPageChange }: BookingsPaginationProps) => 
           type="button"
           onClick={() => onPageChange(meta.page - 1)}
           disabled={meta.page <= 1}
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-40"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-line text-ink/50 transition hover:bg-mist disabled:opacity-40"
         >
           <FontAwesomeIcon icon="chevron-left" className="h-3.5 w-3.5" />
         </button>
@@ -38,8 +38,8 @@ const BookingsPagination = ({ meta, onPageChange }: BookingsPaginationProps) => 
               onClick={() => onPageChange(pageNum)}
               className={`flex h-10 w-10 items-center justify-center rounded-xl text-sm font-bold transition ${
                 pageNum === meta.page
-                  ? 'bg-brand text-white shadow-md shadow-brand/20'
-                  : 'border border-slate-200 text-slate-600 hover:bg-slate-50'
+                  ? 'bg-brand text-white'
+                  : 'border border-line text-ink/70 hover:bg-mist'
               }`}
             >
               {pageNum}
@@ -50,7 +50,7 @@ const BookingsPagination = ({ meta, onPageChange }: BookingsPaginationProps) => 
           type="button"
           onClick={() => onPageChange(meta.page + 1)}
           disabled={meta.page >= meta.totalPages}
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-40"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-line text-ink/50 transition hover:bg-mist disabled:opacity-40"
         >
           <FontAwesomeIcon icon="chevron-right" className="h-3.5 w-3.5" />
         </button>

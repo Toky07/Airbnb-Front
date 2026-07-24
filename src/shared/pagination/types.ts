@@ -23,4 +23,14 @@ export type ListQueryParams = {
   propertyId?: number;
   checkIn?: string;
   checkOut?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  minGuests?: number;
+  roomTypeId?: number;
+  amenityIds?: number[];
+  city?: string;
+  status?: string;
+  lat?: number;
+  lng?: number;
+  radiusKm?: number;
 };

@@ -3,6 +3,8 @@ import { getHttpClient } from '../../../shared/http/composition/http.composition
 import { buildListQuery } from '../../../shared/pagination/build-list-query';
 import { parsePaginatedResponse } from '../../../shared/pagination/parse-paginated-response';
 import type { ListQueryParams, PaginatedResponse } from '../../../shared/pagination/types';
+import { mapPricingBreakdown } from '../../../shared/pricing/pricing-breakdown.types';
+import type { PricingBreakdown } from '../../../shared/pricing/pricing-breakdown.types';
 import { mapRoomListItem } from '../core/mappers/map-room-list-item';
 import type { RoomListItem } from '../core/types/room.types';
 import type { RoomRepository } from '../application/ports/room.repository';
@@ -50,5 +52,26 @@ export class HttpRoomRepository implements RoomRepository {
 
     const data: unknown = await response.json();
     return mapRoomListItem(data);
+  }
+
+  async getPricingPreview(
+    slug: string,
+    params: { startDate: string; endDate: string; guestCount: number },
+  ): Promise<PricingBreakdown | null> {
+    const query = new URLSearchParams({
+      startDate: params.startDate,
+      endDate: params.endDate,
+      guestCount: String(params.guestCount),
+    });
+    const response = await this.httpClient.get(
+      `/rooms/by-slug/${encodeURIComponent(slug)}/pricing-preview?${query.toString()}`,
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data: unknown = await response.json();
+    return mapPricingBreakdown(data);
   }
 }

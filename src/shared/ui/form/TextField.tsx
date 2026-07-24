@@ -29,7 +29,7 @@ const TextField = (props: TextFieldProps) => {
 
   return (
     <label className={['block', wrapperClass].filter(Boolean).join(' ')}>
-      <span className="mb-2 block text-sm font-medium text-slate-700">{label}</span>
+      <span className="mb-2 block text-sm font-medium text-ink/80">{label}</span>
       {multiline ? (
         <textarea
           {...(rest as TextareaHTMLAttributes<HTMLTextAreaElement>)}
@@ -56,8 +56,8 @@ export function AuthFormHeader({
 }) {
   return (
     <div className="mb-8 text-center">
-      <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
-      <p className="mt-2 text-sm text-slate-500">{description}</p>
+      <h1 className="font-display text-2xl font-bold text-ink">{title}</h1>
+      <p className="mt-2 text-sm text-ink/60">{description}</p>
     </div>
   );
 }

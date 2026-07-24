@@ -27,10 +27,18 @@ export type PasswordSetupValidation = {
   lastName?: string;
 };
 
+export type PasswordResetValidation = {
+  valid: boolean;
+  email?: string;
+};
+
 export interface AuthRepository {
   login(credentials: LoginCredentials): Promise<LoginResult>;
   register(payload: RegisterPayload): Promise<MutationResult>;
   validatePasswordSetup(token: string): Promise<PasswordSetupValidation>;
   setPassword(token: string, password: string): Promise<MutationResult>;
+  requestPasswordReset(email: string): Promise<MutationResult>;
+  validatePasswordReset(token: string): Promise<PasswordResetValidation>;
+  resetPassword(token: string, password: string): Promise<MutationResult>;
   fetchMe(): Promise<MeResponse | null>;
 }

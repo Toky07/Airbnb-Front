@@ -5,8 +5,8 @@ import { SegmentedControl } from '../../../../shared/ui';
 type HostPropertyDetailHeaderProps = {
   name: string;
   subtitle: string;
-  activeTab: 'rooms' | 'info' | 'availability';
-  onTabChange: (tab: 'rooms' | 'info' | 'availability') => void;
+  activeTab: 'rooms' | 'info' | 'availability' | 'pricing';
+  onTabChange: (tab: 'rooms' | 'info' | 'availability' | 'pricing') => void;
 };
 
 const HostPropertyDetailHeader = ({
@@ -18,7 +18,7 @@ const HostPropertyDetailHeader = ({
   <>
     <Link
       to="/host/property"
-      className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900"
+      className="inline-flex items-center gap-2 text-sm font-medium text-ink/60 transition hover:text-ink"
     >
         <FontAwesomeIcon icon="arrow-left" className="h-3.5 w-3.5" />
       Retour à mes établissements
@@ -26,8 +26,8 @@ const HostPropertyDetailHeader = ({
 
     <div className="flex flex-wrap items-end justify-between gap-6">
       <div>
-        <h1 className="font-serif text-4xl font-bold text-slate-900">{name}</h1>
-        <p className="mt-2 text-lg text-slate-500">{subtitle}</p>
+        <h1 className="font-display text-4xl font-bold text-ink">{name}</h1>
+        <p className="mt-2 text-lg text-ink/50">{subtitle}</p>
       </div>
 
       <SegmentedControl
@@ -35,6 +35,7 @@ const HostPropertyDetailHeader = ({
         onChange={onTabChange}
         options={[
           { value: 'rooms', label: 'Chambres' },
+          { value: 'pricing', label: 'Tarification' },
           { value: 'availability', label: 'Disponibilité' },
           { value: 'info', label: 'Informations' },
         ]}

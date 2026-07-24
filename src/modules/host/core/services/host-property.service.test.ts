@@ -19,6 +19,7 @@ const samplePropertyApi = {
   image: null,
   roomCount: 4,
   cancellationPolicy: 'moderate',
+  touristTaxPerGuestNight: 0,
 };
 
 function createHttpClient(overrides: Partial<HttpClient> = {}): HttpClient {
@@ -75,6 +76,7 @@ describe('HostPropertyService', () => {
       checkOutTime: '11:00',
       propertyTypeId: 1,
       cancellationPolicy: 'moderate',
+      touristTaxPerGuestNight: 0,
     });
 
     expect(result.success).toBe(true);
@@ -102,6 +104,7 @@ describe('HostPropertyService', () => {
       checkOutTime: '11:00',
       propertyTypeId: null,
       cancellationPolicy: 'moderate',
+      touristTaxPerGuestNight: 0,
     });
 
     expect(result).toEqual({ success: false, error: 'Nom déjà utilisé' });

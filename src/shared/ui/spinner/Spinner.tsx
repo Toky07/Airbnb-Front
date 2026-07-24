@@ -2,7 +2,7 @@ type SpinnerProps = {
   className?: string;
 };
 
-const Spinner = ({ className = 'h-5 w-5' }: SpinnerProps) => (
+const Spinner = ({ className = 'h-5 w-5 text-brand' }: SpinnerProps) => (
   <svg
     className={['animate-spin', className].join(' ')}
     viewBox="0 0 24 24"

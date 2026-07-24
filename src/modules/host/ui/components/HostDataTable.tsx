@@ -8,7 +8,7 @@ type HostDataTableProps = {
 const HostDataTable = ({ children, className = '' }: HostDataTableProps) => (
   <div
     className={[
-      'overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm',
+      'overflow-hidden rounded-2xl border border-ink/8 bg-surface soft-shadow',
       className,
     ].join(' ')}
   >
@@ -21,7 +21,7 @@ type HostDataTableHeadProps = {
 };
 
 export const HostDataTableHead = ({ children }: HostDataTableHeadProps) => (
-  <thead className="bg-slate-50">
+  <thead className="bg-mist/60">
     <tr>{children}</tr>
   </thead>
 );
@@ -40,7 +40,7 @@ export const HostDataTableHeaderCell = ({
   <th
     scope="col"
     className={[
-      'px-5 py-4 text-xs font-bold uppercase tracking-wider text-slate-500',
+      'px-5 py-4 text-xs font-bold uppercase tracking-wider text-ink/50',
       align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left',
       className,
     ].join(' ')}
@@ -54,7 +54,7 @@ type HostDataTableBodyProps = {
 };
 
 export const HostDataTableBody = ({ children }: HostDataTableBodyProps) => (
-  <tbody className="divide-y divide-slate-100">{children}</tbody>
+  <tbody className="divide-y divide-ink/8">{children}</tbody>
 );
 
 type HostDataTableRowProps = {
@@ -70,7 +70,7 @@ export const HostDataTableRow = ({ children, onClick, className = '' }: HostData
     <tr
       onClick={onClick}
       className={[
-        interactive ? 'cursor-pointer transition hover:bg-slate-50/80' : '',
+        interactive ? 'cursor-pointer transition hover:bg-mist/40' : '',
         className,
       ].join(' ')}
     >
@@ -92,7 +92,7 @@ export const HostDataTableCell = ({
 }: HostDataTableCellProps) => (
   <td
     className={[
-      'px-5 py-4 text-sm text-slate-700',
+      'px-5 py-4 text-sm text-ink/70',
       align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left',
       className,
     ].join(' ')}

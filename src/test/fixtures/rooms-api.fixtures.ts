@@ -19,6 +19,8 @@ export const sampleRoomApi = {
     country: 'France',
     address: '1 Promenade',
     description: '',
+    latitude: 43.7102,
+    longitude: 7.262,
     checkInTime: '15:00',
     checkOutTime: '11:00',
     propertyType: null,

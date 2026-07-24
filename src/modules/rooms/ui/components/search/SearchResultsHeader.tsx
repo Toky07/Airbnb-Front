@@ -6,10 +6,10 @@ type SearchResultsHeaderProps = {
 
 const SearchResultsHeader = ({ query, loading, total }: SearchResultsHeaderProps) => (
   <div>
-    <h1 className="text-2xl font-bold text-slate-900">
+    <h1 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
       {query ? `Résultats pour « ${query} »` : 'Tous les logements'}
     </h1>
-    <p className="mt-1 text-sm text-slate-500">
+    <p className="mt-1 text-sm text-ink/50">
       {loading
         ? 'Chargement…'
         : `${total} logement${total > 1 ? 's' : ''} trouvé${total > 1 ? 's' : ''}`}

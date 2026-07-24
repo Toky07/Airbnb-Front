@@ -35,6 +35,12 @@ const room: RoomListItem = {
   unavailableDates: [{ startDate: '2026-09-10', endDate: '2026-09-13' }],
 };
 
+vi.mock('../../../rooms/application/composition/room.composition', () => ({
+  getGetRoomPricingPreviewUseCase: () => ({
+    execute: vi.fn().mockResolvedValue(null),
+  }),
+}));
+
 const addReservation = vi.fn().mockResolvedValue({ success: true });
 
 vi.mock('../../../cart/ui/hooks/useCart', () => ({

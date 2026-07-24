@@ -1,3 +1,6 @@
+import type { PricingBreakdown } from '../../../../shared/pricing/pricing-breakdown.types';
+import { mapPricingBreakdown } from '../../../../shared/pricing/pricing-breakdown.types';
+
 export type CartItemType = 'reservation' | 'service';
 
 export type CartItem = {
@@ -28,6 +31,7 @@ export type Cart = {
   items: CartItem[];
   totalPrice: number;
   itemCount: number;
+  pricingBreakdown: PricingBreakdown | null;
 };
 
 export type AddReservationToCartPayload = {
@@ -102,6 +106,7 @@ export function mapCart(data: unknown): Cart | null {
     items,
     totalPrice: Number(record.totalPrice ?? 0),
     itemCount: Number(record.itemCount ?? 0),
+    pricingBreakdown: mapPricingBreakdown(record.pricingBreakdown),
   };
 }
 

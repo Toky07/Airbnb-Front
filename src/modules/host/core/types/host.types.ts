@@ -22,6 +22,7 @@ export type HostProperty = {
   checkInTime: string;
   checkOutTime: string;
   cancellationPolicy: string;
+  touristTaxPerGuestNight: number;
   ownerId: number;
   propertyTypeId: number | null;
   propertyType: CategorySummary | null;
@@ -45,6 +46,7 @@ export type PropertyFormPayload = {
   checkInTime: string;
   checkOutTime: string;
   cancellationPolicy: string;
+  touristTaxPerGuestNight: number;
   propertyTypeId: number | null;
   imageFile?: File | null;
 };
@@ -53,6 +55,7 @@ export type RoomFormPayload = {
   name: string;
   description: string;
   pricePerNight: number;
+  weekendPricePerNight?: number | null;
   maxGuests: number;
   bedrooms: number;
   bathrooms: number;

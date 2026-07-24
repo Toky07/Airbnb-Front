@@ -7,7 +7,7 @@ type PublicPageLayoutProps = {
 };
 
 const PublicPageLayout = ({ children }: PublicPageLayoutProps) => (
-  <div className="min-h-screen bg-white">
+  <div className="min-h-screen bg-transparent">
     <SiteHeader />
     <main>{children}</main>
     <SiteFooter />

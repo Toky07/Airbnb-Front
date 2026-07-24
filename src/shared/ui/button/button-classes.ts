@@ -2,10 +2,13 @@ import type { ButtonSize, ButtonVariant } from './types';
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-[var(--color-brand)] text-white hover:bg-[var(--color-brand-dark)]',
-  secondary: 'bg-white text-slate-900 border border-slate-200 hover:bg-slate-50',
-  ghost: 'text-slate-700 hover:bg-slate-100',
-  outline: 'border border-slate-900 text-slate-900 hover:bg-slate-50',
+    'bg-brand text-white hover:bg-brand-dark focus-visible:ring-2 focus-visible:ring-brand/20',
+  secondary:
+    'border border-line bg-white text-ink hover:bg-mist focus-visible:ring-2 focus-visible:ring-brand/20',
+  ghost:
+    'text-ink/70 hover:bg-mist focus-visible:ring-2 focus-visible:ring-brand/20',
+  outline:
+    'border border-ink text-ink hover:bg-mist focus-visible:ring-2 focus-visible:ring-brand/20',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -20,8 +23,9 @@ export function getButtonClassName(
   extra?: string,
 ): string {
   return [
-    'inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition',
+    'inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition duration-200',
     'disabled:opacity-50 disabled:cursor-not-allowed',
+    'focus-visible:outline-none',
     variantClasses[variant],
     sizeClasses[size],
     extra ?? '',

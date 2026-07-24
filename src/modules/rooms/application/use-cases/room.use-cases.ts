@@ -41,3 +41,23 @@ export class GetRoomBySlugUseCase {
     return this.roomRepository.getBySlug(normalizedSlug);
   }
 }
+
+export class GetRoomPricingPreviewUseCase {
+  private readonly roomRepository: RoomRepository;
+
+  constructor(roomRepository: RoomRepository) {
+    this.roomRepository = roomRepository;
+  }
+
+  execute(
+    slug: string,
+    params: { startDate: string; endDate: string; guestCount: number },
+  ) {
+    const normalizedSlug = slug.trim();
+    if (!normalizedSlug || !params.startDate || !params.endDate) {
+      return Promise.resolve(null);
+    }
+
+    return this.roomRepository.getPricingPreview(normalizedSlug, params);
+  }
+}

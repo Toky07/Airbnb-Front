@@ -27,25 +27,25 @@ const RoomPagination = ({ page, totalPages }: RoomPaginationProps) => {
         to={buildPageUrl(Math.max(1, page - 1))}
         aria-disabled={page <= 1}
         className={[
-          'rounded-full border px-4 py-2 text-sm font-medium transition',
+          'rounded-xl border px-4 py-2 text-sm font-medium transition duration-200',
           page <= 1
-            ? 'pointer-events-none border-slate-100 text-slate-300'
-            : 'border-slate-200 text-slate-700 hover:border-slate-300',
+            ? 'pointer-events-none border-line/60 text-ink/30'
+            : 'border-line text-ink/70 hover:border-brand/30 hover:bg-mist',
         ].join(' ')}
       >
         Précédent
       </Link>
-      <span className="px-3 text-sm text-slate-500">
+      <span className="px-3 text-sm text-ink/50">
         Page {page} sur {totalPages}
       </span>
       <Link
         to={buildPageUrl(Math.min(totalPages, page + 1))}
         aria-disabled={page >= totalPages}
         className={[
-          'rounded-full border px-4 py-2 text-sm font-medium transition',
+          'rounded-xl border px-4 py-2 text-sm font-medium transition duration-200',
           page >= totalPages
-            ? 'pointer-events-none border-slate-100 text-slate-300'
-            : 'border-slate-200 text-slate-700 hover:border-slate-300',
+            ? 'pointer-events-none border-line/60 text-ink/30'
+            : 'border-line text-ink/70 hover:border-brand/30 hover:bg-mist',
         ].join(' ')}
       >
         Suivant

@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { Button } from '../../../../shared/ui';
+import type { Invoice } from '../../core/types/invoice.types';
 import {
   getReservationStatusLabel,
   type Reservation,
@@ -8,6 +10,10 @@ import { formatPricePerNight } from '../../../rooms/core/types/room.types';
 import { StayProductCard } from '../../../../shared/ui/product/StayProductCard';
 import { parseProductLabel } from '../../../../shared/ui/product/parse-product-label';
 import { useCancelReservation } from '../hooks/useCancelReservation';
+import { useContactHost } from '../../../messaging/ui/hooks/useContactHost';
+import ReviewForm from '../../../review/ui/components/ReviewForm';
+import { useCreateReview } from '../../../review/ui/hooks/useCreateReview';
+import { canLeaveReview } from '../../../review/core/utils/review-eligibility';
 
 function getStatusTone(
   status: Reservation['status'],
@@ -32,15 +38,38 @@ function formatRefundAmount(amount: number, currency: string): string {
 
 type PurchaseCardProps = {
   reservation: Reservation;
+  invoice?: Invoice | null;
+  downloadingInvoice?: boolean;
+  onDownloadInvoice?: (invoiceId: number) => void;
   onCancelled?: () => void;
+  hasReview?: boolean;
+  onReviewSubmitted?: () => void;
 };
 
-export default function PurchaseCard({ reservation, onCancelled }: PurchaseCardProps) {
+export default function PurchaseCard({
+  reservation,
+  invoice,
+  downloadingInvoice = false,
+  onDownloadInvoice,
+  onCancelled,
+  hasReview = false,
+  onReviewSubmitted,
+}: PurchaseCardProps) {
+  const navigate = useNavigate();
   const { preview, loading, error, loadPreview, cancel, reset } = useCancelReservation();
+  const { contactHost, loading: contactingHost, error: contactError } = useContactHost(
+    reservation.id,
+  );
+  const { createReview } = useCreateReview();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const fallback = parseProductLabel(`Chambre #${reservation.roomId}`);
   const canCancel =
     reservation.status === 'confirmed' && reservation.startDate > new Date().toISOString().slice(0, 10);
+  const showReviewForm = canLeaveReview(
+    reservation.status,
+    reservation.endDate,
+    hasReview,
+  );
 
   const handleOpenCancel = async () => {
     const result = await loadPreview(reservation.id);
@@ -55,6 +84,13 @@ export default function PurchaseCard({ reservation, onCancelled }: PurchaseCardP
       setConfirmOpen(false);
       reset();
       onCancelled?.();
+    }
+  };
+
+  const handleContactHost = async () => {
+    const conversationId = await contactHost();
+    if (conversationId) {
+      navigate(`/account/messages/${conversationId}`);
     }
   };
 
@@ -90,12 +126,43 @@ export default function PurchaseCard({ reservation, onCancelled }: PurchaseCardP
         </Button>
       ) : null}
 
+      {reservation.status === 'confirmed' && invoice && onDownloadInvoice ? (
+        <Button
+          type="button"
+          variant="secondary"
+          disabled={downloadingInvoice}
+          onClick={() => onDownloadInvoice(invoice.id)}
+        >
+          {downloadingInvoice ? 'Téléchargement…' : 'Télécharger la facture'}
+        </Button>
+      ) : null}
+
+      {reservation.status === 'confirmed' ? (
+        <Button
+          type="button"
+          variant="secondary"
+          disabled={contactingHost}
+          onClick={() => void handleContactHost()}
+        >
+          {contactingHost ? 'Ouverture…' : 'Contacter l’hôte'}
+        </Button>
+      ) : null}
+
+      {showReviewForm ? (
+        <ReviewForm
+          reservationId={reservation.id}
+          onSubmit={createReview}
+          onSuccess={onReviewSubmitted}
+        />
+      ) : null}
+
       {error ? <p className="text-sm text-red-600">{error}</p> : null}
+      {contactError ? <p className="text-sm text-red-600">{contactError}</p> : null}
 
       {confirmOpen && preview ? (
-        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-          <p className="font-medium text-slate-900">{preview.policyLabel}</p>
-          <p className="mt-2 text-sm text-slate-600">
+        <div className="surface rounded-2xl p-4">
+          <p className="font-medium text-ink">{preview.policyLabel}</p>
+          <p className="mt-2 text-sm text-ink/60">
             Remboursement estimé :{' '}
             {formatRefundAmount(preview.refundAmount, preview.currency)} ({preview.refundPercent}
             %)
