@@ -4,15 +4,13 @@ import { Button, ConfirmDialog } from '../../../../shared/ui';
 import type { ButtonVariant } from '../../../../shared/ui/button/types';
 import type { HostBookingOrder } from '../../core/types/host-booking.types';
 import { formatHostCurrency, formatHostDate } from '../utils/host-formatters';
-import PaymentBadge from './PaymentBadge';
+import BookingStatusCell from './BookingStatusCell';
 import {
   canHostCancelBooking,
   canHostMarkNoShow,
   canHostRestoreFromNoShow,
   useHostBookingActions,
 } from '../hooks/useHostBookingActions';
-import { getReservationStatusLabel } from '../../../reservation/core/types/reservation.types';
-import type { ReservationStatus } from '../../../reservation/core/types/reservation.types';
 
 type BookingsTableProps = {
   bookings: HostBookingOrder[];
@@ -153,11 +151,6 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
               reservationId !== null &&
               canHostRestoreFromNoShow(booking.reservationStatus);
             const isPending = reservationId !== null && pendingId === reservationId;
-            const reservationLabel =
-              booking.reservationStatus &&
-              ['confirmed', 'cancelled', 'no_show'].includes(booking.reservationStatus)
-                ? getReservationStatusLabel(booking.reservationStatus as ReservationStatus)
-                : null;
 
             return (
               <tr
@@ -194,13 +187,11 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
                 <td className="whitespace-nowrap px-8 py-5 text-lg font-bold text-ink">
                   {formatHostCurrency(booking.amount)}
                 </td>
-                <td className="whitespace-nowrap px-8 py-5">
-                  <div className="flex flex-col gap-2">
-                    <PaymentBadge status={booking.paymentStatus} />
-                    {reservationLabel ? (
-                      <span className="text-xs font-medium text-ink/50">{reservationLabel}</span>
-                    ) : null}
-                  </div>
+                <td className="px-8 py-5">
+                  <BookingStatusCell
+                    paymentStatus={booking.paymentStatus}
+                    reservationStatus={booking.reservationStatus}
+                  />
                 </td>
                 <td className="whitespace-nowrap px-8 py-5">
                   {canCancel || canNoShow || canRestore ? (

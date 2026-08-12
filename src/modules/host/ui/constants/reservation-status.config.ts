@@ -7,6 +7,8 @@ export type PaymentStatusKey =
   | 'canceled'
   | 'no_show';
 
+export type StayStatusKey = 'pending' | 'confirmed' | 'cancelled' | 'no_show';
+
 export const paymentStatusConfig: Record<
   PaymentStatusKey,
   { label: string; className: string }
@@ -19,3 +21,30 @@ export const paymentStatusConfig: Record<
   canceled: { label: 'Annulée', className: 'bg-mist text-ink/60 ring-ink/10' },
   no_show: { label: 'No-show', className: 'bg-orange-500/10 text-orange-700 ring-orange-500/15' },
 };
+
+export const stayStatusConfig: Record<
+  StayStatusKey,
+  { label: string; className: string; hint: string | null }
+> = {
+  pending: {
+    label: 'En attente',
+    className: 'bg-amber-500/10 text-amber-700 ring-amber-500/15',
+    hint: null,
+  },
+  confirmed: {
+    label: 'Confirmée',
+    className: 'bg-emerald-500/10 text-emerald-700 ring-emerald-500/15',
+    hint: null,
+  },
+  cancelled: {
+    label: 'Annulée',
+    className: 'bg-mist text-ink/60 ring-ink/10',
+    hint: 'Séjour annulé.',
+  },
+  no_show: {
+    label: 'Non honorée',
+    className: 'bg-orange-500/10 text-orange-700 ring-orange-500/15',
+    hint: 'Le client ne s’est pas présenté.',
+  },
+};
+
