@@ -14,6 +14,26 @@ describe('MSW server', () => {
     expect(data).toEqual(sampleRoomsListApi);
   });
 
+  it('intercepte les avis et le résumé de note par slug', async () => {
+    const reviewsResponse = await fetch(
+      apiUrl('/rooms/by-slug/suite-vue-mer/reviews?page=1&limit=10'),
+    );
+    const summaryResponse = await fetch(
+      apiUrl('/rooms/by-slug/suite-vue-mer/rating-summary'),
+    );
+
+    expect(reviewsResponse.status).toBe(200);
+    expect(await reviewsResponse.json()).toEqual({
+      data: [],
+      meta: { page: 1, limit: 10, total: 0, totalPages: 0 },
+    });
+    expect(summaryResponse.status).toBe(200);
+    expect(await summaryResponse.json()).toMatchObject({
+      averageRating: 0,
+      totalReviews: 0,
+    });
+  });
+
   it('retourne un panier avec articles après loadCartWithItems', async () => {
     loadCartWithItems();
 

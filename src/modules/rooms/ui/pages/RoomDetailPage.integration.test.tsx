@@ -15,6 +15,10 @@ describe('RoomDetailPage (integration)', () => {
     });
 
     expect(screen.getByText('Nice, France')).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(screen.getByText(/aucun avis publié pour le moment/i)).toBeInTheDocument();
+    });
   });
 
   it('affiche une erreur lorsque le slug est inconnu', async () => {
