@@ -5,6 +5,7 @@ import PaymentBadge from './PaymentBadge';
 import {
   canHostCancelBooking,
   canHostMarkNoShow,
+  canHostRestoreFromNoShow,
   useHostBookingActions,
 } from '../hooks/useHostBookingActions';
 import { getReservationStatusLabel } from '../../../reservation/core/types/reservation.types';
@@ -17,7 +18,7 @@ type BookingsTableProps = {
 };
 
 const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => {
-  const { cancelReservation, markNoShow, pendingId, error, clearError } =
+  const { cancelReservation, markNoShow, restoreFromNoShow, pendingId, error, clearError } =
     useHostBookingActions(onUpdated);
 
   if (loading) {
@@ -84,6 +85,9 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
             const canNoShow =
               reservationId !== null &&
               canHostMarkNoShow(booking.reservationStatus, booking.checkIn);
+            const canRestore =
+              reservationId !== null &&
+              canHostRestoreFromNoShow(booking.reservationStatus);
             const isPending = reservationId !== null && pendingId === reservationId;
             const reservationLabel =
               booking.reservationStatus &&
@@ -135,13 +139,22 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
                   </div>
                 </td>
                 <td className="whitespace-nowrap px-8 py-5">
-                  {canCancel || canNoShow ? (
+                  {canCancel || canNoShow || canRestore ? (
                     <div className="flex flex-col gap-2">
                       {canCancel ? (
                         <button
                           type="button"
                           disabled={isPending}
-                          onClick={() => void cancelReservation(reservationId!)}
+                          onClick={() => {
+                            if (
+                              !window.confirm(
+                                'Annuler cette réservation ? Un remboursement peut être appliqué selon la politique.',
+                              )
+                            ) {
+                              return;
+                            }
+                            void cancelReservation(reservationId!);
+                          }}
                           className="text-left text-sm font-semibold text-red-600 hover:text-red-700 disabled:opacity-50"
                         >
                           {isPending ? 'Traitement…' : 'Annuler'}
@@ -151,10 +164,38 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
                         <button
                           type="button"
                           disabled={isPending}
-                          onClick={() => void markNoShow(reservationId!)}
+                          onClick={() => {
+                            if (
+                              !window.confirm(
+                                'Marquer cette réservation en no-show ? Le client est considéré comme absent.',
+                              )
+                            ) {
+                              return;
+                            }
+                            void markNoShow(reservationId!);
+                          }}
                           className="text-left text-sm font-semibold text-orange-600 hover:text-orange-700 disabled:opacity-50"
                         >
                           {isPending ? 'Traitement…' : 'No-show'}
+                        </button>
+                      ) : null}
+                      {canRestore ? (
+                        <button
+                          type="button"
+                          disabled={isPending}
+                          onClick={() => {
+                            if (
+                              !window.confirm(
+                                'Rétablir cette réservation comme confirmée ?',
+                              )
+                            ) {
+                              return;
+                            }
+                            void restoreFromNoShow(reservationId!);
+                          }}
+                          className="text-left text-sm font-semibold text-brand hover:text-brand/80 disabled:opacity-50"
+                        >
+                          {isPending ? 'Traitement…' : 'Rétablir'}
                         </button>
                       ) : null}
                     </div>

@@ -7,6 +7,7 @@ import {
 import {
   CancelHostReservationUseCase,
   MarkHostReservationNoShowUseCase,
+  RestoreHostReservationFromNoShowUseCase,
 } from '../use-cases/host-reservation-actions.use-cases';
 import { HttpHostReservationRepository } from '../../../infrastructure/reservation/http-host-reservation.repository';
 
@@ -15,6 +16,8 @@ let listHostBookingsUseCase: ListHostBookingsUseCase | null = null;
 let getHostReservationStatsOverviewUseCase: GetHostReservationStatsOverviewUseCase | null = null;
 let cancelHostReservationUseCase: CancelHostReservationUseCase | null = null;
 let markHostReservationNoShowUseCase: MarkHostReservationNoShowUseCase | null = null;
+let restoreHostReservationFromNoShowUseCase: RestoreHostReservationFromNoShowUseCase | null =
+  null;
 
 export function getHostReservationRepository(): HostReservationRepository {
   if (!hostReservationRepository) {
@@ -53,4 +56,12 @@ export function getMarkHostReservationNoShowUseCase(): MarkHostReservationNoShow
     );
   }
   return markHostReservationNoShowUseCase;
+}
+
+export function getRestoreHostReservationFromNoShowUseCase(): RestoreHostReservationFromNoShowUseCase {
+  if (!restoreHostReservationFromNoShowUseCase) {
+    restoreHostReservationFromNoShowUseCase =
+      new RestoreHostReservationFromNoShowUseCase(getHostReservationRepository());
+  }
+  return restoreHostReservationFromNoShowUseCase;
 }

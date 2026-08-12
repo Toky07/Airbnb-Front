@@ -10,6 +10,9 @@ vi.mock('../../application/reservation/composition/host-reservation.composition'
   getMarkHostReservationNoShowUseCase: () => ({
     execute: vi.fn().mockResolvedValue({ success: true }),
   }),
+  getRestoreHostReservationFromNoShowUseCase: () => ({
+    execute: vi.fn().mockResolvedValue({ success: true }),
+  }),
 }));
 
 const booking: HostBookingOrder = {

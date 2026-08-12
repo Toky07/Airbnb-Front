@@ -9,4 +9,5 @@ export interface HostReservationRepository {
   getStatsOverview(): Promise<HostReservationStatsOverview>;
   cancelReservation(reservationId: number): Promise<{ success: boolean; error?: string }>;
   markNoShow(reservationId: number): Promise<{ success: boolean; error?: string }>;
+  restoreFromNoShow(reservationId: number): Promise<{ success: boolean; error?: string }>;
 }

@@ -134,12 +134,20 @@ const HostDashboardPage = () => {
           </div>
         </section>
 
-        <HostDashboardStatCard
-          icon="euro-sign"
-          label="Revenus du mois"
-          value={formatHostCurrency(reservationStats?.monthlyRevenue ?? 0)}
-          accent="bg-brand/10 text-brand"
-        />
+        <div className="space-y-6">
+          <HostDashboardStatCard
+            icon="euro-sign"
+            label="Revenus du mois"
+            value={formatHostCurrency(reservationStats?.monthlyRevenue ?? 0)}
+            accent="bg-brand/10 text-brand"
+          />
+          <HostDashboardStatCard
+            icon="chart-line"
+            label="Revenu total"
+            value={formatHostCurrency(reservationStats?.totalRevenue ?? 0)}
+            accent="bg-brand/10 text-brand"
+          />
+        </div>
       </div>
 
       {!hasProperties ? (

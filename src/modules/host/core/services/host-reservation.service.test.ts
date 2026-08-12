@@ -45,6 +45,7 @@ describe('HostReservationService', () => {
             activeCount: 2,
             pendingCount: 1,
             monthlyRevenue: 500,
+            totalRevenue: 1200,
             totalCount: 5,
             occupancyRate: 42,
             recentActivity: [

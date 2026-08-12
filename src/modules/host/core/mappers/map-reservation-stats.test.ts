@@ -12,6 +12,7 @@ describe('mapReservationStats', () => {
         activeCount: 4,
         pendingCount: 2,
         monthlyRevenue: 1500.5,
+        totalRevenue: 4200,
         totalCount: 10,
         occupancyRate: 68,
         recentActivity: [],
@@ -20,6 +21,7 @@ describe('mapReservationStats', () => {
       activeCount: 4,
       pendingCount: 2,
       monthlyRevenue: 1500.5,
+      totalRevenue: 4200,
       totalCount: 10,
       occupancyRate: 68,
     });
@@ -57,6 +59,7 @@ describe('mapReservationStatsOverview', () => {
         activeCount: 2,
         pendingCount: 1,
         monthlyRevenue: 500,
+        totalRevenue: 1200,
         totalCount: 5,
         occupancyRate: 42,
         recentActivity: [
@@ -73,6 +76,7 @@ describe('mapReservationStatsOverview', () => {
         activeCount: 2,
         pendingCount: 1,
         monthlyRevenue: 500,
+        totalRevenue: 1200,
         totalCount: 5,
         occupancyRate: 42,
       },

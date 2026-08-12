@@ -13,6 +13,7 @@ function createHostReservationRepository(
     getStatsOverview: vi.fn(),
     cancelReservation: vi.fn(),
     markNoShow: vi.fn(),
+    restoreFromNoShow: vi.fn(),
     ...overrides,
   };
 }
@@ -40,6 +41,7 @@ describe('GetHostReservationStatsOverviewUseCase', () => {
         activeCount: 1,
         pendingCount: 0,
         monthlyRevenue: 100,
+        totalRevenue: 100,
         totalCount: 1,
         occupancyRate: 50,
       },
