@@ -86,4 +86,22 @@ export class HttpHostReservationRepository implements HostReservationRepository 
 
     return { success: true as const };
   }
+
+  async restoreFromNoShow(reservationId: number) {
+    const response = await this.httpClient.post(
+      `/host/reservations/${reservationId}/restore`,
+      {},
+    );
+
+    if (!response.ok) {
+      const data: unknown = await response.json().catch(() => null);
+      const message =
+        data && typeof data === 'object' && 'message' in data
+          ? String((data as { message: unknown }).message)
+          : 'Impossible de rétablir la réservation.';
+      return { success: false as const, error: message };
+    }
+
+    return { success: true as const };
+  }
 }

@@ -22,6 +22,7 @@ export type HostReservationStats = {
   activeCount: number;
   pendingCount: number;
   monthlyRevenue: number;
+  totalRevenue: number;
   totalCount: number;
   occupancyRate: number;
 };

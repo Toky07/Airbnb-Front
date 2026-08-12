@@ -14,6 +14,7 @@ export function mapReservationStats(data: unknown): HostReservationStats | null 
     activeCount: Number(record.activeCount ?? 0),
     pendingCount: Number(record.pendingCount ?? 0),
     monthlyRevenue: Number(record.monthlyRevenue ?? 0),
+    totalRevenue: Number(record.totalRevenue ?? 0),
     totalCount: Number(record.totalCount ?? 0),
     occupancyRate: Number(record.occupancyRate ?? 0),
   };

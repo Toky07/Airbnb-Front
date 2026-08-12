@@ -14,7 +14,7 @@ const SiteHeader = () => {
         <div className="flex items-center gap-3 md:gap-5">
           <Link
             to="/search"
-            className="hidden text-sm font-medium text-ink/60 transition duration-200 hover:text-ink md:block"
+            className="text-sm font-medium text-ink/60 transition duration-200 hover:text-ink md:block"
           >
             Logements
           </Link>
@@ -23,7 +23,7 @@ const SiteHeader = () => {
             aria-label={itemCount > 0 ? `Panier (${itemCount} article${itemCount > 1 ? 's' : ''})` : 'Panier'}
             className="relative flex h-10 w-10 items-center justify-center rounded-xl text-ink/60 transition duration-200 hover:bg-mist hover:text-ink"
           >
-            <FontAwesomeIcon icon="cart-shopping" className="h-4 w-4" />
+            <FontAwesomeIcon icon="cart-shopping" className="h-4 w-4 text-red" />
             {itemCount > 0 ? (
               <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-md bg-brand px-1 text-[10px] font-bold leading-none text-white">
                 {itemCount > 99 ? '99+' : itemCount}

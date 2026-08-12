@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import {
   getCancelHostReservationUseCase,
   getMarkHostReservationNoShowUseCase,
+  getRestoreHostReservationFromNoShowUseCase,
 } from '../../application/reservation/composition/host-reservation.composition';
 
 export function useHostBookingActions(onSuccess?: () => void) {
@@ -40,7 +41,30 @@ export function useHostBookingActions(onSuccess?: () => void) {
     [onSuccess],
   );
 
-  return { cancelReservation, markNoShow, pendingId, error, clearError: () => setError(null) };
+  const restoreFromNoShow = useCallback(
+    async (reservationId: number) => {
+      setPendingId(reservationId);
+      setError(null);
+      const result = await getRestoreHostReservationFromNoShowUseCase().execute(reservationId);
+      setPendingId(null);
+      if (!result.success) {
+        setError(result.error ?? 'Erreur lors du rétablissement.');
+        return false;
+      }
+      onSuccess?.();
+      return true;
+    },
+    [onSuccess],
+  );
+
+  return {
+    cancelReservation,
+    markNoShow,
+    restoreFromNoShow,
+    pendingId,
+    error,
+    clearError: () => setError(null),
+  };
 }
 
 export function canHostCancelBooking(
@@ -63,4 +87,8 @@ export function canHostMarkNoShow(
   }
   const today = new Date().toISOString().slice(0, 10);
   return checkIn <= today;
+}
+
+export function canHostRestoreFromNoShow(reservationStatus: string | null): boolean {
+  return reservationStatus === 'no_show';
 }

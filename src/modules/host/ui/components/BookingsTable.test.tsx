@@ -10,6 +10,9 @@ vi.mock('../../application/reservation/composition/host-reservation.composition'
   getMarkHostReservationNoShowUseCase: () => ({
     execute: vi.fn().mockResolvedValue({ success: true }),
   }),
+  getRestoreHostReservationFromNoShowUseCase: () => ({
+    execute: vi.fn().mockResolvedValue({ success: true }),
+  }),
 }));
 
 const booking: HostBookingOrder = {
@@ -40,6 +43,20 @@ describe('BookingsTable', () => {
     expect(screen.getByText('jean@example.com')).toBeInTheDocument();
     expect(screen.getByText('Suite Deluxe · Hotel Test')).toBeInTheDocument();
     expect(screen.getByText('Payée')).toBeInTheDocument();
+    expect(screen.getByText('Confirmée')).toBeInTheDocument();
+  });
+
+  it('explique un no-show', () => {
+    render(
+      <BookingsTable
+        bookings={[{ ...booking, reservationStatus: 'no_show', checkIn: '2026-07-31' }]}
+        loading={false}
+      />,
+    );
+
+    expect(screen.getByText('Non honorée')).toBeInTheDocument();
+    expect(screen.getByText('Le client ne s’est pas présenté.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Rétablir' })).toBeInTheDocument();
   });
 
   it('affiche l’état vide', () => {

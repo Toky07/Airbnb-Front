@@ -1,14 +1,16 @@
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, ConfirmDialog } from '../../../../shared/ui';
+import type { ButtonVariant } from '../../../../shared/ui/button/types';
 import type { HostBookingOrder } from '../../core/types/host-booking.types';
 import { formatHostCurrency, formatHostDate } from '../utils/host-formatters';
-import PaymentBadge from './PaymentBadge';
+import BookingStatusCell from './BookingStatusCell';
 import {
   canHostCancelBooking,
   canHostMarkNoShow,
+  canHostRestoreFromNoShow,
   useHostBookingActions,
 } from '../hooks/useHostBookingActions';
-import { getReservationStatusLabel } from '../../../reservation/core/types/reservation.types';
-import type { ReservationStatus } from '../../../reservation/core/types/reservation.types';
 
 type BookingsTableProps = {
   bookings: HostBookingOrder[];
@@ -16,9 +18,66 @@ type BookingsTableProps = {
   onUpdated?: () => void;
 };
 
+type ConfirmAction = {
+  type: 'cancel' | 'no-show' | 'restore';
+  reservationId: number;
+};
+
+const CONFIRM_COPY: Record<
+  ConfirmAction['type'],
+  { title: string; message: string; confirmLabel: string; confirmVariant: ButtonVariant }
+> = {
+  cancel: {
+    title: 'Annuler la réservation',
+    message:
+      'Annuler cette réservation ? Un remboursement peut être appliqué selon la politique d’annulation.',
+    confirmLabel: 'Annuler la réservation',
+    confirmVariant: 'danger',
+  },
+  'no-show': {
+    title: 'Marquer en no-show',
+    message:
+      'Marquer cette réservation en no-show ? Le client est considéré comme absent et le paiement reste encaissé.',
+    confirmLabel: 'Confirmer le no-show',
+    confirmVariant: 'warning',
+  },
+  restore: {
+    title: 'Rétablir la réservation',
+    message: 'Rétablir cette réservation comme confirmée ?',
+    confirmLabel: 'Rétablir',
+    confirmVariant: 'primary',
+  },
+};
+
 const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => {
-  const { cancelReservation, markNoShow, pendingId, error, clearError } =
+  const { cancelReservation, markNoShow, restoreFromNoShow, pendingId, error, clearError } =
     useHostBookingActions(onUpdated);
+  const [confirmAction, setConfirmAction] = useState<ConfirmAction | null>(null);
+
+  const closeConfirm = () => {
+    if (pendingId !== null) {
+      return;
+    }
+    setConfirmAction(null);
+  };
+
+  const handleConfirm = async () => {
+    if (!confirmAction) {
+      return;
+    }
+
+    const { type, reservationId } = confirmAction;
+    const success =
+      type === 'cancel'
+        ? await cancelReservation(reservationId)
+        : type === 'no-show'
+          ? await markNoShow(reservationId)
+          : await restoreFromNoShow(reservationId);
+
+    if (success) {
+      setConfirmAction(null);
+    }
+  };
 
   if (loading) {
     return (
@@ -41,6 +100,10 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
       </div>
     );
   }
+
+  const confirmCopy = confirmAction ? CONFIRM_COPY[confirmAction.type] : null;
+  const confirmPending =
+    confirmAction !== null && pendingId === confirmAction.reservationId;
 
   return (
     <div className="overflow-x-auto">
@@ -84,12 +147,10 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
             const canNoShow =
               reservationId !== null &&
               canHostMarkNoShow(booking.reservationStatus, booking.checkIn);
+            const canRestore =
+              reservationId !== null &&
+              canHostRestoreFromNoShow(booking.reservationStatus);
             const isPending = reservationId !== null && pendingId === reservationId;
-            const reservationLabel =
-              booking.reservationStatus &&
-              ['confirmed', 'cancelled', 'no_show'].includes(booking.reservationStatus)
-                ? getReservationStatusLabel(booking.reservationStatus as ReservationStatus)
-                : null;
 
             return (
               <tr
@@ -126,36 +187,50 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
                 <td className="whitespace-nowrap px-8 py-5 text-lg font-bold text-ink">
                   {formatHostCurrency(booking.amount)}
                 </td>
-                <td className="whitespace-nowrap px-8 py-5">
-                  <div className="flex flex-col gap-2">
-                    <PaymentBadge status={booking.paymentStatus} />
-                    {reservationLabel ? (
-                      <span className="text-xs font-medium text-ink/50">{reservationLabel}</span>
-                    ) : null}
-                  </div>
+                <td className="px-8 py-5">
+                  <BookingStatusCell
+                    paymentStatus={booking.paymentStatus}
+                    reservationStatus={booking.reservationStatus}
+                  />
                 </td>
                 <td className="whitespace-nowrap px-8 py-5">
-                  {canCancel || canNoShow ? (
-                    <div className="flex flex-col gap-2">
+                  {canCancel || canNoShow || canRestore ? (
+                    <div className="flex flex-wrap items-center gap-2">
                       {canCancel ? (
-                        <button
-                          type="button"
+                        <Button
+                          variant="danger"
+                          size="sm"
                           disabled={isPending}
-                          onClick={() => void cancelReservation(reservationId!)}
-                          className="text-left text-sm font-semibold text-red-600 hover:text-red-700 disabled:opacity-50"
+                          onClick={() =>
+                            setConfirmAction({ type: 'cancel', reservationId: reservationId! })
+                          }
                         >
-                          {isPending ? 'Traitement…' : 'Annuler'}
-                        </button>
+                          Annuler
+                        </Button>
                       ) : null}
                       {canNoShow ? (
-                        <button
-                          type="button"
+                        <Button
+                          variant="warning"
+                          size="sm"
                           disabled={isPending}
-                          onClick={() => void markNoShow(reservationId!)}
-                          className="text-left text-sm font-semibold text-orange-600 hover:text-orange-700 disabled:opacity-50"
+                          onClick={() =>
+                            setConfirmAction({ type: 'no-show', reservationId: reservationId! })
+                          }
                         >
-                          {isPending ? 'Traitement…' : 'No-show'}
-                        </button>
+                          No-show
+                        </Button>
+                      ) : null}
+                      {canRestore ? (
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          disabled={isPending}
+                          onClick={() =>
+                            setConfirmAction({ type: 'restore', reservationId: reservationId! })
+                          }
+                        >
+                          Rétablir
+                        </Button>
                       ) : null}
                     </div>
                   ) : (
@@ -167,6 +242,21 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
           })}
         </tbody>
       </table>
+
+      {confirmCopy ? (
+        <ConfirmDialog
+          isOpen={confirmAction !== null}
+          title={confirmCopy.title}
+          message={confirmCopy.message}
+          confirmLabel={confirmCopy.confirmLabel}
+          confirmVariant={confirmCopy.confirmVariant}
+          isPending={confirmPending}
+          onCancel={closeConfirm}
+          onConfirm={() => {
+            void handleConfirm();
+          }}
+        />
+      ) : null}
     </div>
   );
 };

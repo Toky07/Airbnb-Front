@@ -23,3 +23,15 @@ export class MarkHostReservationNoShowUseCase {
     return this.hostReservationRepository.markNoShow(reservationId);
   }
 }
+
+export class RestoreHostReservationFromNoShowUseCase {
+  private readonly hostReservationRepository: HostReservationRepository;
+
+  constructor(hostReservationRepository: HostReservationRepository) {
+    this.hostReservationRepository = hostReservationRepository;
+  }
+
+  execute(reservationId: number) {
+    return this.hostReservationRepository.restoreFromNoShow(reservationId);
+  }
+}
