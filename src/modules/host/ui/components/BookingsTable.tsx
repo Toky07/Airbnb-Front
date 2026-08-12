@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, ConfirmDialog } from '../../../../shared/ui';
+import type { ButtonVariant } from '../../../../shared/ui/button/types';
 import type { HostBookingOrder } from '../../core/types/host-booking.types';
 import { formatHostCurrency, formatHostDate } from '../utils/host-formatters';
 import PaymentBadge from './PaymentBadge';
@@ -17,9 +20,66 @@ type BookingsTableProps = {
   onUpdated?: () => void;
 };
 
+type ConfirmAction = {
+  type: 'cancel' | 'no-show' | 'restore';
+  reservationId: number;
+};
+
+const CONFIRM_COPY: Record<
+  ConfirmAction['type'],
+  { title: string; message: string; confirmLabel: string; confirmVariant: ButtonVariant }
+> = {
+  cancel: {
+    title: 'Annuler la réservation',
+    message:
+      'Annuler cette réservation ? Un remboursement peut être appliqué selon la politique d’annulation.',
+    confirmLabel: 'Annuler la réservation',
+    confirmVariant: 'danger',
+  },
+  'no-show': {
+    title: 'Marquer en no-show',
+    message:
+      'Marquer cette réservation en no-show ? Le client est considéré comme absent et le paiement reste encaissé.',
+    confirmLabel: 'Confirmer le no-show',
+    confirmVariant: 'warning',
+  },
+  restore: {
+    title: 'Rétablir la réservation',
+    message: 'Rétablir cette réservation comme confirmée ?',
+    confirmLabel: 'Rétablir',
+    confirmVariant: 'primary',
+  },
+};
+
 const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => {
   const { cancelReservation, markNoShow, restoreFromNoShow, pendingId, error, clearError } =
     useHostBookingActions(onUpdated);
+  const [confirmAction, setConfirmAction] = useState<ConfirmAction | null>(null);
+
+  const closeConfirm = () => {
+    if (pendingId !== null) {
+      return;
+    }
+    setConfirmAction(null);
+  };
+
+  const handleConfirm = async () => {
+    if (!confirmAction) {
+      return;
+    }
+
+    const { type, reservationId } = confirmAction;
+    const success =
+      type === 'cancel'
+        ? await cancelReservation(reservationId)
+        : type === 'no-show'
+          ? await markNoShow(reservationId)
+          : await restoreFromNoShow(reservationId);
+
+    if (success) {
+      setConfirmAction(null);
+    }
+  };
 
   if (loading) {
     return (
@@ -42,6 +102,10 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
       </div>
     );
   }
+
+  const confirmCopy = confirmAction ? CONFIRM_COPY[confirmAction.type] : null;
+  const confirmPending =
+    confirmAction !== null && pendingId === confirmAction.reservationId;
 
   return (
     <div className="overflow-x-auto">
@@ -140,63 +204,42 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
                 </td>
                 <td className="whitespace-nowrap px-8 py-5">
                   {canCancel || canNoShow || canRestore ? (
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       {canCancel ? (
-                        <button
-                          type="button"
+                        <Button
+                          variant="danger"
+                          size="sm"
                           disabled={isPending}
-                          onClick={() => {
-                            if (
-                              !window.confirm(
-                                'Annuler cette réservation ? Un remboursement peut être appliqué selon la politique.',
-                              )
-                            ) {
-                              return;
-                            }
-                            void cancelReservation(reservationId!);
-                          }}
-                          className="text-left text-sm font-semibold text-red-600 hover:text-red-700 disabled:opacity-50"
+                          onClick={() =>
+                            setConfirmAction({ type: 'cancel', reservationId: reservationId! })
+                          }
                         >
-                          {isPending ? 'Traitement…' : 'Annuler'}
-                        </button>
+                          Annuler
+                        </Button>
                       ) : null}
                       {canNoShow ? (
-                        <button
-                          type="button"
+                        <Button
+                          variant="warning"
+                          size="sm"
                           disabled={isPending}
-                          onClick={() => {
-                            if (
-                              !window.confirm(
-                                'Marquer cette réservation en no-show ? Le client est considéré comme absent.',
-                              )
-                            ) {
-                              return;
-                            }
-                            void markNoShow(reservationId!);
-                          }}
-                          className="text-left text-sm font-semibold text-orange-600 hover:text-orange-700 disabled:opacity-50"
+                          onClick={() =>
+                            setConfirmAction({ type: 'no-show', reservationId: reservationId! })
+                          }
                         >
-                          {isPending ? 'Traitement…' : 'No-show'}
-                        </button>
+                          No-show
+                        </Button>
                       ) : null}
                       {canRestore ? (
-                        <button
-                          type="button"
+                        <Button
+                          variant="primary"
+                          size="sm"
                           disabled={isPending}
-                          onClick={() => {
-                            if (
-                              !window.confirm(
-                                'Rétablir cette réservation comme confirmée ?',
-                              )
-                            ) {
-                              return;
-                            }
-                            void restoreFromNoShow(reservationId!);
-                          }}
-                          className="text-left text-sm font-semibold text-brand hover:text-brand/80 disabled:opacity-50"
+                          onClick={() =>
+                            setConfirmAction({ type: 'restore', reservationId: reservationId! })
+                          }
                         >
-                          {isPending ? 'Traitement…' : 'Rétablir'}
-                        </button>
+                          Rétablir
+                        </Button>
                       ) : null}
                     </div>
                   ) : (
@@ -208,6 +251,21 @@ const BookingsTable = ({ bookings, loading, onUpdated }: BookingsTableProps) => 
           })}
         </tbody>
       </table>
+
+      {confirmCopy ? (
+        <ConfirmDialog
+          isOpen={confirmAction !== null}
+          title={confirmCopy.title}
+          message={confirmCopy.message}
+          confirmLabel={confirmCopy.confirmLabel}
+          confirmVariant={confirmCopy.confirmVariant}
+          isPending={confirmPending}
+          onCancel={closeConfirm}
+          onConfirm={() => {
+            void handleConfirm();
+          }}
+        />
+      ) : null}
     </div>
   );
 };

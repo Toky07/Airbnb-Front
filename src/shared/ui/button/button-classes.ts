@@ -9,6 +9,10 @@ const variantClasses: Record<ButtonVariant, string> = {
     'text-ink/70 hover:bg-mist focus-visible:ring-2 focus-visible:ring-brand/20',
   outline:
     'border border-ink text-ink hover:bg-mist focus-visible:ring-2 focus-visible:ring-brand/20',
+  danger:
+    'border border-red-500/20 bg-red-500/10 text-red-700 hover:bg-red-500/15 focus-visible:ring-2 focus-visible:ring-red-500/20',
+  warning:
+    'border border-orange-500/20 bg-orange-500/10 text-orange-700 hover:bg-orange-500/15 focus-visible:ring-2 focus-visible:ring-orange-500/20',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
