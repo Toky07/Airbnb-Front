@@ -30,7 +30,7 @@
 "leaflet", "react-leaflet", "@types/leaflet"
 ```
 
-En Docker : `make dev-fresh` si le volume `node_modules` est obsolète.
+En Docker : `make npm-frontend PKG=leaflet` (ou `make sync-deps` si le lockfile a déjà changé).
 
 ## Tests
 
