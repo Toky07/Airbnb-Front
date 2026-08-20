@@ -48,16 +48,26 @@ const SiteFooter = () => (
         <p className="text-sm text-ink/45">
           © {new Date().getFullYear()} Airbnb — Projet démo.
         </p>
-        <div className="flex gap-6">
-          {footerLegalLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="text-sm text-ink/45 transition duration-200 hover:text-ink"
-            >
-              {link.label}
-            </a>
-          ))}
+        <div className="flex flex-wrap justify-center gap-6">
+          {footerLegalLinks.map((link) =>
+            isInternalLink(link.href) ? (
+              <Link
+                key={link.label}
+                to={link.href}
+                className="text-sm text-ink/45 transition duration-200 hover:text-ink"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.label}
+                href={link.href}
+                className="text-sm text-ink/45 transition duration-200 hover:text-ink"
+              >
+                {link.label}
+              </a>
+            ),
+          )}
         </div>
       </div>
     </PageContainer>

@@ -77,6 +77,11 @@ describe('HostPropertyService', () => {
       propertyTypeId: 1,
       cancellationPolicy: 'moderate',
       touristTaxPerGuestNight: 0,
+      houseRules: '',
+      checkInInstructions: '',
+      wifiName: '',
+      wifiPassword: '',
+      emergencyContact: '',
     });
 
     expect(result.success).toBe(true);
@@ -105,6 +110,11 @@ describe('HostPropertyService', () => {
       propertyTypeId: null,
       cancellationPolicy: 'moderate',
       touristTaxPerGuestNight: 0,
+      houseRules: '',
+      checkInInstructions: '',
+      wifiName: '',
+      wifiPassword: '',
+      emergencyContact: '',
     });
 
     expect(result).toEqual({ success: false, error: 'Nom déjà utilisé' });

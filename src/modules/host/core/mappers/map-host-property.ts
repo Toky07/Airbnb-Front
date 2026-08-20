@@ -50,6 +50,11 @@ export function mapHostProperty(data: unknown): HostProperty | null {
     checkOutTime: String(record.checkOutTime ?? ''),
     cancellationPolicy: String(record.cancellationPolicy ?? 'moderate'),
     touristTaxPerGuestNight: Number(record.touristTaxPerGuestNight ?? 0),
+    houseRules: String(record.houseRules ?? ''),
+    checkInInstructions: String(record.checkInInstructions ?? ''),
+    wifiName: String(record.wifiName ?? ''),
+    wifiPassword: String(record.wifiPassword ?? ''),
+    emergencyContact: String(record.emergencyContact ?? ''),
     ownerId: Number(record.ownerId ?? 0),
     propertyTypeId:
       typeof record.propertyTypeId === 'number' ? record.propertyTypeId : null,

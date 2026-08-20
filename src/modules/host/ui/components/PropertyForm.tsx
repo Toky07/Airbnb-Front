@@ -157,6 +157,56 @@ const PropertyForm = ({
           </p>
         </HostFormField>
 
+        <HostFormField label="Règlement intérieur" fullWidth>
+          <textarea
+            value={form.houseRules}
+            onChange={(event) => onUpdate('houseRules', event.target.value)}
+            rows={3}
+            className={hostFieldClassName}
+            placeholder="Horaires de silence, fêtes, animaux…"
+          />
+        </HostFormField>
+
+        <HostFormField label="Instructions d’arrivée" fullWidth>
+          <textarea
+            value={form.checkInInstructions}
+            onChange={(event) => onUpdate('checkInInstructions', event.target.value)}
+            rows={3}
+            className={hostFieldClassName}
+            placeholder="Boîte à clés, interphone, étage…"
+          />
+          <p className="mt-2 text-sm text-ink/50">
+            Visible par le voyageur uniquement après un paiement confirmé.
+          </p>
+        </HostFormField>
+
+        <HostFormField label="Nom du wifi">
+          <input
+            value={form.wifiName}
+            onChange={(event) => onUpdate('wifiName', event.target.value)}
+            className={hostFieldClassName}
+            autoComplete="off"
+          />
+        </HostFormField>
+
+        <HostFormField label="Mot de passe wifi">
+          <input
+            value={form.wifiPassword}
+            onChange={(event) => onUpdate('wifiPassword', event.target.value)}
+            className={hostFieldClassName}
+            autoComplete="off"
+          />
+        </HostFormField>
+
+        <HostFormField label="Contact d’urgence" fullWidth>
+          <input
+            value={form.emergencyContact}
+            onChange={(event) => onUpdate('emergencyContact', event.target.value)}
+            className={hostFieldClassName}
+            placeholder="Téléphone ou email"
+          />
+        </HostFormField>
+
         <div className="md:col-span-2">
           <ImageFileInput
             label="Photo principale"

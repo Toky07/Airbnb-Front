@@ -10,7 +10,7 @@ Vue d’ensemble : établissements, chambres, réservations récentes.
 
 - `/host/property` — liste
 - `/host/property/new` — créer
-- `/host/property/:id` — détail, équipements, chambres
+- `/host/property/:id` — détail, équipements, chambres, guide d’arrivée
 
 ## Chambres
 

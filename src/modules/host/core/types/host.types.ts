@@ -30,6 +30,11 @@ export type HostProperty = {
   checkOutTime: string;
   cancellationPolicy: string;
   touristTaxPerGuestNight: number;
+  houseRules: string;
+  checkInInstructions: string;
+  wifiName: string;
+  wifiPassword: string;
+  emergencyContact: string;
   ownerId: number;
   propertyTypeId: number | null;
   propertyType: CategorySummary | null;
@@ -57,6 +62,11 @@ export type PropertyFormPayload = {
   touristTaxPerGuestNight: number;
   propertyTypeId: number | null;
   imageFile?: File | null;
+  houseRules: string;
+  checkInInstructions: string;
+  wifiName: string;
+  wifiPassword: string;
+  emergencyContact: string;
 };
 
 export type RoomFormPayload = {

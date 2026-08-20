@@ -13,6 +13,11 @@ export function buildPropertyFormData(payload: PropertyFormPayload): FormData {
   form.append('checkOutTime', payload.checkOutTime);
   form.append('cancellationPolicy', payload.cancellationPolicy);
   form.append('touristTaxPerGuestNight', String(payload.touristTaxPerGuestNight));
+  form.append('houseRules', payload.houseRules);
+  form.append('checkInInstructions', payload.checkInInstructions);
+  form.append('wifiName', payload.wifiName);
+  form.append('wifiPassword', payload.wifiPassword);
+  form.append('emergencyContact', payload.emergencyContact);
 
   if (payload.propertyTypeId) {
     form.append('propertyTypeId', String(payload.propertyTypeId));

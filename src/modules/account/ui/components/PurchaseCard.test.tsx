@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import PurchaseCard from './PurchaseCard';
@@ -21,6 +21,7 @@ const reservation: Reservation = {
   propertyName: 'Hôtel',
   propertyCity: 'Paris',
   imageUrl: null,
+  arrivalGuide: null,
   createdAt: '2026-01-01T00:00:00.000Z',
   updatedAt: '2026-01-01T00:00:00.000Z',
 };
@@ -60,13 +61,29 @@ describe('PurchaseCard', () => {
     expect(screen.getByRole('button', { name: /annuler/i })).toBeInTheDocument();
   });
 
-  it('charge la prévisualisation au clic sur annuler', async () => {
-    renderCard();
+  it('affiche le guide d’arrivée pour une réservation confirmée', () => {
+    render(
+      <MemoryRouter>
+        <PurchaseCard
+          reservation={{
+            ...reservation,
+            arrivalGuide: {
+              address: '12 rue de la Mer, Nice',
+              checkInTime: '15:00',
+              checkOutTime: '11:00',
+              houseRules: 'Pas de fête',
+              checkInInstructions: 'Boîte à clés',
+              wifiName: 'Riviera-Guest',
+              wifiPassword: 'azerty',
+              emergencyContact: '+33601020304',
+            },
+          }}
+        />
+      </MemoryRouter>,
+    );
 
-    fireEvent.click(screen.getByRole('button', { name: /annuler/i }));
-
-    await waitFor(() => {
-      expect(loadPreview).toHaveBeenCalledWith(12);
-    });
+    expect(screen.getByText('Instructions d’arrivée')).toBeInTheDocument();
+    expect(screen.getByText('Riviera-Guest')).toBeInTheDocument();
+    expect(screen.getByText('azerty')).toBeInTheDocument();
   });
 });

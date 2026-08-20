@@ -22,6 +22,11 @@ const properties: HostProperty[] = [
     roomCount: 4,
     cancellationPolicy: 'moderate',
     touristTaxPerGuestNight: 0,
+    houseRules: '',
+    checkInInstructions: '',
+    wifiName: '',
+    wifiPassword: '',
+    emergencyContact: '',
   },
 ];
 

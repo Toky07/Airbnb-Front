@@ -27,6 +27,9 @@ const FavoritesPage = lazyRoute(() => import('./modules/favorite/ui/pages/Favori
 const BecomeHostPage = lazyRoute(
   () => import('./modules/host-application/ui/pages/BecomeHostPage'),
 );
+const HelpPage = lazyRoute(() => import('./modules/site/ui/pages/HelpPage'));
+const ContactPage = lazyRoute(() => import('./modules/site/ui/pages/ContactPage'));
+const LegalPage = lazyRoute(() => import('./modules/site/ui/pages/LegalPage'));
 const HostDashboardPage = lazyRoute(() => import('./modules/host/ui/pages/HostDashboardPage'));
 const HostPropertiesListPage = lazyRoute(
   () => import('./modules/host/ui/pages/HostPropertiesListPage'),
@@ -58,6 +61,9 @@ const MyPurchasesRoute = withPublicLayout(MyPurchasesPage);
 const MessagesRoute = withPublicLayout(MessagesPage);
 const FavoritesRoute = withPublicLayout(FavoritesPage);
 const BecomeHostRoute = withPublicLayout(BecomeHostPage);
+const HelpRoute = withPublicLayout(HelpPage);
+const ContactRoute = withPublicLayout(ContactPage);
+const LegalRoute = withPublicLayout(LegalPage);
 
 const AuthShell = () => (
   <AuthProvider>
@@ -75,6 +81,9 @@ const router = createBrowserRouter([
       { path: '/search', Component: SearchPage },
       { path: '/rooms/:slug', Component: RoomDetailPage },
       { path: '/cart', Component: CartPage },
+      { path: '/help', Component: HelpRoute },
+      { path: '/contact', Component: ContactRoute },
+      { path: '/legal/:slug', Component: LegalRoute },
       {
         Component: GuestRoute,
         children: [
