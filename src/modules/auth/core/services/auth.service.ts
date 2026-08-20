@@ -52,8 +52,9 @@ export class AuthService {
   }
 
   async validatePasswordSetup(token: string): Promise<PasswordSetupValidation> {
-    const response = await this.httpClient.get(
-      `/auth/password-setup/validate?token=${encodeURIComponent(token)}`,
+    const response = await this.httpClient.post(
+      '/auth/password-setup/validate',
+      { token },
     );
 
     if (!response.ok) {

@@ -18,7 +18,7 @@ export const footerColumns: FooterColumn[] = [
   {
     title: 'Hébergement',
     links: [
-      { label: 'Devenir hôte', href: '#' },
+      { label: 'Devenir hôte', href: '/become-host' },
       { label: 'Espace admin', href: 'http://localhost:5173' },
     ],
   },

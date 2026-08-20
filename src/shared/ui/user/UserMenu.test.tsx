@@ -74,10 +74,8 @@ describe('UserMenu', () => {
   });
 
   it('propose devenir hôte pour un voyageur', () => {
-    const onBecomeHost = vi.fn();
     const items = buildUserMenuItems({
       canAccessHostDashboard: false,
-      onBecomeHost,
       onLogout: vi.fn(),
     });
 
@@ -89,5 +87,10 @@ describe('UserMenu', () => {
       'Devenir hôte',
       'Déconnexion',
     ]);
+    expect(items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ type: 'link', to: '/become-host' }),
+      ]),
+    );
   });
 });

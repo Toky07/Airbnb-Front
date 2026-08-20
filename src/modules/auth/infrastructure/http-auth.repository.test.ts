@@ -78,17 +78,4 @@ describe('HttpAuthRepository', () => {
     expect(me?.email).toBe('user@test.com');
     expect(httpClient.get).toHaveBeenCalledWith('/auth/me');
   });
-
-  it('devient hôte via POST /auth/become-host', async () => {
-    const httpClient = createHttpClient({
-      post: vi.fn().mockResolvedValue(
-        new Response(JSON.stringify({ token: 'host-jwt' }), { status: 200 }),
-      ),
-    });
-    const repository = new HttpAuthRepository(httpClient);
-    const result = await repository.becomeHost();
-
-    expect(result).toEqual({ success: true, token: 'host-jwt' });
-    expect(httpClient.post).toHaveBeenCalledWith('/auth/become-host', {});
-  });
 });

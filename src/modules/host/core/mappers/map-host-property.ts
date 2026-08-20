@@ -1,5 +1,31 @@
 import type { CategorySummary } from '../../../rooms/core/types/room.types';
-import type { HostProfile, HostProperty } from '../types/host.types';
+import type { HostProfile, HostProperty, HostStripeConnect } from '../types/host.types';
+
+const DEFAULT_STRIPE_CONNECT: HostStripeConnect = {
+  onboardingStatus: 'not_started',
+  chargesEnabled: false,
+  payoutsEnabled: false,
+  hasAccount: false,
+};
+
+export function mapHostStripeConnect(data: unknown): HostStripeConnect {
+  if (!data || typeof data !== 'object') {
+    return DEFAULT_STRIPE_CONNECT;
+  }
+
+  const record = data as Record<string, unknown>;
+  const onboardingStatus =
+    record.onboardingStatus === 'pending' || record.onboardingStatus === 'complete'
+      ? record.onboardingStatus
+      : 'not_started';
+
+  return {
+    onboardingStatus,
+    chargesEnabled: Boolean(record.chargesEnabled),
+    payoutsEnabled: Boolean(record.payoutsEnabled),
+    hasAccount: Boolean(record.hasAccount),
+  };
+}
 
 export function mapHostProperty(data: unknown): HostProperty | null {
   if (!data || typeof data !== 'object') {
@@ -79,6 +105,7 @@ export function mapHostProfile(data: unknown): HostProfile | null {
       phoneNumber: String(userRecord.phoneNumber ?? ''),
     },
     properties,
+    stripe: mapHostStripeConnect(record.stripe),
   };
 }
 
