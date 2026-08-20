@@ -17,8 +17,20 @@ export type Reservation = {
   propertyName: string | null;
   propertyCity: string | null;
   imageUrl: string | null;
+  arrivalGuide: ReservationArrivalGuide | null;
   createdAt: string;
   updatedAt: string;
+};
+
+export type ReservationArrivalGuide = {
+  address: string | null;
+  checkInTime: string | null;
+  checkOutTime: string | null;
+  houseRules: string | null;
+  checkInInstructions: string | null;
+  wifiName: string | null;
+  wifiPassword: string | null;
+  emergencyContact: string | null;
 };
 
 export type BookingFormValues = {

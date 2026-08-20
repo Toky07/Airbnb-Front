@@ -14,6 +14,7 @@ import { useContactHost } from '../../../messaging/ui/hooks/useContactHost';
 import ReviewForm from '../../../review/ui/components/ReviewForm';
 import { useCreateReview } from '../../../review/ui/hooks/useCreateReview';
 import { canLeaveReview } from '../../../review/core/utils/review-eligibility';
+import PurchaseArrivalGuide from './PurchaseArrivalGuide';
 
 function getStatusTone(
   status: Reservation['status'],
@@ -119,6 +120,10 @@ export default function PurchaseCard({
             : undefined
         }
       />
+
+      {reservation.status === 'confirmed' && reservation.arrivalGuide ? (
+        <PurchaseArrivalGuide guide={reservation.arrivalGuide} />
+      ) : null}
 
       {canCancel ? (
         <Button type="button" variant="secondary" onClick={handleOpenCancel} disabled={loading}>

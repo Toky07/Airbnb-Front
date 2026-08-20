@@ -22,8 +22,9 @@ const sampleReservation: Reservation = {
   roomSlug: 'suite-deluxe',
   propertyName: 'Hotel Test',
   propertyCity: 'Paris',
-  imageUrl: null,
-  createdAt: '2026-06-01T00:00:00.000Z',
+    imageUrl: null,
+    arrivalGuide: null,
+    createdAt: '2026-06-01T00:00:00.000Z',
   updatedAt: '2026-06-01T00:00:00.000Z',
 };
 

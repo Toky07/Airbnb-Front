@@ -1,11 +1,33 @@
 import type { PaginatedResponse } from '../../../../shared/pagination/types';
-import type { Reservation, ReservationStatus } from '../types/reservation.types';
+import type { Reservation, ReservationArrivalGuide, ReservationStatus } from '../types/reservation.types';
 import {
   isReservationItemApi,
   isReservationOutputApi,
   type ReservationItemApi,
   type ReservationOutputApi,
 } from '../types/reservation-api.types';
+
+function parseArrivalGuide(value: unknown): ReservationArrivalGuide | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+
+  const record = value as Record<string, unknown>;
+  const guide: ReservationArrivalGuide = {
+    address: typeof record.address === 'string' ? record.address : null,
+    checkInTime: typeof record.checkInTime === 'string' ? record.checkInTime : null,
+    checkOutTime: typeof record.checkOutTime === 'string' ? record.checkOutTime : null,
+    houseRules: typeof record.houseRules === 'string' ? record.houseRules : null,
+    checkInInstructions:
+      typeof record.checkInInstructions === 'string' ? record.checkInInstructions : null,
+    wifiName: typeof record.wifiName === 'string' ? record.wifiName : null,
+    wifiPassword: typeof record.wifiPassword === 'string' ? record.wifiPassword : null,
+    emergencyContact:
+      typeof record.emergencyContact === 'string' ? record.emergencyContact : null,
+  };
+
+  return Object.values(guide).some(Boolean) ? guide : null;
+}
 
 function mapReservationItemApi(
   reservation: ReservationOutputApi,
@@ -29,6 +51,7 @@ function mapReservationItemApi(
     propertyName: item.propertyName,
     propertyCity: item.propertyCity,
     imageUrl: item.imageUrl,
+    arrivalGuide: parseArrivalGuide(item.arrivalGuide),
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
   };

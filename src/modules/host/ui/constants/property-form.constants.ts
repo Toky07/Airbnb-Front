@@ -15,6 +15,11 @@ export const emptyPropertyForm: PropertyFormPayload = {
   touristTaxPerGuestNight: 0,
   propertyTypeId: null,
   imageFile: null,
+  houseRules: '',
+  checkInInstructions: '',
+  wifiName: '',
+  wifiPassword: '',
+  emergencyContact: '',
 };
 
 export function propertyToFormPayload(property: HostProperty): PropertyFormPayload {
@@ -32,5 +37,10 @@ export function propertyToFormPayload(property: HostProperty): PropertyFormPaylo
     touristTaxPerGuestNight: property.touristTaxPerGuestNight,
     propertyTypeId: property.propertyTypeId,
     imageFile: null,
+    houseRules: property.houseRules,
+    checkInInstructions: property.checkInInstructions,
+    wifiName: property.wifiName,
+    wifiPassword: property.wifiPassword,
+    emergencyContact: property.emergencyContact,
   };
 }

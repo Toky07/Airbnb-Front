@@ -1,4 +1,4 @@
-import type { ReservationStatus } from '../types/reservation.types';
+import type { ReservationArrivalGuide, ReservationStatus } from './reservation.types';
 
 export type ReservationItemApi = {
   id: number;
@@ -16,6 +16,7 @@ export type ReservationItemApi = {
   propertyName: string | null;
   propertyCity: string | null;
   imageUrl: string | null;
+  arrivalGuide?: ReservationArrivalGuide | null;
   createdAt: string;
   updatedAt: string;
 };
