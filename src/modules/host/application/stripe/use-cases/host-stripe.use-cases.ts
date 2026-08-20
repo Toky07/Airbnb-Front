@@ -1,7 +1,11 @@
 import type { HostStripeRepository } from '../ports/host-stripe.repository';
 
 export class CreateHostStripeOnboardingLinkUseCase {
-  constructor(private readonly repository: HostStripeRepository) {}
+  private readonly repository: HostStripeRepository;
+
+  constructor(repository: HostStripeRepository) {
+    this.repository = repository;
+  }
 
   execute() {
     return this.repository.createOnboardingLink();
@@ -9,7 +13,11 @@ export class CreateHostStripeOnboardingLinkUseCase {
 }
 
 export class CreateHostStripeDashboardLinkUseCase {
-  constructor(private readonly repository: HostStripeRepository) {}
+  private readonly repository: HostStripeRepository;
+
+  constructor(repository: HostStripeRepository) {
+    this.repository = repository;
+  }
 
   execute() {
     return this.repository.createDashboardLink();
