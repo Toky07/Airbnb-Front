@@ -18,14 +18,12 @@ export type UserMenuItem =
 type BuildUserMenuItemsParams = {
   canAccessHostDashboard: boolean;
   hasProperty?: boolean;
-  onBecomeHost?: () => void;
   onLogout: () => void;
 };
 
 export function buildUserMenuItems({
   canAccessHostDashboard,
   hasProperty,
-  onBecomeHost,
   onLogout,
 }: BuildUserMenuItemsParams): UserMenuItem[] {
   const items: UserMenuItem[] = [
@@ -62,12 +60,12 @@ export function buildUserMenuItems({
       label: 'Gérer mon hôtel',
       icon: 'hotel',
     });
-  } else if (onBecomeHost) {
+  } else {
     items.push({
-      type: 'action',
+      type: 'link',
+      to: '/become-host',
       label: 'Devenir hôte',
       icon: 'hotel',
-      onSelect: onBecomeHost,
     });
   }
 

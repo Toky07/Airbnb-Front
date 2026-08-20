@@ -24,6 +24,9 @@ const HostMessagesPage = lazyRoute(
   () => import('./modules/messaging/ui/pages/HostMessagesPage'),
 );
 const FavoritesPage = lazyRoute(() => import('./modules/favorite/ui/pages/FavoritesPage'));
+const BecomeHostPage = lazyRoute(
+  () => import('./modules/host-application/ui/pages/BecomeHostPage'),
+);
 const HostDashboardPage = lazyRoute(() => import('./modules/host/ui/pages/HostDashboardPage'));
 const HostPropertiesListPage = lazyRoute(
   () => import('./modules/host/ui/pages/HostPropertiesListPage'),
@@ -54,6 +57,7 @@ const ProfileRoute = withPublicLayout(ProfilePage);
 const MyPurchasesRoute = withPublicLayout(MyPurchasesPage);
 const MessagesRoute = withPublicLayout(MessagesPage);
 const FavoritesRoute = withPublicLayout(FavoritesPage);
+const BecomeHostRoute = withPublicLayout(BecomeHostPage);
 
 const AuthShell = () => (
   <AuthProvider>
@@ -89,6 +93,7 @@ const router = createBrowserRouter([
           { path: '/account/messages', Component: MessagesRoute },
           { path: '/account/messages/:conversationId', Component: MessagesRoute },
           { path: '/account/favorites', Component: FavoritesRoute },
+          { path: '/become-host', Component: BecomeHostRoute },
         ],
       },
       {

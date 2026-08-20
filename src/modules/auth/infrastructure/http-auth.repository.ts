@@ -52,28 +52,10 @@ export class HttpAuthRepository implements AuthRepository {
     return { success: true };
   }
 
-  async becomeHost(): Promise<LoginResult> {
-    const response = await this.httpClient.post('/auth/become-host', {});
-    const data: unknown = await response.json();
-
-    if (!response.ok) {
-      return {
-        success: false,
-        error: parseApiError(data, 'Impossible de devenir hôte.'),
-      };
-    }
-
-    const token = extractApiToken(data);
-    if (!token) {
-      return { success: false, error: 'Impossible de devenir hôte.' };
-    }
-
-    return { success: true, token };
-  }
-
   async validatePasswordSetup(token: string): Promise<PasswordSetupValidation> {
-    const response = await this.httpClient.get(
-      `/auth/password-setup/validate?token=${encodeURIComponent(token)}`,
+    const response = await this.httpClient.post(
+      '/auth/password-setup/validate',
+      { token },
     );
 
     if (!response.ok) {
@@ -126,8 +108,9 @@ export class HttpAuthRepository implements AuthRepository {
   }
 
   async validatePasswordReset(token: string): Promise<PasswordResetValidation> {
-    const response = await this.httpClient.get(
-      `/auth/reset-password/validate?token=${encodeURIComponent(token)}`,
+    const response = await this.httpClient.post(
+      '/auth/reset-password/validate',
+      { token },
     );
 
     if (!response.ok) {

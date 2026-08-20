@@ -14,7 +14,6 @@ type UserMenuProps = {
   email: string | null;
   canAccessHostDashboard: boolean;
   hasProperty?: boolean;
-  onBecomeHost?: () => void;
   onLogout: () => void;
 };
 
@@ -23,7 +22,6 @@ const UserMenu = ({
   email,
   canAccessHostDashboard,
   hasProperty = false,
-  onBecomeHost,
   onLogout,
 }: UserMenuProps) => {
   const menuId = useId();
@@ -34,7 +32,6 @@ const UserMenu = ({
   const items = buildUserMenuItems({
     canAccessHostDashboard,
     hasProperty,
-    onBecomeHost,
     onLogout,
   });
 

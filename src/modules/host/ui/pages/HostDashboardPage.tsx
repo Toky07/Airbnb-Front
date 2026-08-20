@@ -4,12 +4,23 @@ import { Button, PageSkeleton } from '../../../../shared/ui';
 import { usePageTitle } from '../../../../shared/hooks/usePageTitle';
 import HostDashboardStatCard from '../components/HostDashboardStatCard';
 import HostRecentActivityList from '../components/HostRecentActivityList';
+import HostStripeConnectBanner from '../components/HostStripeConnectBanner';
 import { useHostDashboard } from '../hooks/useHostDashboard';
 import { formatHostCurrency } from '../utils/host-formatters';
 
 const HostDashboardPage = () => {
   usePageTitle('Tableau de bord');
-  const { profile, roomsCount, reservationStats, recentActivity, loading } = useHostDashboard();
+  const {
+    profile,
+    roomsCount,
+    reservationStats,
+    recentActivity,
+    loading,
+    stripeBusy,
+    stripeError,
+    startStripeOnboarding,
+    openStripeDashboard,
+  } = useHostDashboard();
 
   if (loading) {
     return <PageSkeleton className="h-64" />;
@@ -32,6 +43,20 @@ const HostDashboardPage = () => {
         </h1>
         <p className="mt-3 text-lg text-ink/50">Voici un aperçu de votre activité aujourd'hui.</p>
       </div>
+
+      {profile ? (
+        <HostStripeConnectBanner
+          stripe={profile.stripe}
+          busy={stripeBusy}
+          error={stripeError}
+          onStartOnboarding={() => {
+            void startStripeOnboarding();
+          }}
+          onOpenDashboard={() => {
+            void openStripeDashboard();
+          }}
+        />
+      ) : null}
 
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
         <div className="group relative overflow-hidden rounded-2xl border border-ink/8 bg-surface p-8 soft-shadow">

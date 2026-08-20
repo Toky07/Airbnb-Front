@@ -10,6 +10,13 @@ export type HostUser = {
   phoneNumber: string;
 };
 
+export type HostStripeConnect = {
+  onboardingStatus: 'not_started' | 'pending' | 'complete';
+  chargesEnabled: boolean;
+  payoutsEnabled: boolean;
+  hasAccount: boolean;
+};
+
 export type HostProperty = {
   id: number;
   name: string;
@@ -33,6 +40,7 @@ export type HostProperty = {
 export type HostProfile = {
   user: HostUser;
   properties: HostProperty[];
+  stripe: HostStripeConnect;
 };
 
 export type PropertyFormPayload = {
