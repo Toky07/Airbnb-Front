@@ -24,6 +24,11 @@ const sampleProperty: HostProperty = {
   roomCount: 4,
   cancellationPolicy: 'moderate',
   touristTaxPerGuestNight: 0,
+  houseRules: '',
+  checkInInstructions: '',
+  wifiName: '',
+  wifiPassword: '',
+  emergencyContact: '',
 };
 
 function createHostPropertyRepository(
